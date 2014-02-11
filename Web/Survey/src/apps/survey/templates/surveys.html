@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+
+	<h1>{% trans "Surveys" %}</h1>
+	
+	{% if request.user.is_anonymous %}
+		{% url 'login' as login_url %}
+		{% with '<a href="'|add:login_url|add:'?next='|add:request.path|add:'">'|safe as start_link %}
+		{% with '</a>' as end_link %}
+		<p>
+			{% blocktrans %}
+				{{ start_link }}Login{{ end_link }} to see your private surveys.
+			{% endblocktrans %}
+		</p>
+		{% endwith %}
+		{% endwith %}
+	{% endif %}
+	
+	<h2>{% trans "Live Surveys" %}</h2>
+	{% if live_surveys %}
+		<table>
+			<thead>
+				<td>{% trans "Name" %}</td>
+				<td>{% trans "Submissions" %}</td>
+				<td>{% trans "Public" %}</td>
+			</thead>
+			{% for survey in live_surveys %}
+				<tr>
+					<td><a href="{% url 'survey_detail' survey.slug %}">{{ survey.title }}</a></td>
+					<td>{{ survey.submission_set.count }}</td>
+					<td>
+						{% if survey.require_login %}
+							<img src="{{ MEDIA_URL }}static/survey/cross_icon.png" alt="{% trans "Private" %}" width="16" height="16" />
+						{% else %}
+							<img src="{{ MEDIA_URL }}static/survey/tick_icon.png" alt="{% trans "Public" %}" width="16" height="16" />
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<p>{% trans "There are no live surveys." %}</p>
+	{% endif %}
+
+	<h2>{% trans "Archived Surveys" %}</h2>
+	{% if archived_surveys %}
+		<table>
+			<thead>
+				<td>{% trans "Name" %}</td>
+				<td>{% trans "Submissions" %}</td>
+				<td>{% trans "Public" %}</td>
+			</thead>
+			{% for survey in archived_surveys %}
+				<tr>
+					<td><a href="">{{ survey.title }}</a></td>
+					<td>{{ survey.submission_set.count }}</td>
+					<td>
+						{% if survey.require_login %}
+							<img src="{{ MEDIA_URL }}survey/public_icon.png" alt="{% trans "Public" %}" />
+						{% else %}
+							<img src="{{ MEDIA_URL }}survey/private_icon.png" alt="{% trans "Private" %}" />
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<p>{% trans "There are no archived surveys." %}</p>
+	{% endif %}
+	
+{% endblock %}

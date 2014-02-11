@@ -1,5 +1,5 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
-    url(r'^$', 'apps.core.views.home'),
+    url(r'^$', 'apps.core.views.home', name='home'),
 )
