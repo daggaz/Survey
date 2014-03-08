@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+
+	<h1>{{ survey.title }}</h1>
+	
+	<form method="POST" action=".">
+		{% csrf_token %}
+		
+		{% for form in forms %}
+			{{ form.as_p }}
+		{% endfor %}
+		
+		<input type="submit" name="{% trans "Submit" %} />
+	</form>
+	
+{% endblock %}
