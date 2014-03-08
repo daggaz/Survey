@@ -12,25 +12,25 @@
 		{% with '</a>' as end_link %}
 		<p>
 			{% blocktrans %}
-				{{ start_link }}Login{{ end_link }} to see your private surveys.
+				{{ start_link }}Login{{ end_link }} to see your surveys.
 			{% endblocktrans %}
 		</p>
 		{% endwith %}
 		{% endwith %}
 	{% endif %}
 	
-	<h2>{% trans "Live Surveys" %}</h2>
-	{% if live_surveys %}
+	<h2>{% trans "Open Surveys" %}</h2>
+	{% if open_surveys %}
 		<table>
 			<thead>
 				<td>{% trans "Name" %}</td>
 				<td>{% trans "Submissions" %}</td>
 				<td>{% trans "Public" %}</td>
 			</thead>
-			{% for survey in live_surveys %}
+			{% for survey in open_surveys %}
 				<tr>
-					<td><a href="{% url 'survey_detail' survey.slug %}">{{ survey.title }}</a></td>
-					<td>{{ survey.submission_set.count }}</td>
+					<td><a href="{% url 'survey' survey.slug %}">{{ survey.title }}</a></td>
+					<td>{{ survey.submissions.count }}</td>
 					<td>
 						{% if survey.require_login %}
 							<img src="{{ MEDIA_URL }}static/survey/cross_icon.png" alt="{% trans "Private" %}" width="16" height="16" />

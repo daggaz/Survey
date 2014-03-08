@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'crowdsourcing',
     'apps.core',
     'apps.survey',
     'debug_toolbar',
