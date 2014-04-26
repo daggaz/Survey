@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Login Image -->
+    
+    <LinearLayout
+        android:id="@+id/logo_layout"
+        android:layout_alignParentTop="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:orientation="horizontal">
+        
+	    <ImageView
+	        android:layout_width="142dp"
+	        android:layout_height="wrap_content"
+	        android:contentDescription="@string/login"
+	        android:src="@drawable/logo" />
+	    
+		<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:gravity="center_vertical|center_horizontal"
+	        android:text="@string/bangladesh"
+	        android:textColor="@color/textHighlight"
+	        android:textSize="25sp" />	    
+
+    </LinearLayout>
+
+    <!-- Login Title -->
+    
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_layout"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/login_text"
+        android:textColor="@color/textHighlight"
+        android:textSize="20sp" />
+    
+    <!-- layout for Username -->
+
+    <LinearLayout
+        android:id="@+id/username_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+     
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+            android:text="@string/username"
+            android:textSize="18sp"
+            />
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:ems="10"
+            android:inputType="text">
+
+            <requestFocus />
+        </EditText>
+
+    </LinearLayout>
+    <!-- layout for Password -->
+
+    <LinearLayout
+        android:id="@+id/password_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username_layout"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+            android:text="@string/password"
+            android:textSize="18sp"
+            />
+        <EditText
+            android:id="@+id/password"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+            android:inputType="textPassword"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password_layout"
+        android:layout_margin="10dp"
+        android:onClick="login"
+        android:text="@string/login" />
+
+</RelativeLayout>

@@ -1,8 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">SurveyApp</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
+    <!-- General -->
+    <string name="app_name">UNDP Survey</string>
+    <string name="bangladesh">Bangladesh</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    
+    <!-- Login screen -->
+    <string name="login_text">Please login to begin</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="login_failed">Login unsuccessful</string>
+    <string name="logging_in">Authenticating&#8230;</string>
+    
+    <!-- Home screen -->
+    <string name="home">Home</string>
+    <string name="surveys">Surveys</string>
+    <string name="synchronise">Synchronise</string>
+    <string name="logout">Logout</string>
+    <string name="confirm_logout">Are you sure you want to logout?</string>
+    
+    <!-- Surveys screen -->
+    <string name="no_surveys">No surveys available.</string>
+    <string name="synchronise_hint">Try synchronising.</string>
+    
+    <!-- Synchronise screen -->
+    <string name="synchronising_error">Error synchronising!</string>
+    <string name="synchronising_success">Successfully synchronised!</string>
+    <string name="synchronising_message">Synchronising&#8230;</string>
+    <string name="synchronising_login">This login is not connected</string>
+    
 </resources>

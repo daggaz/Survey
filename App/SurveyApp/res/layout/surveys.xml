@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.undp.bd.survey.application.activities.Surveys">
+    
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/surveys"
+        android:textColor="@color/textHighlight"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/title" />
+    
+    <LinearLayout
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:orientation="vertical">
+
+        <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="15dp"
+	        android:paddingRight="10dp"
+	        android:paddingTop="10dp"
+	        android:text="@string/no_surveys" />
+        
+        <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingBottom="10dp"
+	        android:paddingLeft="15dp"
+	        android:paddingRight="10dp"
+	        android:textStyle="italic"
+	        android:textSize="12sp"
+	        android:text="@string/synchronise_hint" />
+    </LinearLayout>
+    
+</RelativeLayout>
