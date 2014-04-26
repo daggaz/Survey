@@ -1,1 +1,3 @@
 *.pyc
+Web/src/db.sqlite3
+
