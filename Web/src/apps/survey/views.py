@@ -1,14 +1,16 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
+from django.core import serializers
+
 import json
 
 from models import Survey
 from forms import SubmissionForm, QTYPE_FORM
 from apps.survey.models import Question
-from django.core import serializers
 import itertools
 
 def _get_survey(user, *args, **kwargs):
@@ -67,15 +69,50 @@ def survey_thanks(request, slug):
         'survey': survey,
         })
 
-@login_required
-def sync_surveys(request):
-    surveys = Survey.live.filter(users=request.user.pk)
-    questions = Question.objects.filter(survey__in=surveys)
-    data = serializers.serialize('json', itertools.chain(surveys, questions))
-    return HttpResponse(data, mimetype='application/json')
+def api_login(request):
+    user = authenticate(username=request.GET.get('username'),
+                        password=request.GET.get('password'),
+                        )
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            data = {'status': 'success',
+                    'session_key': request.session.session_key,
+                    }
+        else:
+            data = {'status': 'failed',
+                    'reason': 'account disabled',
+                    }
+    else:
+        data = {'status': 'failed',
+                'reason': 'invalid username/password',
+                }
+    return HttpResponse(json.dumps(data), mimetype='application/json')
 
-@login_required
+def sync_surveys(request):
+    if request.user.is_authenticated():
+        surveys = Survey.live.filter(users=request.user.pk)
+        questions = Question.objects.filter(survey__in=surveys)
+        surveys = json.loads(serializers.serialize('json', surveys))
+        questions = json.loads(serializers.serialize('json', questions))
+        data = {'status': 'success',
+                'surveys': surveys,
+                'questions': questions,
+                }
+    else:
+        data = {'status': 'failed',
+                'reason': 'not authorized',
+                }
+    return HttpResponse(json.dumps(data), mimetype='application/json')
+
 def sync_survey(request, slug):
-    survey = _get_survey(request.user, Survey.live, slug=slug)
-    data = survey
+    if request.user.is_authenticated():
+        survey = _get_survey(request.user, Survey.live, slug=slug)
+        data = {'status': 'success',
+                'data': survey,
+                }
+    else:
+        data = {'status': 'failed',
+                'reason': 'not authorized',
+                }
     return HttpResponse(json.dumps(data), mimetype='application/json')
