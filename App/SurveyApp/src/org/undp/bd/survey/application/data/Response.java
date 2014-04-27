@@ -10,7 +10,7 @@ public class Response {
 	@DatabaseField(generatedId=true)
 	public int id;
 	
-	@DatabaseField(foreign=true)
+	@DatabaseField(foreign=true, canBeNull=false)
 	public Survey survey;
 	
 	@ForeignCollectionField(eager=true)

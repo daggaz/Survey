@@ -70,6 +70,6 @@ public class Survey extends DjangoObject {
 	
 	@Override
 	public String toString() {
-		return "<Survey: remote_id=" + remote_id + ", name=" + title + ">";
+		return "<Survey: id=" + id + ", remote_id=" + remote_id + ", name=" + title + ">";
 	}
 }

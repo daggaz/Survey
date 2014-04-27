@@ -1,6 +1,7 @@
 package org.undp.bd.survey.application.data;
 
 import java.sql.SQLException;
+import java.util.jar.Attributes.Name;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +55,7 @@ public class Question extends DjangoObject {
 			remote_id = pk;
 			required = data.getBoolean("required");
 			order = data.getInt("order");
-			field_name = data.getString("field_name");
+			field_name = data.getString("fieldname");
 			question = data.getString("question");
 			help_text = data.getString("help_text");
 			label = data.getString("label");
@@ -71,5 +72,10 @@ public class Question extends DjangoObject {
 		for (Answer answer : answers)
 			answer.delete(helper);
 		helper.getQuestions().delete(this);
+	}
+	
+	@Override
+	public String toString() {
+		return "<Question: id=" + id + ", remote_id=" + remote_id + ", field_name=" + field_name + ">";  
 	}
 }

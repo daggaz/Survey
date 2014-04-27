@@ -85,12 +85,12 @@ public class Home extends OrmLiteBaseActivity<DatabaseHelper> {
 									break;
 								}
 							if (existingQuestion != null) {
-								Log.d("Survey.Home", "Updated question " + importedQuestion);
 								importedQuestion.id = existingQuestion.id;
 								questions.update(importedQuestion);
+								Log.d("Survey.Home", "Updated question " + importedQuestion);
 							} else {
-								Log.d("Survey.Home", "Created question " + importedQuestion);
 								questions.create(importedQuestion);
+								Log.d("Survey.Home", "Created question " + importedQuestion);
 							}
 						}
 				
@@ -125,13 +125,13 @@ public class Home extends OrmLiteBaseActivity<DatabaseHelper> {
 								break;
 							}
 						if (existingSurvey != null) {
-							Log.d("Survey.Home", "Updated survey " + importedSurvey);
 							importedSurvey.id = existingSurvey.id;
 							surveys.update(importedSurvey);
+							Log.d("Survey.Home", "Updated survey " + importedSurvey);
 						} else {
 							importedSurvey.user = user;
-							Log.d("Survey.Home", "Created survey " + importedSurvey);
 							surveys.create(importedSurvey);
+							Log.d("Survey.Home", "Created survey " + importedSurvey);
 						}
 					}
 					

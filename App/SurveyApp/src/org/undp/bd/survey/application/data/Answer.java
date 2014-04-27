@@ -20,4 +20,9 @@ public class Answer {
 	public void delete(DatabaseHelper helper) {
 		helper.getAnswers().delete(this);
 	}
+	
+	@Override
+	public String toString() {
+		return "<Answer: id=" + id + ", response=" + reponse.id + ", survey=" + question.survey + ", question=" + question.field_name + ", value=" + value + ">";  
+	}
 }
