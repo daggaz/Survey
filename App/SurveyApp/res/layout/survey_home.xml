@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.undp.bd.survey.application.activities.Surveys"
+    android:paddingLeft="15dp"
+    android:paddingRight="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingTop="10dp"
+        android:text="Title"
+        android:textColor="@color/textHighlight"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:paddingBottom="5dp"
+        android:paddingTop="10dp"
+        android:text="Description"
+        android:textColor="@color/textHighlight" />
+    
+    <Button
+        android:id="@+id/create_submission_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_marginTop="10dp"
+        android:text="@string/create_submission"
+        android:onClick="createSubmission" />
+    
+    <TextView
+        android:id="@+id/partal_submissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/create_submission_button"
+        android:paddingBottom="5dp"
+        android:paddingTop="10dp"
+        android:text="@string/partial_submissions"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/textHighlight" />
+    
+    <ListView
+        android:id="@+id/partial_submission_list"
+        android:layout_below="@id/partal_submissions"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" />
+    
+     <TextView
+         android:id="@+id/empty"
+         android:layout_below="@id/partal_submissions"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+	     android:paddingTop="10dp"
+	     android:textStyle="italic"
+	     android:textSize="12sp"
+	     android:text="@string/no_partial_submissions" />
+</RelativeLayout>

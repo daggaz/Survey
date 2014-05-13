@@ -16,9 +16,17 @@ public class Response {
 	@ForeignCollectionField(eager=true)
 	public ForeignCollection<Answer> answers;
 	
+	@DatabaseField(canBeNull=false)
+	public boolean complete;
+	
 	public void delete(DatabaseHelper helper) {
 		for (Answer answer : answers)
 			answer.delete(helper);
 		helper.getResponses().delete(this);
+	}
+
+	@Override
+	public String toString() {
+		return "<Response: id=" + id + ", survey=" + survey + ">";
 	}
 }

@@ -1,7 +1,6 @@
 package org.undp.bd.survey.application.data;
 
 import java.sql.SQLException;
-import java.util.jar.Attributes.Name;
 
 import org.json.JSONException;
 import org.json.JSONObject;

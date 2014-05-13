@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.undp.bd.survey.application.data.DatabaseHelper;
-import org.undp.bd.survey.application.data.Question;
 
 public class DjangoObjectDecoder {
 

@@ -5,59 +5,20 @@ import java.util.List;
 
 import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.data.ApplicationData;
+import org.undp.bd.survey.application.data.DatabaseMixin;
 import org.undp.bd.survey.application.data.DatabaseHelper;
 import org.undp.bd.survey.application.data.Survey;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-
-public class Surveys extends OrmLiteBaseActivity<DatabaseHelper> {
-
-	public abstract class MyAdapter<T> extends BaseAdapter {
-		private final List<T> objects;
-		private final Context context;
-		private final int layout_id;
-
-		public MyAdapter(Context context, List<T> objects, int layout_id) {
-			this.context = context;
-			this.objects = objects;
-			this.layout_id = layout_id;
-		}
-		
-		public abstract void initialiseView(Context context, View view, T object);
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View view = inflater.inflate(layout_id, parent, false);
-			initialiseView(context, view, objects.get(position));
-			return view;
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return objects.get(position);
-		}
-
-		@Override
-		public int getCount() {
-			return objects.size();
-		}
-	}
+public class Surveys extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,17 +41,25 @@ public class Surveys extends OrmLiteBaseActivity<DatabaseHelper> {
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		      @Override
 		      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-		    	  
+		    	  Intent intent = new Intent(Surveys.this, SurveyHome.class);
+		    	  intent.putExtra("survey_id", surveys.get(position).id);
+		    	  startActivity(intent);
 		      }
 		});
-	}
-	
-	@Override
-	public void onContentChanged() {
-		super.onContentChanged();
-
+		
 	    View empty = findViewById(R.id.empty);
-	    ListView list = (ListView) findViewById(R.id.list);
-	    list.setEmptyView(empty);
+	    listView.setEmptyView(empty);
+	}
+
+	private DatabaseMixin db = new DatabaseMixin(this);
+
+	public DatabaseHelper getHelper() {
+		return db.getHelper();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		db.destroy();
 	}
 }

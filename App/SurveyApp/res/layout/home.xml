@@ -1,58 +1,35 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.undp.bd.survey.application.activities.Home"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:layout_alignParentTop="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.undp.bd.survey.application.activities.Home">
-    
-    <TextView
-        android:id="@+id/title"
+    android:paddingTop="20dp"
+    android:orientation="vertical" >
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:paddingBottom="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:text="@string/home"
-        android:textColor="@color/textHighlight"
-        android:textStyle="bold"
-        android:textSize="20sp" />
-
-    <ScrollView
-        android:id="@+id/menu"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/surveys"
+        android:onClick="surveys" />
+    
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/title">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/synchronise"
+        android:onClick="synchronise" />
+    
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/logout"
+        android:onClick="logout" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="@string/surveys"
-                android:onClick="surveys" />
-            
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="@string/synchronise"
-                android:onClick="synchronise" />
-            
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="@string/logout"
-                android:onClick="logout" />
-
-        </LinearLayout>
-    </ScrollView>
-
-</RelativeLayout>
+</LinearLayout>

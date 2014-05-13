@@ -11,6 +11,7 @@ import org.undp.bd.survey.application.api.APITask;
 import org.undp.bd.survey.application.api.DjangoObjectDecoder;
 import org.undp.bd.survey.application.data.ApplicationData;
 import org.undp.bd.survey.application.data.DatabaseHelper;
+import org.undp.bd.survey.application.data.DatabaseMixin;
 import org.undp.bd.survey.application.data.Question;
 import org.undp.bd.survey.application.data.Survey;
 import org.undp.bd.survey.application.data.User;
@@ -19,14 +20,26 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
-public class Home extends OrmLiteBaseActivity<DatabaseHelper> {
+public class Home extends ActionBarActivity {
+	
+	private DatabaseMixin db = new DatabaseMixin(this);
+
+	@Override
+	protected void onDestroy() {
+	    super.onDestroy();
+	    db.destroy();
+	}
+
+	private DatabaseHelper getHelper() {
+		return db.getHelper();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
