@@ -8,6 +8,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     
+    <string name="lorem">Lorem ipsum</string>
+    <string name="lorem_long">Lorem ipsum sit amit delor</string>
+    
     <!-- Login screen -->
     <string name="login_text">Please login to begin</string>
     <string name="username">Username</string>
@@ -48,6 +51,10 @@
     <string name="discard_response">Discard Response</string>
     <string name="discard">Discard Changes</string>
     <string name="save_draft_query">Your response has not yet been submitted!</string>
+    <string name="questions">Questions</string>
+    <string name="question">Question</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
     
     
 </resources>

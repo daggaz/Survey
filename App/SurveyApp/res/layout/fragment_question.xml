@@ -2,11 +2,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="10dp"
     tools:context="corg.undp.bd.survey.application.fragments.QuestionFragment" >
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/question"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lorem_long"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
+    
+    <fragment
+        android:id="@+id/answer"
+        android:name="org.undp.bd.survey.application.fragements.AnswerFragment"
+        android:layout_below="@id/question"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+    
+    <LinearLayout
+        android:layout_below="@id/answer"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+	    <Button
+	        android:id="@+id/previous_button"
+	        android:text="@string/previous"
+	        android:layout_weight="1"
+	        android:layout_width="1dp"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="2dp"
+	        android:onClick="previousQuestion" />
+	    <Button
+	        android:id="@+id/next_button"
+	        android:text="@string/next"
+	        android:layout_weight="1"
+	        android:layout_width="1dp"
+        	android:layout_height="wrap_content"
+	        android:layout_marginLeft="2dp"
+	        android:onClick="nextQuestion" />
+	</LinearLayout>
+	
 </RelativeLayout>

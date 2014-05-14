@@ -75,6 +75,6 @@ public class Question extends DjangoObject {
 	
 	@Override
 	public String toString() {
-		return "<Question: id=" + id + ", remote_id=" + remote_id + ", field_name=" + field_name + ">";  
+		return "<Question: id=" + id + ", remote_id=" + remote_id + ", field_name=" + field_name + ", option_type=" + option_type + ">";  
 	}
 }

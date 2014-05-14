@@ -2,6 +2,7 @@ package org.undp.bd.survey.application.fragements;
 
 import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.data.Answer;
+import org.undp.bd.survey.application.fragements.QuestionFragment.QuestionFragmentCallBacks;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,31 +11,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-public class QuestionFragment extends Fragment {
-	
-	public interface QuestionFragmentCallBacks {
-		public Answer getAnswer();
-	}
+public class AnswerFragment extends Fragment {
 
 	private Answer answer;
 
-	public QuestionFragment() {
+	public AnswerFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_question, container, false);
-		TextView textView = (TextView) rootView.findViewById(R.id.question);
-		textView.setText(answer.question.question);
-		return rootView;
+		if (answer.question.option_type.equals("char")) {
+			View rootView = inflater.inflate(R.layout.fragment_answer_char, container, false);
+			return rootView;
+		} else {
+			throw new RuntimeException("unknown question type: " + answer.question.option_type);
+		}
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		Log.d("QuestionFragment", "Attached");
+		Log.d("AnswerFragment", "Attached: " + answer);
 		answer = ((QuestionFragmentCallBacks)activity).getAnswer();
 	}
 }
