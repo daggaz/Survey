@@ -43,9 +43,28 @@ public class Question extends DjangoObject {
 	@DatabaseField(canBeNull=false)
 	public String option_type;
 	
+	@DatabaseField(canBeNull=false)
+	public String options;
+	
 	@ForeignCollectionField
 	public ForeignCollection<Answer> answers;
 
+	public boolean hasPrevious() {
+		for (Question q : this.survey.questions)
+			return q.id != this.id;
+		return false;
+	}
+	
+	public boolean hasNext() {
+		Question last = null;
+		for (Question q : this.survey.questions)
+			last = q;
+		if (last != null)
+			return this.id != last.id;
+		return false;
+		
+	}
+	
 	@Override
 	public void initialise(String model, int pk, JSONObject data, DatabaseHelper helper) {
 		try
@@ -59,6 +78,7 @@ public class Question extends DjangoObject {
 			help_text = data.getString("help_text");
 			label = data.getString("label");
 			option_type = data.getString("option_type");
+			options = data.getString("options");
 			survey = helper.getSurveys().queryBuilder().where().eq("remote_id", data.getInt("survey")).queryForFirst();
 		} catch (JSONException e) {
 			throw new RuntimeException(e);

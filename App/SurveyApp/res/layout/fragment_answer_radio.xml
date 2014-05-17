@@ -4,14 +4,10 @@
     android:layout_height="wrap_content"
     tools:context="corg.undp.bd.survey.application.fragments.AnswerFragment" >
 
-    <EditText
-        android:id="@+id/char_answer"
-        android:layout_width="match_parent"
+    <RadioGroup
+        android:id="@+id/radio_answer"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
+        android:orientation="vertical" />
 
 </RelativeLayout>

@@ -14,16 +14,16 @@
         android:text="@string/lorem_long"
         android:paddingTop="10dp"
         android:paddingBottom="10dp" />
-    
-    <fragment
-        android:id="@+id/answer"
-        android:name="org.undp.bd.survey.application.fragements.AnswerFragment"
+
+    <LinearLayout
+        android:id="@+id/answer_container"
+        android:orientation="vertical"
         android:layout_below="@id/question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     
     <LinearLayout
-        android:layout_below="@id/answer"
+        android:layout_below="@id/answer_container"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"

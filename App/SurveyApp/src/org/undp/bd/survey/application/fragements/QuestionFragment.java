@@ -28,6 +28,13 @@ public class QuestionFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_question, container, false);
 		TextView textView = (TextView) rootView.findViewById(R.id.question);
 		textView.setText(answer.question.question);
+		getChildFragmentManager()
+		.beginTransaction()
+		.replace(R.id.answer_container, new AnswerFragment())
+		.commit();
+		// TODO disabled button styling
+		rootView.findViewById(R.id.previous_button).setEnabled(answer.question.hasPrevious());
+		rootView.findViewById(R.id.next_button).setEnabled(answer.question.hasNext());
 		return rootView;
 	}
 

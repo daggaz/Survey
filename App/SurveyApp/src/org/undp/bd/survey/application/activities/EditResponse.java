@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.ImageButton;
 
 public class EditResponse extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, QuestionFragmentCallBacks {
 
@@ -31,6 +32,8 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 	private Response response;
 	private Question currentQuestion;
 	private Answer currentAnswer;
+	private int currentIndex;
+	private List<Answer> unsavedAnswers = new ArrayList<Answer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,22 +122,39 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 			getHelper().getResponses().update(response);
 		finish();
 	}
-
+	
 	public void previousQuestion(View view) {
-		
+		if (currentQuestion.hasPrevious())
+			showQuestion(currentIndex-1);
 	}
 	
 	public void nextQuestion(View view) {
-		
+		if (currentQuestion.hasNext())
+			showQuestion(currentIndex+1);
 	}
 
-	@Override
-	public void onNavigationDrawerItemSelected(int position) {
-		currentQuestion = response.survey.questions.toArray(new Question[] {})[position];
-		Log.d("EditResponse", "question: " + currentQuestion);
 
+	@Override
+	public void onNavigationDrawerItemSelected(int index) {
+		showQuestion(index);
+	}
+
+	public void showQuestion(int index) {
+		// TODO if current question is required field ask for "Give answer" or "Come back later"
+		currentIndex = index;
+		currentQuestion = response.survey.questions.toArray(new Question[] {})[index];
+		Log.d("EditResponse", "question: " + currentQuestion);
+		
+		currentAnswer = null;
 		if (response.answers != null) {
 			for (Answer answer : response.answers)
+				if (answer.question.id == currentQuestion.id) {
+					currentAnswer = answer;
+					break;
+				}
+		}
+		if (currentAnswer == null) {
+			for (Answer answer : unsavedAnswers)
 				if (answer.question.id == currentQuestion.id) {
 					currentAnswer = answer;
 					break;
@@ -144,6 +164,7 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 			currentAnswer = new Answer();
 			this.currentAnswer.question = currentQuestion;
 			currentAnswer.reponse = response;
+			unsavedAnswers.add(currentAnswer);
 		}
 		Log.d("EditResponse", "answer: " + currentAnswer);
 		
