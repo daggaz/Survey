@@ -8,7 +8,7 @@ public class Answer {
 	@DatabaseField(generatedId=true)
 	public int id;
 	
-	@DatabaseField(canBeNull=false)
+	@DatabaseField()
 	public String value;
 	
 	@DatabaseField(foreign=true, canBeNull=false)
@@ -24,5 +24,11 @@ public class Answer {
 	@Override
 	public String toString() {
 		return "<Answer: id=" + id + ", response=" + reponse.id + ", survey=" + question.survey + ", question=" + question.field_name + ", value=" + value + ">";  
+	}
+
+	public boolean isComplete() {
+		if (question.required)
+			return value != null && !value.trim().equals("");
+		return true;
 	}
 }

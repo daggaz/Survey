@@ -26,13 +26,26 @@ public class QuestionFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_question, container, false);
-		TextView textView = (TextView) rootView.findViewById(R.id.question);
-		textView.setText(answer.question.question);
+		
+		String questionText = answer.question.question;
+		if (answer.question.required) {
+			TextView requiredHint = (TextView)rootView.findViewById(R.id.required_hint);
+			requiredHint.setText("* " + getResources().getString(R.string.required));
+			requiredHint.setVisibility(View.VISIBLE);
+			questionText = "*" + questionText;
+		}
+		((TextView)rootView.findViewById(R.id.question)).setText(questionText);
+		if (answer.question.help_text != null && !answer.question.help_text.trim().equals("")) {
+			TextView helpText = (TextView)rootView.findViewById(R.id.help_text);
+			helpText.setText(answer.question.help_text);
+			helpText.setVisibility(View.VISIBLE);
+		}
+		
 		getChildFragmentManager()
 		.beginTransaction()
 		.replace(R.id.answer_container, new AnswerFragment())
 		.commit();
-		// TODO disabled button styling
+		
 		rootView.findViewById(R.id.previous_button).setEnabled(answer.question.hasPrevious());
 		rootView.findViewById(R.id.next_button).setEnabled(answer.question.hasNext());
 		return rootView;

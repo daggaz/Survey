@@ -35,11 +35,9 @@ public class SurveyHome extends ActionBarActivity {
 		
 		setTitle(survey.title);
 		
-		TextView title = (TextView)findViewById(R.id.title);
-		title.setText(survey.title);
+		((TextView)findViewById(R.id.title)).setText(survey.title);
 		
-		TextView description = (TextView)findViewById(R.id.description);
-		description.setText(survey.description);
+		((TextView)findViewById(R.id.description)).setText(survey.description);
 		
 	    partialResponseData = new MyAdapter<Response>(this, getPartialResponses(), R.layout.partial_submission_list_item) {
 			@Override
@@ -63,6 +61,18 @@ public class SurveyHome extends ActionBarActivity {
 				editResponse(SurveyHome.this.partialResponseData.getObjects().get(position).id);
 			}
 		});
+
+		
+		List<Response> submittedResponses = getSubmittedResponses();
+		TextView submittedResponseMessage = (TextView)findViewById(R.id.submitted_response_message);
+		if (submittedResponses.size() == 0) {
+			submittedResponseMessage.setText(getResources().getString(R.string.no_submitted_responses));
+		} else if (submittedResponses.size()== 1) {
+			submittedResponseMessage.setText(getResources().getString(R.string.submitted_response_message));
+		} else {
+			String message = getResources().getString(R.string.submitted_response_message_plural).replace("{0}", Integer.toString(submittedResponses.size()));
+			submittedResponseMessage.setText(message);
+		}
 	}
 	
 	@Override
@@ -77,6 +87,14 @@ public class SurveyHome extends ActionBarActivity {
 	    	if (!response.complete)
 	    		partialResponses.add(response);
 	    return partialResponses;
+	}
+
+	public List<Response> getSubmittedResponses() {
+		final List<Response> submittedResponses = new ArrayList<Response>();
+	    for (Response response : survey.responses)
+	    	if (response.complete)
+	    		submittedResponses.add(response);
+	    return submittedResponses;
 	}
 	
 	public void createSubmission(View view) {

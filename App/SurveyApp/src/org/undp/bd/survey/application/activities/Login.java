@@ -44,10 +44,16 @@ public class Login extends OrmLiteBaseActivity<DatabaseHelper> {
     	
     	if (ApplicationData.isConnected(this)) {
     		doConnectedLogin(user, username, password);
-    	} else if (user != null && user.passwordHash == password.hashCode() && user.authenticated) {
-    		completeLogin(user, password);
+    	} else if (user != null) {
+    		if (user.authenticated) { 
+	    		if (user.passwordHash == password.hashCode()) 
+	    			completeLogin(user, password);
+	    		else
+	    			Toast.makeText(getApplicationContext(), R.string.login_failed_username_password, Toast.LENGTH_LONG).show();
+    		} else
+    			Toast.makeText(getApplicationContext(), R.string.login_failed_credentials_invalid, Toast.LENGTH_LONG).show();
     	} else {
-    		Toast.makeText(getApplicationContext(), R.string.login_failed, Toast.LENGTH_LONG).show();
+    		Toast.makeText(getApplicationContext(), R.string.login_failed_must_connect, Toast.LENGTH_LONG).show();
     	}
     }
     
@@ -90,7 +96,7 @@ public class Login extends OrmLiteBaseActivity<DatabaseHelper> {
 	    	protected void failed(String reason) {
 	    		Log.d("Survey.Login", "login failed: " + reason);
 	    		invalidateUsersLogin(user);
-				Toast.makeText(getApplicationContext(), R.string.login_failed, Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_failed) + ": " + reason, Toast.LENGTH_LONG).show();
 	    	};
 
 			private void invalidateUsersLogin(final User user) {

@@ -23,6 +23,7 @@
         android:layout_height="wrap_content" />
     
     <LinearLayout
+        android:id="@+id/button_container"
         android:layout_below="@id/answer_container"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
@@ -45,5 +46,21 @@
 	        android:layout_marginLeft="2dp"
 	        android:onClick="nextQuestion" />
 	</LinearLayout>
+	
+    <TextView
+        android:id="@+id/required_hint"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_container"
+        android:visibility="gone" />
+    
+    <TextView
+        android:id="@+id/help_text"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/required_hint"
+        android:visibility="gone" />
 	
 </RelativeLayout>

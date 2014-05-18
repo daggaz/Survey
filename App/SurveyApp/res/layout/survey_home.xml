@@ -50,17 +50,39 @@
     <ListView
         android:id="@+id/partial_submission_list"
         android:layout_below="@id/partal_submissions"
+        android:layout_above="@+id/submitted_responses"
         android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="fill_parent" />
     
+	<TextView
+	    android:id="@+id/empty"
+	    android:layout_below="@id/partal_submissions"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	 	android:paddingTop="10dp"
+	 	android:textStyle="italic"
+	 	android:textSize="12sp"
+	 	android:text="@string/no_partial_submissions" />
+     
+    <TextView
+        android:id="@id/submitted_responses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/submitted_response_message"
+        android:paddingBottom="5dp"
+        android:paddingTop="10dp"
+        android:text="@string/submitted_responses"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/textHighlight" />
+    
      <TextView
-         android:id="@+id/empty"
-         android:layout_below="@id/partal_submissions"
+         android:id="@id/submitted_response_message"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-	     android:paddingTop="10dp"
-	     android:textStyle="italic"
-	     android:textSize="12sp"
-	     android:text="@string/no_partial_submissions" />
+         android:layout_alignParentBottom="true"
+	     android:paddingBottom="20dp"
+	     android:textSize="12sp" />
+     
 </RelativeLayout>

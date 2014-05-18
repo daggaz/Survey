@@ -46,7 +46,6 @@ public class AnswerFragment extends Fragment {
 			});
 			return rootView;
 		} else if (answer.question.option_type.equals("choice")) {
-			// TODO radio option text color
 			// TODO clear button non-required
 			View rootView = inflater.inflate(R.layout.fragment_answer_radio, container, false);
 			RadioGroup group = (RadioGroup) rootView.findViewById(R.id.radio_answer);

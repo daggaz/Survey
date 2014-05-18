@@ -2,6 +2,7 @@ package org.undp.bd.survey.application.api;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.http.HTTPTask;
 
 import android.content.Context;
@@ -24,15 +25,15 @@ public abstract class APITask<Progress> extends HTTPTask<Progress> {
 				if (status.equals("success")) {
 					success(data);
 				} else if (status.equals("failed")) {
-					failed(data.getString("reason"));
+					failed(data.getString("reason")); // TODO I18n response from server
 				} else {
-					failed("unknown reason");
+					failed(context.getResources().getString(R.string.unknown_reason));
 				}
 			} catch (JSONException e) {
-				failed("Error parsing JSON response");
+				failed(context.getResources().getString(R.string.error_parsing_response));
 			}
 		} else {
-			failed("No response");
+			failed(context.getResources().getString(R.string.no_response));
 		}
 	}
 	

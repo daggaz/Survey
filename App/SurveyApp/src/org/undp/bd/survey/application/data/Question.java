@@ -50,17 +50,20 @@ public class Question extends DjangoObject {
 	public ForeignCollection<Answer> answers;
 
 	public boolean hasPrevious() {
-		for (Question q : this.survey.questions)
-			return q.id != this.id;
+		if (survey != null)
+			for (Question q : this.survey.questions)
+				return q.id != this.id;
 		return false;
 	}
 	
 	public boolean hasNext() {
-		Question last = null;
-		for (Question q : this.survey.questions)
-			last = q;
-		if (last != null)
-			return this.id != last.id;
+		if (survey != null) {
+			Question last = null;
+			for (Question q : this.survey.questions)
+				last = q;
+			if (last != null)
+				return this.id != last.id;
+		}
 		return false;
 		
 	}

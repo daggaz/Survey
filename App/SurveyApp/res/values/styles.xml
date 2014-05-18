@@ -13,6 +13,7 @@
         -->
         <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
+    
 
     <!-- ActionBar styles -->
     <style name="MyActionBar"
@@ -22,7 +23,6 @@
         <item name="titleTextStyle">@style/MyActionBar.Text</item>
         <item name="background">@color/un</item>
     </style>
-    
     <style name="MyActionBar.Text" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">15sp</item>
@@ -33,8 +33,14 @@
         <item name="android:windowBackground">@color/background</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:buttonStyle">@style/UNButtonStyle</item>
+	    <item name="android:radioButtonStyle">@style/MyRadioButton</item>
     </style>
-
+    
+	<style name="MyRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+	    <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+	</style>
+    
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>

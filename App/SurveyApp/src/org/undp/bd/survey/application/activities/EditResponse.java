@@ -1,7 +1,6 @@
 package org.undp.bd.survey.application.activities;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.data.Answer;
@@ -14,6 +13,7 @@ import org.undp.bd.survey.application.fragements.QuestionFragment;
 import org.undp.bd.survey.application.fragements.QuestionFragment.QuestionFragmentCallBacks;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -22,8 +22,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class EditResponse extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, QuestionFragmentCallBacks {
 
@@ -32,8 +36,7 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 	private Response response;
 	private Question currentQuestion;
 	private Answer currentAnswer;
-	private int currentIndex;
-	private List<Answer> unsavedAnswers = new ArrayList<Answer>();
+	private int currentIndex = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,53 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 	}
 	
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.question_list:
+			mNavigationDrawerFragment.openDrawer();
+			return true;
+		case R.id.save_draft:
+			saveDraft();
+			return true;
+		case R.id.submit:
+			submit();
+			return true;
+		default:
+            return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	private void submit() {
+		if (response.isComplete()) {
+			new AlertDialog.Builder(this)
+	        .setIcon(android.R.drawable.ic_dialog_info)
+	        .setTitle(getResources().getString(R.string.confirm_submission))
+	        .setMessage(getResources().getString(R.string.confirm_submission_message))
+	        .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+		        @Override
+		        public void onClick(DialogInterface dialog, int which) {
+		        	response.saveComplete(getHelper());
+					finish();
+					Toast.makeText(EditResponse.this, R.string.response_submitted, Toast.LENGTH_LONG).show();
+		        }
+			})
+			.setCancelable(true)
+		    .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {}
+			})
+		    .show();
+		} else {
+			Toast.makeText(this, R.string.not_complete, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	public void saveDraft() {
+		response.save(getHelper());
+		finish();
+	}
+	
+	@Override
 	protected void onResume() {
 		super.onResume();
 		Log.d("EditResponse", "Resume");
@@ -80,7 +130,6 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 	@Override
 	protected void onStop() {
 		super.onStop();
-		// TODO possible save response?
 		Log.d("EditResponse", "Stopped");
 	}
 	
@@ -93,36 +142,32 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 	
 	@Override
 	public void onBackPressed() {
-		new AlertDialog.Builder(this)
-	        .setIcon(android.R.drawable.ic_dialog_alert)
-	        .setTitle(getResources().getString(R.string.discard_response))
-	        .setMessage(getResources().getString(R.string.save_draft_query))
-	        .setPositiveButton(getResources().getString(R.string.save_draft), new DialogInterface.OnClickListener() {
-		        @Override
-		        public void onClick(DialogInterface dialog, int which) {
-		            saveDraft();
-		            finish();
-		        }
-
-			})
-			.setCancelable(true)
-		    .setNegativeButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			})
-		    .show();
-	}
-
-	public void saveDraft() {
-		if (response.id == 0)
-			getHelper().getResponses().create(response);
-		else
-			getHelper().getResponses().update(response);
-		finish();
-	}
+		if (mNavigationDrawerFragment.isDrawerOpen()) {
+			mNavigationDrawerFragment.closeDrawer();
+		} else {
+			new AlertDialog.Builder(this)
+		        .setIcon(android.R.drawable.ic_dialog_alert)
+		        .setTitle(getResources().getString(R.string.discard_response))
+		        .setMessage(getResources().getString(R.string.save_draft_query))
+		        .setPositiveButton(getResources().getString(R.string.save_draft), new DialogInterface.OnClickListener() {
+			        @Override
+			        public void onClick(DialogInterface dialog, int which) {
+			            saveDraft();
+			            finish();
+			        }
 	
+				})
+				.setCancelable(true)
+			    .setNegativeButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				})
+			    .show();
+		}
+	}
+
 	public void previousQuestion(View view) {
 		if (currentQuestion.hasPrevious())
 			showQuestion(currentIndex-1);
@@ -133,39 +178,41 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 			showQuestion(currentIndex+1);
 	}
 
-
 	@Override
 	public void onNavigationDrawerItemSelected(int index) {
 		showQuestion(index);
 	}
 
-	public void showQuestion(int index) {
-		// TODO if current question is required field ask for "Give answer" or "Come back later"
+	public void showQuestion(final int index) {
+		if (index != currentIndex) {
+			if (currentQuestion != null && currentQuestion.required && currentAnswer != null && (currentAnswer.value == null || currentAnswer.value.trim().equals(""))) {
+				new AlertDialog.Builder(this)
+		        .setIcon(android.R.drawable.ic_dialog_alert)
+		        .setTitle(getResources().getString(R.string.answer_required))
+		        .setMessage(getResources().getString(R.string.required_question_message))
+		        .setPositiveButton(getResources().getString(R.string.provide_answer), new DialogInterface.OnClickListener() {
+			        @Override
+			        public void onClick(DialogInterface dialog, int which) {}
+				})
+				.setCancelable(true)
+			    .setNegativeButton(getResources().getString(R.string.later), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						doShowQuestion(index);
+					}
+				})
+			    .show();
+			} else {
+				doShowQuestion(index);
+			}
+		}
+	}
+
+	public void doShowQuestion(int index) {
 		currentIndex = index;
 		currentQuestion = response.survey.questions.toArray(new Question[] {})[index];
 		Log.d("EditResponse", "question: " + currentQuestion);
-		
-		currentAnswer = null;
-		if (response.answers != null) {
-			for (Answer answer : response.answers)
-				if (answer.question.id == currentQuestion.id) {
-					currentAnswer = answer;
-					break;
-				}
-		}
-		if (currentAnswer == null) {
-			for (Answer answer : unsavedAnswers)
-				if (answer.question.id == currentQuestion.id) {
-					currentAnswer = answer;
-					break;
-				}
-		}
-		if (currentAnswer == null) {
-			currentAnswer = new Answer();
-			this.currentAnswer.question = currentQuestion;
-			currentAnswer.reponse = response;
-			unsavedAnswers.add(currentAnswer);
-		}
+		currentAnswer = response.getOrCreateAnswer(currentQuestion);
 		Log.d("EditResponse", "answer: " + currentAnswer);
 		
 		mTitle = getResources().getText(R.string.question) + ": " + currentQuestion.label;
@@ -177,12 +224,32 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 	}
 
 	@Override
-	public String[] getNavigationDrawerItems() {
+	public ListAdapter getNavigationDrawerListAdapter() {
 		Log.d("EditResponse", "Setting up question drawer");
-		List<String> questions = new ArrayList<String>();
-		for (Question question : response.survey.questions)
-			questions.add(question.label);
-		return questions.toArray(new String[] {});
+		return new MyAdapter<Question>(this, new ArrayList<Question>(response.survey.questions), R.layout.question_list_item) {
+			@Override
+			public void initialiseView(Context context, View view, Question question) {
+				((TextView)view.findViewById(R.id.title)).setText(question.label);
+				Integer image = null;
+				Answer answer = response.getOrCreateAnswer(question);
+				if (question.required) {
+					if (answer.isComplete())
+						image = R.drawable.required_checked;
+					else
+						image = R.drawable.required;
+				} else if (answer.value != null && !answer.value.trim().equals("")) {
+					image = R.drawable.checked;
+				}
+				ImageView required_icon = (ImageView)view.findViewById(R.id.required_icon);
+				if (image != null) {
+					view.setBackgroundResource(image.intValue());
+					required_icon.setImageDrawable(getResources().getDrawable(image));
+					required_icon.setVisibility(View.VISIBLE);
+				} else {
+					required_icon.setVisibility(View.GONE);
+				}
+			}
+		};
 	}
 	
 	@Override

@@ -11,12 +11,20 @@
     <string name="lorem">Lorem ipsum</string>
     <string name="lorem_long">Lorem ipsum sit amit delor</string>
     
+    <!-- Error messages -->
+    <string name="unknown_reason">Unknown error</string>
+    <string name="error_parsing_response">Error parsing response</string>
+    <string name="no_response">No response</string>
+    
     <!-- Login screen -->
     <string name="login_text">Please login to begin</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="login_failed">Login unsuccessful</string>
+    <string name="login_failed_must_connect">Login unsuccessful: you must be connected to login for the first time</string>
+    <string name="login_failed_credentials_invalid">Offline login unsuccssful: you must perform a connected login</string>
+    <string name="login_failed_username_password">Offline login unsuccssful: you must be connected, or use the password last used on this phone</string>
     <string name="logging_in">Authenticating&#8230;</string>
     
     <!-- Home screen -->
@@ -33,7 +41,7 @@
     <string name="synchronising_error">Error synchronising!</string>
     <string name="synchronising_success">Successfully synchronised!</string>
     <string name="synchronising_message">Synchronising&#8230;</string>
-    <string name="synchronising_login">This login is not connected</string>
+    <string name="synchronising_login">You are offline, you must login in again while connected to the internet</string>
     
     <!-- Survey home screen -->
     <string name="create_submission">Create new response</string>
@@ -41,6 +49,10 @@
     <string name="no_partial_submissions">You have no draft responses saved</string>
     <string name="partial_response">Draft response</string>
     <string name="delete_partial_response">Delete draft response</string>
+    <string name="submitted_responses">Submitted responses</string>
+    <string name="submitted_response_message">You have 1 submitted response. Please synchronise.</string>
+    <string name="submitted_response_message_plural">You have {0} submitted responses. Please synchronise.</string>
+    <string name="no_submitted_responses">You have no submitted responses</string>
     
     <!-- Edit response screen -->
     <string name="edit_response">Create new response</string>
@@ -48,6 +60,7 @@
     <string name="close_question_list">Close question list</string>
     <string name="submit">Submit</string>
     <string name="save_draft">Save draft</string>
+    <string name="question_list">Question list</string>
     <string name="discard_response">Discard Response</string>
     <string name="discard">Discard Changes</string>
     <string name="save_draft_query">Your response has not yet been submitted!</string>
@@ -55,6 +68,16 @@
     <string name="question">Question</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
-    
+    <string name="answer_required">Answer required</string>
+    <string name="required_question_message">This question is required, and must be completed before the survey is submitted.</string>
+    <string name="provide_answer">Complete now</string>
+    <string name="later">Complete later</string>
+    <string name="required">This question is required</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_submission">Confirm submission</string>
+    <string name="confirm_submission_message">Once submitted, you will not be able to make any changes.</string>
+    <string name="not_complete">You have not completed all the required questions!</string>
+    <string name="response_submitted">Response submitted: please synchronise</string>
     
 </resources>
