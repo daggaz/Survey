@@ -62,7 +62,17 @@ public class SurveyHome extends ActionBarActivity {
 			}
 		});
 
-		
+		updateSubmittedResponses();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		updateSubmittedResponses();
+		partialResponseData.setObjects(getPartialResponses());
+	}
+
+	public void updateSubmittedResponses() {
 		List<Response> submittedResponses = getSubmittedResponses();
 		TextView submittedResponseMessage = (TextView)findViewById(R.id.submitted_response_message);
 		if (submittedResponses.size() == 0) {
@@ -75,11 +85,6 @@ public class SurveyHome extends ActionBarActivity {
 		}
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		partialResponseData.setObjects(getPartialResponses());
-	}
 
 	public List<Response> getPartialResponses() {
 		final List<Response> partialResponses = new ArrayList<Response>();

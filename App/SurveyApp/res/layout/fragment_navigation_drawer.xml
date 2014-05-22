@@ -1,9 +1,32 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+   	android:background="#e47a"
     android:layout_height="match_parent"
-    android:background="#e47a"
-    android:choiceMode="singleChoice"
-    android:divider="#369"
-    android:dividerHeight="1dp"
-    tools:context="org.undp.bd.survey.application.fragements.NavigationDrawerFragment" />
+    tools:context="org.undp.bd.survey.application.fragements.NavigationDrawerFragment">
+    
+	<LinearLayout
+	    android:id="@+id/header"
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true" />
+
+	<ListView
+	    android:id="@+id/drawer_list"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/footer"
+	    android:layout_below="@id/header"
+	    android:choiceMode="singleChoice"
+	    android:divider="#369"
+	    android:dividerHeight="1dp" />
+
+	<LinearLayout
+	    android:id="@id/footer"
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true" />
+</RelativeLayout>

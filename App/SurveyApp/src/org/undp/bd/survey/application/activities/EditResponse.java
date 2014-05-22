@@ -8,7 +8,9 @@ import org.undp.bd.survey.application.data.DatabaseHelper;
 import org.undp.bd.survey.application.data.DatabaseMixin;
 import org.undp.bd.survey.application.data.Question;
 import org.undp.bd.survey.application.data.Response;
+import org.undp.bd.survey.application.fragements.EditSurveyNavigationDrawerFooter;
 import org.undp.bd.survey.application.fragements.NavigationDrawerFragment;
+import org.undp.bd.survey.application.fragements.NavigationDrawerFragment.NavigationDrawerCallbacks;
 import org.undp.bd.survey.application.fragements.QuestionFragment;
 import org.undp.bd.survey.application.fragements.QuestionFragment.QuestionFragmentCallBacks;
 
@@ -16,6 +18,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -24,12 +27,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EditResponse extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, QuestionFragmentCallBacks {
+public class EditResponse extends ActionBarActivity implements NavigationDrawerCallbacks, QuestionFragmentCallBacks {
 
 	private CharSequence mTitle;
 	private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -37,6 +40,48 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 	private Question currentQuestion;
 	private Answer currentAnswer;
 	private int currentIndex = -1;
+
+	@Override
+	public BaseAdapter getNavigationDrawerListAdapter() {
+		Log.d("EditResponse", "Setting up question drawer");
+		return new MyAdapter<Question>(EditResponse.this, new ArrayList<Question>(response.survey.questions), R.layout.question_list_item) {
+			@Override
+			public void initialiseView(Context context, View view, Question question) {
+				((TextView)view.findViewById(R.id.title)).setText(question.label);
+				Integer image = null;
+				Answer answer = response.getOrCreateAnswer(question);
+				if (question.required) {
+					if (answer.isComplete())
+						image = R.drawable.required_checked;
+					else
+						image = R.drawable.required;
+				} else if (answer.value != null && !answer.value.trim().equals("")) {
+					image = R.drawable.checked;
+				}
+				ImageView required_icon = (ImageView)view.findViewById(R.id.required_icon);
+				if (image != null) {
+					required_icon.setImageResource(image.intValue());
+					required_icon.setVisibility(View.VISIBLE);
+				} else {
+					required_icon.setVisibility(View.GONE);
+				}
+			}
+		};
+	}
+	@Override
+	public Fragment getHeader() {
+		return null;
+	}
+
+	@Override
+	public Fragment getFooter() {
+		return new EditSurveyNavigationDrawerFooter();
+	}
+	
+	@Override
+	public void onNavigationDrawerItemSelected(int index) {
+		showQuestion(index);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -178,11 +223,6 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 			showQuestion(currentIndex+1);
 	}
 
-	@Override
-	public void onNavigationDrawerItemSelected(int index) {
-		showQuestion(index);
-	}
-
 	public void showQuestion(final int index) {
 		if (index != currentIndex) {
 			if (currentQuestion != null && currentQuestion.required && currentAnswer != null && (currentAnswer.value == null || currentAnswer.value.trim().equals(""))) {
@@ -221,35 +261,6 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerF
 		.beginTransaction()
 		.replace(R.id.container, new QuestionFragment())
 		.commit();
-	}
-
-	@Override
-	public ListAdapter getNavigationDrawerListAdapter() {
-		Log.d("EditResponse", "Setting up question drawer");
-		return new MyAdapter<Question>(this, new ArrayList<Question>(response.survey.questions), R.layout.question_list_item) {
-			@Override
-			public void initialiseView(Context context, View view, Question question) {
-				((TextView)view.findViewById(R.id.title)).setText(question.label);
-				Integer image = null;
-				Answer answer = response.getOrCreateAnswer(question);
-				if (question.required) {
-					if (answer.isComplete())
-						image = R.drawable.required_checked;
-					else
-						image = R.drawable.required;
-				} else if (answer.value != null && !answer.value.trim().equals("")) {
-					image = R.drawable.checked;
-				}
-				ImageView required_icon = (ImageView)view.findViewById(R.id.required_icon);
-				if (image != null) {
-					view.setBackgroundResource(image.intValue());
-					required_icon.setImageDrawable(getResources().getDrawable(image));
-					required_icon.setVisibility(View.VISIBLE);
-				} else {
-					required_icon.setVisibility(View.GONE);
-				}
-			}
-		};
 	}
 	
 	@Override

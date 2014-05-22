@@ -72,7 +72,8 @@
     <string name="required_question_message">This question is required, and must be completed before the survey is submitted.</string>
     <string name="provide_answer">Complete now</string>
     <string name="later">Complete later</string>
-    <string name="required">This question is required</string>
+    <string name="required">required</string>
+    <string name="question_required">This question is required</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_submission">Confirm submission</string>

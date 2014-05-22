@@ -30,7 +30,7 @@ public class QuestionFragment extends Fragment {
 		String questionText = answer.question.question;
 		if (answer.question.required) {
 			TextView requiredHint = (TextView)rootView.findViewById(R.id.required_hint);
-			requiredHint.setText("* " + getResources().getString(R.string.required));
+			requiredHint.setText("* " + getResources().getString(R.string.question_required));
 			requiredHint.setVisibility(View.VISIBLE);
 			questionText = "*" + questionText;
 		}

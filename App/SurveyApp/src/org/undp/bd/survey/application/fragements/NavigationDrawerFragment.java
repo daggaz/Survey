@@ -2,13 +2,13 @@ package org.undp.bd.survey.application.fragements;
 
 import org.undp.bd.survey.application.R;
 
-import android.support.v7.app.ActionBarActivity;
-import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 /**
@@ -57,6 +57,8 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+	private BaseAdapter adapter;
+
     public NavigationDrawerFragment() {
     }
 
@@ -87,16 +89,33 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View drawerLayout = (View) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) drawerLayout.findViewById(R.id.drawer_list);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(mCallbacks.getNavigationDrawerListAdapter());
+        adapter = mCallbacks.getNavigationDrawerListAdapter();
+		mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        
+        Fragment headerFragment = mCallbacks.getHeader(); 
+        if (headerFragment != null)
+        	getChildFragmentManager()
+        	.beginTransaction()
+        	.replace(R.id.header, headerFragment)
+        	.commit();
+        
+        Fragment footerFragment = mCallbacks.getFooter(); 
+        if (footerFragment != null)
+	        getChildFragmentManager()
+	        .beginTransaction()
+			.replace(R.id.footer, footerFragment)
+	        .commit();
+        
+        return drawerLayout;
     }
 
     public boolean isDrawerOpen() {
@@ -130,6 +149,12 @@ public class NavigationDrawerFragment extends Fragment {
                 R.string.open_question_list,  /* "open drawer" description for accessibility */
                 R.string.close_question_list  /* "close drawer" description for accessibility */
         ) {
+        	
+        	@Override
+        	public void onDrawerSlide(View drawerView, float slideOffset) {
+        		adapter.notifyDataSetChanged();
+        		super.onDrawerSlide(drawerView, slideOffset);
+        	}
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -146,7 +171,7 @@ public class NavigationDrawerFragment extends Fragment {
                 if (!isAdded()) {
                     return;
                 }
-
+                
                 if (!mUserLearnedDrawer) {
                     // The user manually opened the drawer; store this flag to prevent auto-showing
                     // the navigation drawer automatically in the future.
@@ -186,15 +211,12 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
+        if (mDrawerListView != null)
             mDrawerListView.setItemChecked(position, true);
-        }
-        if (mDrawerLayout != null) {
+        if (mDrawerLayout != null)
             mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null) {
+        if (mCallbacks != null)
             mCallbacks.onNavigationDrawerItemSelected(position);
-        }
     }
 
     @Override
@@ -239,6 +261,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static interface NavigationDrawerCallbacks {
         void onNavigationDrawerItemSelected(int position);
-        ListAdapter getNavigationDrawerListAdapter();
+        Fragment getHeader();
+		Fragment getFooter();
+		BaseAdapter getNavigationDrawerListAdapter();
     }
 }
