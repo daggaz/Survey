@@ -1,4 +1,4 @@
-package org.undp.bd.survey.application.api;
+package org.undp.bd.survey.application.actions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,10 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.undp.bd.survey.application.api.DjangoObject;
 import org.undp.bd.survey.application.data.DatabaseHelper;
 
-public class DjangoObjectDecoder {
+class DjangoObjectDecoder {
 
 	public static <T extends DjangoObject> List<T> decode(Class<T> cls, DatabaseHelper helper, JSONArray jsonArray) throws JSONException {
 		List<T> objects = new ArrayList<T>();
