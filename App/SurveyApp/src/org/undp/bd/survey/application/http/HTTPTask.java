@@ -11,21 +11,19 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.Context;
 import android.util.Log;
 
-public abstract class HTTPTask<Progress> extends ProgressTask<HttpUriRequest, Progress, String> {
+public class HTTPTask {
+	private HttpUriRequest request;
 	
-	public HTTPTask(Context context) {
-		super(context);
+	public HTTPTask(HttpUriRequest request) {
+		this.request = request;
 	}
 	
-    @Override
-    protected String doInBackground(HttpUriRequest... requests) {
+    public void execute() {
     	HttpClient httpclient = new DefaultHttpClient();
         HttpResponse response;
         String responseString = null;
-        HttpUriRequest request = requests[0];
         try {
         	Log.d("HTTPTask", "loading: " + request.getURI().toString());
             response = httpclient.execute(request);
@@ -45,6 +43,5 @@ public abstract class HTTPTask<Progress> extends ProgressTask<HttpUriRequest, Pr
         } catch (IOException e) {
         	Log.d("HTTPTask", e.getMessage());
         }
-        return responseString;
     }
 }

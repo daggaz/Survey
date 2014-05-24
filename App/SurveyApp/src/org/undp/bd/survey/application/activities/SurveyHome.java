@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.data.DatabaseHelper;
-import org.undp.bd.survey.application.data.DatabaseMixin;
+import org.undp.bd.survey.application.data.DatabaseContext;
 import org.undp.bd.survey.application.data.Response;
 import org.undp.bd.survey.application.data.Survey;
 
@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class SurveyHome extends ActionBarActivity {
 
-	private DatabaseMixin db = new DatabaseMixin(this);
+	private DatabaseContext db = new DatabaseContext(this);
 	private Survey survey;
 	private MyAdapter<Response> partialResponseData;
 	

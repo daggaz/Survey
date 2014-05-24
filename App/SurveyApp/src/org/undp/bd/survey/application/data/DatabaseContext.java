@@ -4,12 +4,12 @@ import android.content.Context;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-public class DatabaseMixin  {
+public class DatabaseContext  {
 
 	private DatabaseHelper databaseHelper = null;
 	private Context context;
 	
-	public DatabaseMixin(Context context) {
+	public DatabaseContext(Context context) {
 		this.context = context;
 	}
 
@@ -24,5 +24,9 @@ public class DatabaseMixin  {
 	    if (databaseHelper == null)
 	    	databaseHelper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
 	    return databaseHelper;
+	}
+	
+	public Context getContext() {
+		return context;
 	}
 }

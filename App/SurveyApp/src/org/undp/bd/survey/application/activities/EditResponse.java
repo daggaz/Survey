@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.data.Answer;
 import org.undp.bd.survey.application.data.DatabaseHelper;
-import org.undp.bd.survey.application.data.DatabaseMixin;
+import org.undp.bd.survey.application.data.DatabaseContext;
 import org.undp.bd.survey.application.data.Question;
 import org.undp.bd.survey.application.data.Response;
 import org.undp.bd.survey.application.fragements.EditSurveyNavigationDrawerFooter;
@@ -268,7 +268,7 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerC
 		return currentAnswer;
 	}
 	
-	private DatabaseMixin db = new DatabaseMixin(this);
+	private DatabaseContext db = new DatabaseContext(this);
 	public DatabaseHelper getHelper() {
 		return db.getHelper();
 	}

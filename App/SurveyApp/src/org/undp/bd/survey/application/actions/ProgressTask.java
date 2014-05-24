@@ -1,4 +1,4 @@
-package org.undp.bd.survey.application.http;
+package org.undp.bd.survey.application.actions;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.os.AsyncTask;
 
 abstract class ProgressTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
 
-	protected ProgressDialog dialog;
-	protected Context context;
+	private ProgressDialog dialog;
+	private Context context;
 	
 	public ProgressTask(Context context) {
 		super();
@@ -19,7 +19,7 @@ abstract class ProgressTask<Params, Progress, Result> extends AsyncTask<Params, 
 	@Override
 	protected void onPreExecute() {
 		dialog = new ProgressDialog(context);
-		dialog.setMessage(getMessage());
+		dialog.setMessage(getProgressMessage());
 		dialog.setOnCancelListener(new OnCancelListener() {
             public void onCancel(DialogInterface arg0) {
                 cancel(true);
@@ -33,5 +33,5 @@ abstract class ProgressTask<Params, Progress, Result> extends AsyncTask<Params, 
 		dialog.dismiss();
 	};
 	
-	protected abstract String getMessage();
+	protected abstract String getProgressMessage();
 }

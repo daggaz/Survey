@@ -41,6 +41,7 @@
     <string name="synchronising_error">Error synchronising!</string>
     <string name="synchronising_success">Successfully synchronised!</string>
     <string name="synchronising_message">Synchronising&#8230;</string>
+    <string name="synchronising_response_invalid">Response invalid</string>
     <string name="synchronising_login">You are offline, you must login in again while connected to the internet</string>
     
     <!-- Survey home screen -->

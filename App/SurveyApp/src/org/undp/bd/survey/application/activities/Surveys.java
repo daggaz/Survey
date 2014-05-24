@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.data.ApplicationData;
-import org.undp.bd.survey.application.data.DatabaseMixin;
+import org.undp.bd.survey.application.data.DatabaseContext;
 import org.undp.bd.survey.application.data.DatabaseHelper;
 import org.undp.bd.survey.application.data.Survey;
 
@@ -51,7 +51,7 @@ public class Surveys extends ActionBarActivity {
 	    listView.setEmptyView(empty);
 	}
 
-	private DatabaseMixin db = new DatabaseMixin(this);
+	private DatabaseContext db = new DatabaseContext(this);
 
 	public DatabaseHelper getHelper() {
 		return db.getHelper();
