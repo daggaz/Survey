@@ -49,7 +49,7 @@ public abstract class LoginAction {
 
 		@Override
 		protected void run(APIListener listener) {
-			API.login(getContext(), username, password, listener);	
+			API.login(getContext(), listener, username, password);	
 		}
 		
 		@Override

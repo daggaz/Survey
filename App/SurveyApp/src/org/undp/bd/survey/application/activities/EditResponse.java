@@ -1,6 +1,7 @@
 package org.undp.bd.survey.application.activities;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.data.Answer;
@@ -92,6 +93,7 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerC
 			getHelper().getSurveys().refresh(response.survey);
 		} else {
 			response = new Response();
+			response.uuid = UUID.randomUUID();
 			response.survey = getHelper().getSurveys().queryForId(getIntent().getIntExtra("survey_id", 0));
 		}
 		Log.d("EditResponse", "Editing response " + response);

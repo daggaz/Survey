@@ -2,6 +2,7 @@ package org.undp.bd.survey.application.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -13,7 +14,10 @@ public class Response {
 	@DatabaseField(generatedId=true)
 	public int id;
 	
-	@DatabaseField(foreign=true, canBeNull=false)
+	@DatabaseField()
+	public UUID uuid;
+	
+	@DatabaseField(foreign=true, canBeNull=false, foreignAutoRefresh=true)
 	public Survey survey;
 	
 	@ForeignCollectionField(eager=true)
@@ -68,7 +72,7 @@ public class Response {
 
 	@Override
 	public String toString() {
-		return "<Response: id=" + id + ", survey=" + survey + ">";
+		return "<Response: id=" + id + ", survey=" + survey.title + ", uuid=" + uuid + ">";
 	}
 
 	public Answer getOrCreateAnswer(Question question) {

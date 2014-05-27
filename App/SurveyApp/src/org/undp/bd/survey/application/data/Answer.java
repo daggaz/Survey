@@ -11,7 +11,7 @@ public class Answer {
 	@DatabaseField()
 	public String value;
 	
-	@DatabaseField(foreign=true, canBeNull=false)
+	@DatabaseField(foreign=true, canBeNull=false, foreignAutoRefresh=true)
 	public Question question;
 	
 	@DatabaseField(foreign=true, canBeNull=false)

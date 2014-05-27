@@ -2,7 +2,7 @@ package org.undp.bd.survey.application.activities;
 
 
 import org.undp.bd.survey.application.R;
-import org.undp.bd.survey.application.actions.SynchroniseSurveysAction;
+import org.undp.bd.survey.application.actions.SynchroniseAction;
 import org.undp.bd.survey.application.data.ApplicationData;
 import org.undp.bd.survey.application.data.DatabaseContext;
 import org.undp.bd.survey.application.data.DatabaseHelper;
@@ -43,7 +43,7 @@ public class Home extends ActionBarActivity {
 	}
 	
 	public void synchronise(View view) {
-		new SynchroniseSurveysAction(db) {
+		new SynchroniseAction(db) {
 
 			@Override
 			protected void onSuccess() {
