@@ -3,7 +3,7 @@ package org.undp.bd.survey.application.activities;
 import java.sql.SQLException;
 
 import org.undp.bd.survey.application.R;
-import org.undp.bd.survey.application.actions.LoginTask;
+import org.undp.bd.survey.application.actions.LoginAction;
 import org.undp.bd.survey.application.data.DatabaseContext;
 
 import android.app.Activity;
@@ -35,7 +35,7 @@ public class Login extends Activity {
     	String username = usernameWidget.getText().toString();
     	String password = passwordWidget.getText().toString();
     	
-    	new LoginTask(db, username, password) {
+    	new LoginAction(db, username, password) {
     		@Override
     		public void onSuccess() {
     			usernameWidget.setText("");
@@ -48,8 +48,13 @@ public class Login extends Activity {
     		public void onFailure(FailureType failure) {
     			switch (failure) {
     			case ONLINE_LOGIN_FAILED:
+    				Toast.makeText(Login.this, R.string.online_login_failed, Toast.LENGTH_LONG).show();
+					break;
+    			case ONLINE_LOGIN_ERROR:
+    				Toast.makeText(Login.this, R.string.online_login_error, Toast.LENGTH_LONG).show();
+    				break;
     			case OFFLINE_LOGIN_FAILED:
-    				Toast.makeText(Login.this, R.string.login_failed_username_password, Toast.LENGTH_LONG).show();
+    				Toast.makeText(Login.this, R.string.offline_login_failed, Toast.LENGTH_LONG).show();
     				break;
     			case OFFLINE_LOGIN_INVALID:
     				Toast.makeText(Login.this, R.string.login_failed_credentials_invalid, Toast.LENGTH_LONG).show();
@@ -59,6 +64,6 @@ public class Login extends Activity {
     				break;
     			}
     		}
-    	}.execute(username, password);
+    	}.execute();
     }
 }

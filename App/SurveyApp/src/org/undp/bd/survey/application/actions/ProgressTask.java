@@ -15,6 +15,10 @@ abstract class ProgressTask<Params, Progress, Result> extends AsyncTask<Params, 
 		super();
 		this.context = context;
 	}
+
+	public Context getContext() {
+		return context;
+	}
 	
 	@Override
 	protected void onPreExecute() {

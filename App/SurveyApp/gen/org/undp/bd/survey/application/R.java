@@ -1200,82 +1200,84 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
-        public static final int answer_required=0x7f0a0042;
+        public static final int answer_required=0x7f0a0044;
         /**  General 
          */
         public static final int app_name=0x7f0a000d;
         public static final int app_subtitle=0x7f0a000e;
-        public static final int cancel=0x7f0a0048;
-        public static final int close_question_list=0x7f0a0037;
-        public static final int confirm=0x7f0a0049;
-        public static final int confirm_logout=0x7f0a0024;
-        public static final int confirm_submission=0x7f0a004a;
-        public static final int confirm_submission_message=0x7f0a004b;
+        public static final int cancel=0x7f0a004a;
+        public static final int close_question_list=0x7f0a0039;
+        public static final int confirm=0x7f0a004b;
+        public static final int confirm_logout=0x7f0a0026;
+        public static final int confirm_submission=0x7f0a004c;
+        public static final int confirm_submission_message=0x7f0a004d;
         /**  Survey home screen 
          */
-        public static final int create_submission=0x7f0a002c;
-        public static final int delete_partial_response=0x7f0a0030;
-        public static final int discard=0x7f0a003c;
-        public static final int discard_response=0x7f0a003b;
+        public static final int create_submission=0x7f0a002e;
+        public static final int delete_partial_response=0x7f0a0032;
+        public static final int discard=0x7f0a003e;
+        public static final int discard_response=0x7f0a003d;
         /**  Edit response screen 
          */
-        public static final int edit_response=0x7f0a0035;
+        public static final int edit_response=0x7f0a0037;
         public static final int error_parsing_response=0x7f0a0016;
         /**  Home screen 
          */
-        public static final int home=0x7f0a0021;
-        public static final int later=0x7f0a0045;
-        public static final int logging_in=0x7f0a0020;
+        public static final int home=0x7f0a0023;
+        public static final int later=0x7f0a0047;
+        public static final int logging_in=0x7f0a0022;
         public static final int login=0x7f0a001b;
         public static final int login_failed=0x7f0a001c;
         public static final int login_failed_credentials_invalid=0x7f0a001e;
         public static final int login_failed_must_connect=0x7f0a001d;
-        public static final int login_failed_username_password=0x7f0a001f;
         /**  Login screen 
          */
         public static final int login_text=0x7f0a0018;
-        public static final int logout=0x7f0a0023;
+        public static final int logout=0x7f0a0025;
         public static final int lorem=0x7f0a0013;
         public static final int lorem_long=0x7f0a0014;
-        public static final int next=0x7f0a0041;
+        public static final int next=0x7f0a0043;
         public static final int no=0x7f0a0012;
-        public static final int no_partial_submissions=0x7f0a002e;
+        public static final int no_partial_submissions=0x7f0a0030;
         public static final int no_response=0x7f0a0017;
-        public static final int no_submitted_responses=0x7f0a0034;
+        public static final int no_submitted_responses=0x7f0a0036;
         /**  Surveys screen 
          */
-        public static final int no_surveys=0x7f0a0025;
-        public static final int not_complete=0x7f0a004c;
-        public static final int open_question_list=0x7f0a0036;
-        public static final int partial_response=0x7f0a002f;
-        public static final int partial_submissions=0x7f0a002d;
+        public static final int no_surveys=0x7f0a0027;
+        public static final int not_complete=0x7f0a004e;
+        public static final int offline_login_failed=0x7f0a001f;
+        public static final int online_login_error=0x7f0a0021;
+        public static final int online_login_failed=0x7f0a0020;
+        public static final int open_question_list=0x7f0a0038;
+        public static final int partial_response=0x7f0a0031;
+        public static final int partial_submissions=0x7f0a002f;
         public static final int password=0x7f0a001a;
-        public static final int previous=0x7f0a0040;
-        public static final int provide_answer=0x7f0a0044;
-        public static final int question=0x7f0a003f;
-        public static final int question_list=0x7f0a003a;
-        public static final int question_required=0x7f0a0047;
-        public static final int questions=0x7f0a003e;
-        public static final int required=0x7f0a0046;
-        public static final int required_question_message=0x7f0a0043;
-        public static final int response_submitted=0x7f0a004d;
-        public static final int save_draft=0x7f0a0039;
-        public static final int save_draft_query=0x7f0a003d;
-        public static final int submit=0x7f0a0038;
-        public static final int submitted_response_message=0x7f0a0032;
-        public static final int submitted_response_message_plural=0x7f0a0033;
-        public static final int submitted_responses=0x7f0a0031;
+        public static final int previous=0x7f0a0042;
+        public static final int provide_answer=0x7f0a0046;
+        public static final int question=0x7f0a0041;
+        public static final int question_list=0x7f0a003c;
+        public static final int question_required=0x7f0a0049;
+        public static final int questions=0x7f0a0040;
+        public static final int required=0x7f0a0048;
+        public static final int required_question_message=0x7f0a0045;
+        public static final int response_submitted=0x7f0a004f;
+        public static final int save_draft=0x7f0a003b;
+        public static final int save_draft_query=0x7f0a003f;
+        public static final int submit=0x7f0a003a;
+        public static final int submitted_response_message=0x7f0a0034;
+        public static final int submitted_response_message_plural=0x7f0a0035;
+        public static final int submitted_responses=0x7f0a0033;
         public static final int survey=0x7f0a0010;
         public static final int surveys=0x7f0a000f;
-        public static final int synchronise=0x7f0a0022;
-        public static final int synchronise_hint=0x7f0a0026;
+        public static final int synchronise=0x7f0a0024;
+        public static final int synchronise_hint=0x7f0a0028;
         /**  Synchronise screen 
          */
-        public static final int synchronising_error=0x7f0a0027;
-        public static final int synchronising_login=0x7f0a002b;
-        public static final int synchronising_message=0x7f0a0029;
-        public static final int synchronising_response_invalid=0x7f0a002a;
-        public static final int synchronising_success=0x7f0a0028;
+        public static final int synchronising_error=0x7f0a0029;
+        public static final int synchronising_login=0x7f0a002d;
+        public static final int synchronising_message=0x7f0a002b;
+        public static final int synchronising_response_invalid=0x7f0a002c;
+        public static final int synchronising_success=0x7f0a002a;
         /**  Error messages 
          */
         public static final int unknown_reason=0x7f0a0015;

@@ -11,58 +11,73 @@ import org.undp.bd.survey.application.api.APIError;
 import org.undp.bd.survey.application.api.APIListener;
 import org.undp.bd.survey.application.data.ApplicationData;
 import org.undp.bd.survey.application.data.DatabaseContext;
+import org.undp.bd.survey.application.data.DatabaseHelper;
 import org.undp.bd.survey.application.data.Question;
 import org.undp.bd.survey.application.data.Survey;
 import org.undp.bd.survey.application.data.User;
 
+import android.content.Context;
 import android.util.Log;
 
-public abstract class SynchroniseSurveysTask extends AbstractTask {
+public abstract class SynchroniseSurveysAction {
 
 	public enum FailureType {
 		OFFLINE, API,
 	}
+
+	private Context context;
+	private DatabaseHelper database;
 	
-	public SynchroniseSurveysTask(DatabaseContext db) {
-		super(db);
+	public SynchroniseSurveysAction(DatabaseContext db) {
+		this.context = db.getContext();
+		this.database = db.getHelper();
 	}
 
 	protected abstract void onSuccess();
 	protected abstract void onFailure(FailureType offline, String reason);
 
-	@Override
-	protected String getProgressMessage() {
-		return getResources().getString(R.string.synchronising_message);
+	private class SynchroniseTask extends APITask {
+		public SynchroniseTask() {
+			super(context);
+		}
+		
+		@Override
+		protected void run(APIListener listener) {
+			API.synchroniseSurveys(context, listener);
+		}
+		
+		@Override
+		public void onSuccess(JSONObject data) {
+			try {
+				processSurveys(data);
+				processQuestions(data);
+				SynchroniseSurveysAction.this.onSuccess();
+			} catch (JSONException e) {
+				onFailure(FailureType.API, context.getResources().getString(R.string.synchronising_response_invalid));
+			}
+		}
+		
+		@Override
+		public void onError(APIError error) {
+			Log.d("SynchroniseSurveysTask", error.getDetail());
+			switch (error.getReason()) {
+			case PARSING_EXCEPTION:
+				onFailure(FailureType.API, context.getResources().getString(R.string.error_parsing_response));
+				break;
+			default:
+				onFailure(FailureType.API, context.getResources().getString(R.string.unknown_reason));
+			}
+		}
+		
+		@Override
+		protected String getProgressMessage() {
+			return context.getResources().getString(R.string.synchronising_message);
+		}
 	}
 	
-	@Override
-	protected void run() {
+	public void execute() {
 		if (getUser().session_key != null) {
-			API.synchroniseSurveys(getContext(), new APIListener() {
-				@Override
-				public void success(JSONObject data) {
-					try {
-						processSurveys(data);
-						processQuestions(data);
-						onSuccess();
-					} catch (JSONException e) {
-						onFailure(FailureType.API, getResources().getString(R.string.synchronising_response_invalid));
-					}
-				}
-				
-				@Override
-				public void failed(APIError error) {
-					Log.d("SynchroniseSurveysTask", error.getDetail());
-					switch (error.getReason())
-					{
-					case PARSING_EXCEPTION:
-						onFailure(FailureType.API, getResources().getString(R.string.error_parsing_response));
-						break;
-					default:
-						onFailure(FailureType.API, getResources().getString(R.string.unknown_reason));
-					}
-				}
-			});
+			new SynchroniseTask().execute();
 		} else {
 			onFailure(FailureType.OFFLINE, null);
 		}
@@ -73,7 +88,7 @@ public abstract class SynchroniseSurveysTask extends AbstractTask {
 	}
 
 	private void processQuestions(JSONObject data) throws JSONException {
-		List<Question> allImportedQuestions = DjangoObjectDecoder.decode(Question.class, getDatabase(), data.getJSONArray("questions"));
+		List<Question> allImportedQuestions = DjangoObjectDecoder.decode(Question.class, database, data.getJSONArray("questions"));
 		
 		for (Survey survey : getUser().surveys) {
 			List<Question> existingQuestions = new ArrayList<Question>(survey.questions);
@@ -92,10 +107,10 @@ public abstract class SynchroniseSurveysTask extends AbstractTask {
 					}
 				if (existingQuestion != null) {
 					importedQuestion.id = existingQuestion.id;
-					getDatabase().getQuestions().update(importedQuestion);
+					database.getQuestions().update(importedQuestion);
 					Log.d("Survey.Home", "Updated question " + importedQuestion);
 				} else {
-					getDatabase().getQuestions().create(importedQuestion);
+					database.getQuestions().create(importedQuestion);
 					Log.d("Survey.Home", "Created question " + importedQuestion);
 				}
 			}
@@ -110,7 +125,7 @@ public abstract class SynchroniseSurveysTask extends AbstractTask {
 					}
 				if (!found) {
 					Log.d("Survey.Home", "Deleted question " + existingQuestion);
-					existingQuestion.delete(getDatabase());
+					existingQuestion.delete(database);
 					
 				}
 			}
@@ -118,7 +133,7 @@ public abstract class SynchroniseSurveysTask extends AbstractTask {
 	}
 
 	private void processSurveys(JSONObject data) throws JSONException {
-		List<Survey> importedSurveys = DjangoObjectDecoder.decode(Survey.class, getDatabase(), data.getJSONArray("surveys"));
+		List<Survey> importedSurveys = DjangoObjectDecoder.decode(Survey.class, database, data.getJSONArray("surveys"));
 		List<Survey> existingSurveys = new ArrayList<Survey>(getUser().surveys);
 		
 		// Create or update surveys
@@ -131,11 +146,11 @@ public abstract class SynchroniseSurveysTask extends AbstractTask {
 				}
 			if (existingSurvey != null) {
 				importedSurvey.id = existingSurvey.id;
-				getDatabase().getSurveys().update(importedSurvey);
+				database.getSurveys().update(importedSurvey);
 				Log.d("Survey.Home", "Updated survey " + importedSurvey);
 			} else {
 				importedSurvey.user = getUser();
-				getDatabase().getSurveys().create(importedSurvey);
+				database.getSurveys().create(importedSurvey);
 				Log.d("Survey.Home", "Created survey " + importedSurvey);
 			}
 		}
@@ -150,7 +165,7 @@ public abstract class SynchroniseSurveysTask extends AbstractTask {
 				}
 			if (!found) {
 				Log.d("Survey.Home", "Deleted survey " + existingSurvey);
-				existingSurvey.delete(getDatabase());
+				existingSurvey.delete(database);
 				
 			}
 		}

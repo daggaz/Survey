@@ -24,7 +24,9 @@
     <string name="login_failed">Login unsuccessful</string>
     <string name="login_failed_must_connect">Login unsuccessful: you must be connected to login for the first time</string>
     <string name="login_failed_credentials_invalid">Offline login unsuccssful: you must perform a connected login</string>
-    <string name="login_failed_username_password">Offline login unsuccssful: you must be connected, or use the password last used on this phone</string>
+    <string name="offline_login_failed">Offline login unsuccssful: you must be connected, or use the password last used on this phone</string>
+    <string name="online_login_failed">Invalid username or password</string>
+    <string name="online_login_error">Error logging in</string>
     <string name="logging_in">Authenticating&#8230;</string>
     
     <!-- Home screen -->
