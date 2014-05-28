@@ -26,7 +26,7 @@ public abstract class LoginAction {
 		ONLINE_LOGIN_ERROR,
 	}
 	
-	private User offlineUser;
+	private User existingUser;
 	private String username;
 	private String password;
 	private Context context;
@@ -67,12 +67,11 @@ public abstract class LoginAction {
 				return;
 			}
 			
-			if (offlineUser != null) {
-				if (!offlineUser.authenticated)
-					offlineUser.authenticated = true;
-				offlineUser.session_key = session_key;
-				database.getUsers().update(offlineUser);
-				completeLogin(offlineUser, password);
+			if (existingUser != null) {
+				existingUser.authenticated = true;
+				existingUser.session_key = session_key;
+				database.getUsers().update(existingUser);
+				completeLogin(existingUser);
 			} else {
 				User newUser = new User();
 				newUser.username = username;
@@ -81,7 +80,7 @@ public abstract class LoginAction {
 				newUser.session_key = session_key;
 				database.getUsers().create(newUser);
 				newUser = database.getUsers().queryForId(newUser.id);
-				completeLogin(newUser, password);
+				completeLogin(newUser);
 			}
 		}
 		
@@ -89,9 +88,9 @@ public abstract class LoginAction {
 		public void onError(APIError error) {
 			Log.d("LoginTask", error.toString());
 			if (error.getReason() == Reason.FAILED_RESPONSE) {
-				if (offlineUser != null && offlineUser.authenticated) {
-					offlineUser.authenticated = false;
-					database.getUsers().update(offlineUser);
+				if (existingUser != null && existingUser.authenticated) {
+					existingUser.authenticated = false;
+					database.getUsers().update(existingUser);
 				}
 				onFailure(FailureType.ONLINE_LOGIN_FAILED);
 			} else
@@ -101,18 +100,21 @@ public abstract class LoginAction {
 
 	public void execute() {
 		try {
-			offlineUser = database.getUsers().queryBuilder().where().eq("username", username).queryForFirst();
+			existingUser = database.getUsers().queryBuilder().where().eq("username", username).queryForFirst();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
     	
     	if (ApplicationData.isConnected(context)) {
+    		Log.d("LoginAction", "Attempting online login");
     		new LoginTask().execute();
-    	} else if (offlineUser != null) {
-    		if (offlineUser.authenticated) { 
-	    		if (offlineUser.passwordHash == password.hashCode())
-	    			completeLogin(offlineUser, password);
-	    		else
+    	} else if (existingUser != null) {
+    		Log.d("LoginAction", "Attempting offline login");
+    		if (existingUser.authenticated) { 
+	    		if (existingUser.passwordHash == password.hashCode()) {
+	        		Log.d("LoginAction", "Offline login succeded");
+	    			completeLogin(existingUser);
+	    		} else
 	    			onFailure(FailureType.OFFLINE_LOGIN_FAILED);
     		} else
     			onFailure(FailureType.OFFLINE_LOGIN_INVALID);
@@ -121,9 +123,9 @@ public abstract class LoginAction {
     	}
 	}
 
-	private void completeLogin(User user, String password) {
-    	user.password = password;
+	private void completeLogin(User user) {
     	ApplicationData.instance().setUser(user);
+    	Log.d("LoginAction", "Completing login for " + user);
     	onSuccess();
 	}
 }

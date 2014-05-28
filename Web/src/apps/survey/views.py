@@ -11,7 +11,6 @@ import json
 from models import Survey
 from forms import SubmissionForm, QTYPE_FORM
 from apps.survey.models import Question
-import itertools
 
 def _get_survey(user, *args, **kwargs):
     survey = get_object_or_404(*args, **kwargs)
@@ -91,6 +90,12 @@ def api_login(request):
 
 def sync_surveys(request):
     if request.user.is_authenticated():
+        responses = json.loads(request.POST['responses'])
+        acknowledgments = []
+        for response in responses:
+            print response
+            acknowledgments.append(response['uuid'])
+        
         surveys = Survey.live.filter(users=request.user.pk)
         questions = Question.objects.filter(survey__in=surveys)
         surveys = json.loads(serializers.serialize('json', surveys))
@@ -98,6 +103,7 @@ def sync_surveys(request):
         data = {'status': 'success',
                 'surveys': surveys,
                 'questions': questions,
+                'acknowledgments': acknowledgments
                 }
     else:
         data = {'status': 'failed',

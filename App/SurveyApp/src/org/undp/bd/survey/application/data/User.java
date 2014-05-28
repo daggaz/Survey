@@ -18,15 +18,16 @@ public class User {
 	@DatabaseField(canBeNull=false)
 	public int passwordHash;
 	
-	@DatabaseField()
 	public String session_key;
 	
 	@ForeignCollectionField(eager=false)
 	public ForeignCollection<Survey> surveys;
-
-	// Not persisted to database
-	public String password;
 	
 	@DatabaseField(canBeNull=false)
 	public boolean authenticated = false;
+	
+	@Override
+	public String toString() {
+		return "<User: " + username + ", session=" + session_key + ">";
+	}
 }
