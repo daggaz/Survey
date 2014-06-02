@@ -1,3 +1,6 @@
 [submodule "Web/django"]
 	path = Web/django
 	url = https://github.com/django/django.git
+[submodule "Web/django-debug-toolbar"]
+	path = Web/django-debug-toolbar
+	url = https://github.com/django-debug-toolbar/django-debug-toolbar.git
