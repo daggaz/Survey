@@ -22,8 +22,17 @@ var header = {
 	        id: 'title',
 	    	autoEl: { tag: 'div', html: I18N.get('app_title') }
         }],
-        height: '100%',
-	    flex:1
+        height: '100%'
+    },{
+    	id: 'main_menu',
+    	layout: {
+    		type: 'hbox',
+    		align: 'middle',
+    		pack: 'start'
+    	},
+    	html: 'menu',
+    	height: '100%',
+    	flex: 1
     }]
 };
 

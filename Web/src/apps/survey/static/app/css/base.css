@@ -37,12 +37,15 @@ h2 {
 	font-size: 30px;
 	padding: 0 20px;
 }
-
-#menu {
+#main_menu {
+	opacity: 0;
+}
+	
+#main_menu a {
 	color: #39F;
 }
 
-#menu:hover {
+#main_menu a:hover {
 	color: white;	
 }
 

@@ -11,31 +11,40 @@ Ext.define('Survey.view.Login', {
 		xtype: 'form',
 		title : 'Login',
 		frame: true,
-		width: 250,
+		width: 350,
 		bodyPadding: '10px 20px',
+    	defaultType: 'textfield',
 		items: [{
-			xtype: 'textfield',
 			fieldLabel: I18N.get('username'),
 			name: 'username',
 			itemId: 'username',
-			allowblank: false
+			msgTarget: 'under',
+			allowBlank: false
 		},{
-			xtype: 'textfield',
 			fieldLabel: I18N.get('password'),
 			name: 'password',
 			itemId: 'password',
-			allowblank: false,
-			inputType: 'password'
+			allowBlank: false,
+			inputType: 'password',
+			msgTarget: 'under'
 		}],
 		buttons:[{
 			text: 'Login',
-			listeners: {
-				click: function() {
-					var username = this.up('form').down('#username').getValue();
-					var password = this.up('form').down('#password').getValue();
-					this.fireEvent('signin', username, password);
+			formBind: true,
+			disabled: true,
+			handler: function() {
+				this.up('form').submit();
+			}
+		}],
+		listeners: {
+			beforeAction: function (form, action, eOpts) {
+				if (this.isValid()) {
+					var username = this.down('#username').getValue();
+					var password = this.down('#password').getValue();
+					this.fireEvent('login', username, password);
+					return false;
 				}
 			}
-		}]
+		}
 	}]
 });
