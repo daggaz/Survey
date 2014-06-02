@@ -12,5 +12,6 @@
 <path>/SurveyWebsite/src</path>
 <path>/${PROJECT_DIR_NAME}/django</path>
 <path>/${PROJECT_DIR_NAME}/django-debug-toolbar</path>
+<path>/${PROJECT_DIR_NAME}/sqlparse</path>
 </pydev_pathproperty>
 </pydev_project>
