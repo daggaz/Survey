@@ -5,7 +5,7 @@ import re
 
 from operator import itemgetter
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -35,17 +35,14 @@ class ChoiceEnum(object):
         return [v[1] for v in self._choices if v[0] == key][0]
 
 
-OPTION_TYPE_CHOICES = ChoiceEnum(sorted([('char', 'Text Box'),
+OPTION_TYPE_CHOICES = ChoiceEnum(sorted([('char', 'Text'),
+                                         ('text', 'Multi-line Text'),
                                          ('email', 'Email Text Box'),
-                                         ('integer', 'Integer Text Box'),
-                                         ('float', 'Decimal Text Box'),
-                                         ('bool', 'Checkbox'),
-                                         ('text', 'Text Area'),
+                                         ('integer', 'Number'),
+                                         ('float', 'Decimal Number'),
                                          ('select', 'Drop Down List'),
                                          ('choice', 'Radio Button List'),
-                                         ('bool_list', 'Checkbox List'),
-                                         ('numeric_select', 'Numeric Drop Down List'),
-                                         ('numeric_choice', 'Numeric Radio Button List'),
+                                         ('bool_list', 'Multiple Checkbox List'),
                                          ],
                                         key=itemgetter(1)
                                         ))
@@ -221,73 +218,34 @@ class Question(models.Model):
     def __unicode__(self):
         return self.question
 
-    def save(self, *args, **kwargs):
-        self.numeric_is_int = True
-        OTC = OPTION_TYPE_CHOICES
-        if self.option_type in (OTC.NUMERIC_SELECT, OTC.NUMERIC_CHOICE):
-            for option in self.parsed_options:
-                try:
-                    int(option)
-                except ValueError:
-                    float(option)
-                    self.numeric_is_int = False
-        elif self.option_type == OTC.FLOAT:
-            self.numeric_is_int = False
-        super(Question, self).save(*args, **kwargs)
-
     @property
     def parsed_options(self):
-        if OPTION_TYPE_CHOICES.BOOL == self.option_type:
-            return [True, False]
         return filter(None, (s.strip() for s in self.options.splitlines()))
 
     @property
-    def parsed_map_icons(self):
-        return filter(None, (s.strip() for s in self.map_icons.splitlines()))
-
-    def parsed_option_icon_pairs(self):
-        options = self.parsed_options
-        icons = self.parsed_map_icons
-        to_return = []
-        for i in range(len(options)):
-            if i < len(icons):
-                to_return.append((options[i], icons[i]))
-            else:
-                to_return.append((options[i], None))
-        return to_return
-
-    @property
     def value_column(self):
-        ot = self.option_type
-        OTC = OPTION_TYPE_CHOICES
-        if ot == OTC.BOOL:
-            return "boolean_answer"
-        elif self.is_float:
+        if self.is_float:
             return "float_answer"
-        elif self.is_integer:
+        if self.is_integer:
             return "integer_answer"
-        elif ot == OTC.PHOTO:
-            return "image_answer"
         return "text_answer"
-
-    @property
-    def is_numeric(self):
-        OTC = OPTION_TYPE_CHOICES
-        return self.option_type in [OTC.FLOAT,
-                                    OTC.INTEGER,
-                                    OTC.BOOL,
-                                    OTC.NUMERIC_SELECT,
-                                    OTC.NUMERIC_CHOICE]
-
+    
     @property
     def is_float(self):
-        return self.is_numeric and not self.numeric_is_int
+        return self.option_type in [OPTION_TYPE_CHOICES.FLOAT]
 
     @property
     def is_integer(self):
-        return self.is_numeric and self.numeric_is_int
+        return self.option_type in [OPTION_TYPE_CHOICES.INTEGER]
+    
+    def answerFromString(self, string):
+        answer = Answer()
+        answer.question = self
+        answer.value = string
+        return answer
 
 class Submission(models.Model):
+    uuid = models.CharField(max_length=50)
     survey = models.ForeignKey(Survey, related_name='submissions')
     user = models.ForeignKey(User, blank=True, null=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
@@ -352,21 +310,13 @@ class Answer(models.Model):
     
     @value.setter
     def value(self, v):
-        ot = self.question.option_type
-        OTC = OPTION_TYPE_CHOICES
-        if ot == OTC.BOOL:
-            self.boolean_answer = bool(v)
-        elif ot in (OTC.FLOAT,
-                    OTC.INTEGER,
-                    OTC.NUMERIC_SELECT,
-                    OTC.NUMERIC_CHOICE):
-            # Keep values in both the integer and float columns just in
-            # case the question switches between integer and float types.
-            if v:
-                self.float_answer = float(v)
-                self.integer_answer = int(round(self.float_answer))
-            else:
-                self.float_answer = self.integer_answer = None
+        v = v.strip()
+        if self.question.required and v.lower() in ["", "null", "none"]:
+            raise Exception("No answer for required question") 
+        if self.question.is_float:
+            self.float_answer = float(v)
+        elif self.question.is_integer:
+            self.integer_answer = int(v)
         else:
             self.text_answer = v
 

@@ -77,9 +77,9 @@ public abstract class LoginAction {
 				newUser.username = username;
 				newUser.passwordHash = password.hashCode();
 				newUser.authenticated = true;
-				newUser.session_key = session_key;
 				database.getUsers().create(newUser);
 				newUser = database.getUsers().queryForId(newUser.id);
+				newUser.session_key = session_key;
 				completeLogin(newUser);
 			}
 		}

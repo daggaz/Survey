@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="corg.undp.bd.survey.application.fragments.AnswerFragment" >
+    tools:context="org.undp.bd.survey.application.fragments.AnswerFragment" >
 
     <EditText
         android:id="@+id/char_answer"

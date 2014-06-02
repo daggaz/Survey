@@ -35,6 +35,7 @@ public class QuestionFragment extends Fragment {
 			questionText = "*" + questionText;
 		}
 		((TextView)rootView.findViewById(R.id.question)).setText(questionText);
+		
 		if (answer.question.help_text != null && !answer.question.help_text.trim().equals("")) {
 			TextView helpText = (TextView)rootView.findViewById(R.id.help_text);
 			helpText.setText(answer.question.help_text);

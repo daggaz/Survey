@@ -5,7 +5,7 @@
     android:paddingBottom="10dp"
     android:paddingLeft="15dp"
     android:paddingRight="10dp"
-    tools:context="corg.undp.bd.survey.application.fragments.QuestionFragment" >
+    tools:context="org.undp.bd.survey.application.fragments.QuestionFragment" >
 
     <TextView
         android:id="@+id/question"
