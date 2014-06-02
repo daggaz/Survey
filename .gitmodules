@@ -4,3 +4,6 @@
 [submodule "Web/django-debug-toolbar"]
 	path = Web/django-debug-toolbar
 	url = https://github.com/django-debug-toolbar/django-debug-toolbar.git
+[submodule "Web/sqlparse"]
+	path = Web/sqlparse
+	url = https://github.com/andialbrecht/sqlparse.git
