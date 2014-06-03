@@ -1,6 +1,6 @@
 Ext.define('Survey.view.Home', {
 	extend: 'Ext.Panel',
 	alias : 'widget.home',
-	title : 'Home',
+	title : I18N.get('home'),
 	html: 'home'
 });

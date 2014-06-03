@@ -8,10 +8,10 @@ Ext.define('Survey.controller.Login', {
 						field.up('form').getForm().submit();
 				}
 			},
-			'login form': { login: this.loginuser }
+			'login form': { login: this.loginUser }
 		});
 	},
-	loginuser: function(username, password) {
+	loginUser: function(username, password) {
 		Ext.Ajax.request({
 			url: '/api/login/',
 			method: 'GET',
@@ -22,12 +22,18 @@ Ext.define('Survey.controller.Login', {
 					Survey.getApplication().session_key = Ext.decode(response.responseText).session_key;
 					console.log("login success: session = " + Survey.getApplication().session_key);
 					Survey.getApplication().getMainController().showView('Home', function () {
-						Survey.getApplication().getMainController().showMenu();
+						Survey.getApplication().getMainController().showHeader();
 					});
 				} else {
 					console.log("login failed");
 				}
 			}
 		});
+	},
+	logoutUser: function() {
+		delete Survey.getApplication().session_key;
+		Survey.getApplication().getMainController().hideHeader();
+		Survey.getApplication().getMainController().showView('Login');
+		
 	}
 });

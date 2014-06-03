@@ -32,21 +32,35 @@ h2 {
 	background: #0A294E;
 }
 
-#title {
+#header #title {
 	color: white;
 	font-size: 30px;
 	padding: 0 20px;
 }
-#main_menu {
+#header #main_menu {
 	opacity: 0;
 }
-	
-#main_menu a {
-	color: #39F;
+
+#header #main_menu .x-btn {
+	background: none;
+	border-width: 0 1px;
+	margin: 10px 0;
+	padding: 0 20px;
 }
 
-#main_menu a:hover {
-	color: white;	
+#header #main_menu .x-btn-inner {
+	color: #39F;
+	font-size: 23px;
+	font-weight: normal;
+}
+
+#header #main_menu .x-btn-over .x-btn-inner,
+#header #main_menu .selected .x-btn-inner {
+	color: white;
+}
+
+#header #header_right {
+	padding: 0 20px;
 }
 
 #footer {

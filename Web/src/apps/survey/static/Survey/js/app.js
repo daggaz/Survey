@@ -1,7 +1,7 @@
 var I18N = {
 	get: function (key) {
 		console.log("I18N: " + key + " = " + this.strings[key]);
-		return this.strings[key];
+		return this.strings[key] || key;
 	},
 	strings: {}
 }
@@ -32,7 +32,7 @@ Ext.onReady(function () {
 				Ext.application({
 					requires: ['Ext.grid.*', 'Ext.data.*', 'Ext.util.*', 'Ext.util.JSON.*', 'Ext.state.*'],
 					name: 'Survey',
-					appFolder: '/media/static/app/js/app',
+					appFolder: '/media/static/Survey/js/Survey',
 					controllers: ['Main', 'Login'],
 					autoCreateViewport: true,
 					refs: [{

@@ -1,7 +1,7 @@
 Ext.define('Survey.view.Login', {
 	extend: 'Ext.Panel',
 	alias : 'widget.login',
-	title : 'Login',
+	title : I18N.get('login'),
 	layout: {
 		type: 'hbox',
 		align: 'middle',
@@ -9,7 +9,6 @@ Ext.define('Survey.view.Login', {
 	},
 	items: [{
 		xtype: 'form',
-		title : 'Login',
 		frame: true,
 		width: 350,
 		bodyPadding: '10px 20px',
@@ -29,7 +28,7 @@ Ext.define('Survey.view.Login', {
 			msgTarget: 'under'
 		}],
 		buttons:[{
-			text: 'Login',
+			text: I18N.get('login'),
 			formBind: true,
 			disabled: true,
 			handler: function() {
