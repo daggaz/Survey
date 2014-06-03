@@ -11,23 +11,40 @@ Ext.define('Survey.controller.Login', {
 			'login form': { login: this.loginUser }
 		});
 	},
+	refs: [{
+		ref: 'error',
+		selector: 'login #error'
+	}],
 	loginUser: function(username, password) {
 		Ext.Ajax.request({
 			url: '/api/login/',
 			method: 'GET',
 			params: {username: username, password: password },
-			callback: function (options, success, response) {
+			callback: Ext.bind(function (options, success, response) {
 				console.log(response.responseText);
 				if (success) {
-					Survey.getApplication().session_key = Ext.decode(response.responseText).session_key;
-					console.log("login success: session = " + Survey.getApplication().session_key);
-					Survey.getApplication().getMainController().showView('Home', function () {
-						Survey.getApplication().getMainController().showHeader();
-					});
+					var result = Ext.decode(response.responseText);
+					if (result.status == "success") {
+						this.getError().hide();
+						Survey.getApplication().session_key = result.session_key;
+						console.log("login success: session = " + Survey.getApplication().session_key);
+						Survey.getApplication().getMainController().showView('Home', function () {
+							Survey.getApplication().getMainController().showHeader();
+						});
+					} else {
+						this.getError().show();
+						this.getError().update(result.reason);
+					}
 				} else {
+					Ext.Msg.show({
+						title: I18N.get('error'),
+						msg: 'Server error',
+           				icon: Ext.Msg.ERROR,
+           				buttons: Ext.Msg.OK
+           				});
 					console.log("login failed");
 				}
-			}
+			}, this)
 		});
 	},
 	logoutUser: function() {

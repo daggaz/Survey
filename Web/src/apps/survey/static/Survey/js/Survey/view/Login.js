@@ -14,6 +14,12 @@ Ext.define('Survey.view.Login', {
 		bodyPadding: '10px 20px',
     	defaultType: 'textfield',
 		items: [{
+			xtype: 'panel',
+			hidden: true,
+			margin: '0 0 10 0',
+			cls: 'x-form-invalid-under',
+			itemId: 'error'
+		},{
 			fieldLabel: I18N.get('username'),
 			name: 'username',
 			itemId: 'username',

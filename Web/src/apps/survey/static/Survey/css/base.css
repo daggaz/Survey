@@ -23,6 +23,7 @@ h2 {
 
 .loading, .loading .x-panel-body {
 	background: #0A294E;
+	color: white;
 	font-size: 30px;
 }
 
