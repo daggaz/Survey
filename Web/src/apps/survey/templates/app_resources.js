@@ -9,5 +9,7 @@
 		'logout': '{% trans "Logout" %}',
 		'confirm_logout': '{% trans "Are you sure you want to logout?" %}',
 		'home': '{% trans "Home" %}',
+		'surveys': '{% trans "Surveys" %}',
+		'survey': '{% trans "Survey" %}',
 	}
 }

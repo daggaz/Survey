@@ -1,6 +1,6 @@
 Ext.define('Survey.controller.Main', {
      extend: 'Ext.app.Controller',
-     views: ['Main', 'Login', 'Home'],
+     views: ['Main', 'Login', 'Home', 'Surveys'],
      refs: [{
      	ref: 'MainContent',
      	selector: '#main_content'
@@ -27,13 +27,11 @@ Ext.define('Survey.controller.Main', {
      	});
      },
      onLaunch: function () {
-     	console.log("onLaunch");
      	Ext.getCmp('loading_viewport').destroy();
      	viewport = this.application.getViewport();
      	viewport.removeAll();
 		viewport.add(this.getMainView());
 		this.showView('Login', Ext.bind(function () {
-			console.log(this.getLoginView());
 			this.getMainContent().down('textfield').focus();
 		}, this));
      },
@@ -52,7 +50,6 @@ Ext.define('Survey.controller.Main', {
      	return Ext.bind(function() {
 			this.getMainContent().removeAll();
 			viewCmp = this['get' + view + 'View']();
-			console.log(viewCmp);
 	     	this.getMainContent().add(viewCmp);
 	     	this.getMainContent().doLayout();
 	     	Ext.ComponentQuery.query('main #main_menu button[view!='+view+']').forEach(function (cmp) {
@@ -63,7 +60,7 @@ Ext.define('Survey.controller.Main', {
 	     	});
 			if (animate)
 	     		this.getMainContent().el.fadeIn({duration: 600, easing: 'easeInOut', callback: callback});
-	     	else
+			else
 	     		callback();
      	}, this);
  	 },

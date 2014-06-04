@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'apps.core',
     'apps.survey',
     'debug_toolbar',
+    'extjs',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -145,5 +146,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+SERIALIZATION_MODULES = {
+    'extjson': 'extjs.serializers',
+}
 
 SITE_ID = 1

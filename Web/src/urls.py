@@ -9,6 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 #     url(r'^', include('apps.core.urls')),
     url(r'^', include('apps.survey.urls')),
+    url(r'^api/extjs/', include('extjs.urls')),
 #     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
