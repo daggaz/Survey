@@ -12,5 +12,6 @@ Ext.define('Survey.controller.Surveys', {
 	refs: [{
 		ref: 'surveysGrid',
 		selector: 'survey grid'
-	}]
+	}],
+	stores: ['survey.Survey']
 });

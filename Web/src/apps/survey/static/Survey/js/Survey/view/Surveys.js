@@ -1,11 +1,3 @@
-var store = Ext.create('Ext.data.JsonStore', {
-	 model: 'Django.model.survey.Survey',
-	 proxy: {
-	 	type: 'ajax',
-	 	url: '/api/extjs/proxy/survey/survey/'
-	 }
-});
-
 Ext.define('Survey.view.Surveys', {
 	extend: 'Ext.Panel',
 	alias : 'widget.surveys',
@@ -23,7 +15,7 @@ Ext.define('Survey.view.Surveys', {
 	},{
 		xtype: 'grid',
 		title: I18N.get('surveys'),
-		store: store,
+		store: 'survey.Survey',
         disableSelection: true,
         loadMask: true,
         frame: true,
@@ -38,6 +30,15 @@ Ext.define('Survey.view.Surveys', {
 //                pluginId: 'preview'
 //            }]
         },
+		listeners : {
+			render : function(grid) {
+				grid.body.mask('Loading&helip;');
+				grid.getStore().load(function () {
+					grid.body.unmask();
+				});
+			},
+			delay: 200
+		},
         columns:[{
             text: I18N.get('title'),
             dataIndex: 'title',

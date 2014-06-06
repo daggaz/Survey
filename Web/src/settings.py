@@ -142,6 +142,7 @@ STATICFILES_DIRS = (
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
+    'extjs.staticfiles.ExtjsFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
@@ -150,5 +151,11 @@ STATICFILES_FINDERS = (
 SERIALIZATION_MODULES = {
     'extjson': 'extjs.serializers',
 }
+
+EXTJS_APPLICATIONS = (
+    {'name': 'Survey',
+     'prefix': 'Survey/js/',
+     },
+)
 
 SITE_ID = 1

@@ -97,7 +97,7 @@ def api_login(request):
         data = {'status': 'failed',
                 'reason': 'invalid username/password',
                 }
-    return HttpResponse(json.dumps(data), mimetype='application/json')
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 def sync_surveys(request):
     if request.user.is_authenticated():

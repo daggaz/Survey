@@ -1,11 +1,42 @@
-from django.contrib.staticfiles.finders import BaseFinder
-from django.db import models
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 from os import path, makedirs
 import errno
 
+from django.conf import settings
+from django.contrib.staticfiles.finders import BaseFinder
+from django.core.exceptions import ImproperlyConfigured
+from django.db import models
+from django.template import loader
+
+extjs_to_django_type_map = {'string': (models.CharField, models.TextField, models.SlugField, models.EmailField,),
+                            'int': (models.IntegerField, models.PositiveIntegerField, models.PositiveSmallIntegerField, models.ForeignKey,),
+                            'float': (models.FloatField,),
+                            'boolean': (models.BooleanField, models.NullBooleanField,),
+                            'date': (models.DateField, models.DateTimeField,),
+                            }
+django_to_extsjs_type_map = {}
+for js_type, django_types in extjs_to_django_type_map.items():
+    for django_type in django_types:
+        django_to_extsjs_type_map[django_type] = js_type
+
 class ExtjsFinder(BaseFinder):
+    def model_to_extjs_model(self, app_name, model):
+        fields = model._meta.fields
+        fields = [field for field in fields if field.name != model._meta.pk.name]
+        fields = ["{name: '%s', type: '%s'}" % (field.name, django_to_extsjs_type_map[type(field)]) for field in fields]
+        fields = ",\n".join(fields)
+        return loader.render_to_string('model.js',
+                                       {'app_name': app_name,
+                                        'app': model._meta.app_label,
+                                        'model': model._meta.object_name,
+                                        'fields': fields,
+                                        })
+    def model_to_extjs_store(self, app_name, model):
+        return loader.render_to_string('store.js',
+                                       {'app_name': app_name,
+                                        'app': model._meta.app_label,
+                                        'model': model._meta.object_name,
+                                        })
+    
     def __init__(self, *args, **kwargs):
         super(ExtjsFinder, self).__init__(*args, **kwargs)
         applications = settings.EXTJS_APPLICATIONS
@@ -17,19 +48,33 @@ class ExtjsFinder(BaseFinder):
             if app_name is None:
                 raise ImproperlyConfigured('application definitions in settings.EXTJS_APPLICATIONS must specify a "name" attribute')
             prefix = application.get('prefix', '')
+            application_dir = dest = path.join(generation_dir, prefix, app_name)
             for model in models.get_models():
-                dest = path.join(generation_dir, prefix, app_name, 'model', model._meta.app_label)
-                try:
-                    makedirs(dest)
-                except OSError as exc:
-                    if exc.errno == errno.EEXIST and path.isdir(dest):
-                        pass
-                    else:
-                        raise
-                f = path.join(dest, "%s.js" % (model._meta.object_name))
+                model_dir = path.join(application_dir, 'model', model._meta.app_label)
+                self.mkdir_p(model_dir)
+                f = path.join(model_dir, "%s.js" % (model._meta.object_name))
                 print "generating %s" % f
                 with file(f, 'w') as out:
-                    out.write(f)
-
+                    out.write(self.model_to_extjs_model(app_name, model))
+                
+                store_dir = path.join(application_dir, 'store', model._meta.app_label)
+                self.mkdir_p(store_dir)
+                f = path.join(store_dir, "%s.js" % (model._meta.object_name))
+                print "generating %s" % f
+                with file(f, 'w') as out:
+                    out.write(self.model_to_extjs_store(app_name, model))
+    
+    def mkdir_p(self, dir_name):
+        try:
+            makedirs(dir_name)
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and path.isdir(dir_name):
+                pass
+            else:
+                raise
+    
     def find(self, path, all=False):
-        return None
+        return []
+
+    def list(self, ignore_patterns):
+        return []
