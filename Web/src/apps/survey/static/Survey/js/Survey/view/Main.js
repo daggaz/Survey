@@ -9,7 +9,7 @@ var header = {
 	items: [{
 	    xtype: 'image',
 	    id: 'logo',
-    	src: '/media/static/app/img/logo.png',
+    	src: '/media/static/Survey/img/logo.png',
     	width: 142
     },{
     	layout: {
@@ -40,14 +40,14 @@ var header = {
 			}
     	},{
     		xtype: 'button',
-    		text: I18N.get('Surveys'),
+    		text: I18N.get('surveys'),
     		view: 'Surveys',
     		handler: function () {
 				this.fireEvent('selected', this.view);
 			}
     	},{
     		xtype: 'button',
-    		text: I18N.get('Users'),
+    		text: I18N.get('users'),
     		view: 'Users',
     		handler: function () {
 				this.fireEvent('selected', this.view);

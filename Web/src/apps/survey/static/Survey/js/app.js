@@ -1,7 +1,10 @@
 var console = console || {log: function () {}};
+//Ext.Loader.config.disableCaching = false;
 var I18N = {
 	get: function (key) {
-		console.log("I18N: " + key + " = " + this.strings[key]);
+		var value = this.strings[key];
+		if (value === undefined)
+			console.log("I18N missing translation:" + key);
 		return this.strings[key] || key;
 	},
 	strings: {}
@@ -25,7 +28,7 @@ Ext.onReady(function () {
 		}]
 	});
 
-	Ext.Ajax.request({
+Ext.Ajax.request({
 		url: '/api/app/resources/',
 		callback: function (options, success, response) {
 			if (success) {
