@@ -48,7 +48,7 @@ class ExtjsFinder(BaseFinder):
             if app_name is None:
                 raise ImproperlyConfigured('application definitions in settings.EXTJS_APPLICATIONS must specify a "name" attribute')
             prefix = application.get('prefix', '')
-            application_dir = dest = path.join(generation_dir, prefix, app_name)
+            application_dir = path.join(generation_dir, prefix, app_name)
             for model in models.get_models():
                 model_dir = path.join(application_dir, 'model', model._meta.app_label)
                 self.mkdir_p(model_dir)

@@ -29,5 +29,12 @@
 		'set_open': '{% trans "Set Open" %}',
 		'set_closed': '{% trans "Set Closed" %}',
 		'delete_survey': '{% trans "Delete Survey" %}',
+		'save_error': '{% trans "Error Saving Data" %}',
+		'confirm_action': '{% trans "Confirm Action" %}',
+		'confirm_set_visible': '{% trans "Are you sure you want to make this survey visible?" %}',
+		'confirm_set_hidden': '{% trans "Are you sure you want to make this survey hidden? This will hide all reports and prevent submissions." %}',
+		'confirm_set_open': '{% trans "Are you sure you want to make this survey open? This will allow submissions to be made." %}',
+		'confirm_set_closed': '{% trans "Are you sure you want to make this survey closed? This will prevent any submissions being made." %}',
+		'confirm_survey_delete': '{% trans "Are you sure you want to delete this survey? This action cannot be undone." %}',
 	}
 }

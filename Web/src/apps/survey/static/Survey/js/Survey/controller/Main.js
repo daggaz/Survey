@@ -73,5 +73,19 @@ Ext.define('Survey.controller.Main', {
      hideHeader: function () {
      	this.getMainMenu().hide();
      	this.getHeaderRight().hide();
+     },
+     syncFailure: function(batch, opts) {
+		var errors = [];
+		Ext.each(batch.exceptions, function (exception) {
+			var error = exception.getError();
+			if (typeof error != 'string') {
+				if (error.statusText !== undefined)
+					error = error.status + ": " + error.statusText;
+				else
+					error = "Internal Error!";
+			}
+			errors.push(error);
+		});
+		Ext.Msg.alert(I18N.get('save_error'), errors.join("\n"));
      }
 });
