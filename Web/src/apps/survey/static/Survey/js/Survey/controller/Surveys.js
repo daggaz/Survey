@@ -35,7 +35,6 @@ Ext.define('Survey.controller.Surveys', {
 			},
 			'surveys grid #live_button': {
 				click: function() {
-					console.log("live clicked");
 					var survey = this.getGrid().getSelectionModel().getSelection()[0];
 					var confirm_message = survey.get('is_live') ? I18N.get('confirm_set_hidden') : I18N.get('confirm_set_visible');
 					Ext.MessageBox.confirm(I18N.get('confirm_action'), confirm_message, Ext.bind(function(result) {
@@ -49,7 +48,6 @@ Ext.define('Survey.controller.Surveys', {
 			},
 			'surveys grid #open_button': {
 				click: function() {
-					console.log("open clicked");
 					var survey = this.getGrid().getSelectionModel().getSelection()[0];
 					var confirm_message = survey.get('is_open') ? I18N.get('confirm_set_closed') : I18N.get('confirm_set_open');
 					Ext.MessageBox.confirm(I18N.get('confirm_action'), confirm_message, Ext.bind(function(result) {
@@ -63,7 +61,6 @@ Ext.define('Survey.controller.Surveys', {
 			},
 			'surveys grid #delete_button': {
 				click: function() {
-					console.log("delete clicked");
 					var survey = this.getGrid().getSelectionModel().getSelection()[0];
 					Ext.MessageBox.confirm(I18N.get('confirm_action'), I18N.get('confirm_survey_delete'), Ext.bind(function(result) {
 						if (result == "yes") {
@@ -76,16 +73,22 @@ Ext.define('Survey.controller.Surveys', {
 		});
 	},
 	updateLiveButton: function(selection) {
-		if (selection.get('is_live'))
+		if (selection.get('is_live')) {
 			this.getLiveButton().setText(I18N.get('set_hidden'));
-		else
+			this.getLiveButton().setIcon('/media/static/Survey/img/hidden.png')
+		} else {
 			this.getLiveButton().setText(I18N.get('set_visible'));
+			this.getLiveButton().setIcon('/media/static/Survey/img/visible.png')
+		}
 	},
 	updateOpenButton: function(selection) {
-		if (selection.get('is_open'))
+		if (selection.get('is_open')) {
 			this.getOpenButton().setText(I18N.get('set_closed'));
-		else
+			this.getOpenButton().setIcon('/media/static/Survey/img/closed.png')
+		} else {
 			this.getOpenButton().setText(I18N.get('set_open'));
+			this.getOpenButton().setIcon('/media/static/Survey/img/open.png')
+		}
 	},
 	refs: [{
 		ref: 'grid',

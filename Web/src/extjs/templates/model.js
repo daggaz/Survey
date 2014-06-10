@@ -14,6 +14,11 @@ Ext.define('{{ app_name }}.model.{{ app }}.{{ model }}', {
 			type: 'json',
 			allowSingle: false
 		},
-		url: '{% url 'extjs-proxy' app=app model=model %}'
+		api: {
+			create  : '{% url 'extjs-proxy-create' app=app model=model %}',
+		    read    : '{% url 'extjs-proxy-read' app=app model=model %}',
+		    update  : '{% url 'extjs-proxy-update' app=app model=model %}',
+		    destroy : '{% url 'extjs-proxy-destroy' app=app model=model %}'
+		}
 	}
 });

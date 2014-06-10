@@ -47,14 +47,15 @@ Ext.define('Survey.view.Surveys', {
             dataIndex: 'is_live',
             width: 70,
             sortable: true,
+            align: 'center',
             tooltip: I18N.get('live_column_tip'),
             renderer: function (value, metaData, record, rowIdx, colIdx, store) {
             	if(value) {
             		metaData.tdAttr = 'data-qtip="' + I18N.get('survey_live') + '"';
-			    	return '<img src="/media/static/Survey/img/tick.png" />';
+			    	return '<img src="/media/static/Survey/img/visible.png" />';
 			    } else {
 			    	metaData.tdAttr = 'data-qtip="' + I18N.get('survey_not_live') + '"';
-			    	return '<img src="/media/static/Survey/img/cross.png" />';
+			    	return '<img src="/media/static/Survey/img/hidden.png" />';
 			    }
             }
         },{
@@ -62,14 +63,15 @@ Ext.define('Survey.view.Surveys', {
             dataIndex: 'is_open',
             width: 70,
             sortable: true,
+            align: 'center',
             tooltip: I18N.get('open_column_tip'),
             renderer: function (value, metaData, record, rowIdx, colIdx, store) {
             	if(value) {
             		metaData.tdAttr = 'data-qtip="' + I18N.get('survey_open') + '"';
-			    	return '<img src="/media/static/Survey/img/tick.png" />';
+			    	return '<img src="/media/static/Survey/img/open.png" />';
 			    } else {
 			    	metaData.tdAttr = 'data-qtip="' + I18N.get('survey_not_open') + '"';
-			    	return '<img src="/media/static/Survey/img/cross.png" />';
+			    	return '<img src="/media/static/Survey/img/closed.png" />';
 			    }
             }
         }],
@@ -97,7 +99,7 @@ Ext.define('Survey.view.Surveys', {
 		    },{
 		        xtype: 'button',
 		        itemId: 'live_button',
-		        icon: '/media/static/Survey/img/live.png',
+		        icon: '/media/static/Survey/img/visible.png',
 		        text: I18N.get('set_visible'),
 		        disabled: true
 		    },{
