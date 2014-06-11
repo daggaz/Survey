@@ -38,7 +38,7 @@ Ext.Ajax.request({
 					models: ['survey.Survey'],
 					name: 'Survey',
 					appFolder: '/media/static/Survey/js/Survey',
-					controllers: ['Main', 'Login', 'Surveys'],
+					controllers: ['Main', 'Login', 'Surveys', 'Home'],
 					autoCreateViewport: true,
 					refs: [{
 						ref: 'viewport',

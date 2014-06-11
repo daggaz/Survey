@@ -1,7 +1,7 @@
 {% load i18n %}
 {
 	'strings': {
-		'app_title': '{% trans " " %}',
+		'app_title': '{% trans "Bangladesh" %}',
 		'username': '{% trans "Username" %}',
 		'password': '{% trans "Password" %}',
 		'footer': '{% trans "&copy; Jamie Cockburn 2014" %}',
@@ -36,5 +36,18 @@
 		'confirm_set_open': '{% trans "Are you sure you want to make this survey open? This will allow submissions to be made." %}',
 		'confirm_set_closed': '{% trans "Are you sure you want to make this survey closed? This will prevent any submissions being made." %}',
 		'confirm_survey_delete': '{% trans "Are you sure you want to delete this survey? This action cannot be undone." %}',
+		'general': '{% trans "General" %}',
+		'questions': '{% trans "Questions" %}',
+		'question': '{% trans "Question" %}',
+		'new_question': '{% trans "New Question" %}',
+		'delete_question': '{% trans "Delete Question" %}',
+		'set_required': '{% trans "Set Required" %}',
+		'set_optional': '{% trans "Set Optional" %}',
+		'move_up': '{% trans "Move Up" %}',
+		'move_down': '{% trans "Move Down" %}',
+		'name': '{% trans "Name" %}',
+		'type': '{% trans "Type" %}',
+		'required': '{% trans "Required" %}',
+		'edit_question': '{% trans "Question Details" %}',
 	}
 }

@@ -1,8 +1,12 @@
 Ext.define('Survey.controller.Surveys', {
 	extend : 'Ext.app.Controller',
+	views: ['Surveys', 'SurveyList', 'EditSurvey'],
+	getMainView: function() {
+		return this.getSurveysView();
+	},
 	init: function() {
 		this.control({
-			'surveys grid': {
+			'surveylist grid': {
 				added: function () {
 					this.getStore().load();
 				},
@@ -23,17 +27,19 @@ Ext.define('Survey.controller.Surveys', {
 					}
 				}.bind(this)
 			},
-			'surveys grid #new_button': {
+			'surveylist grid #new_button': {
 				click: function() {
-					console.log("new survey clicked");
-				}
+					var survey =  Ext.create('Survey.model.survey.Survey');
+					this.editSurvey(survey);
+				}.bind(this)
 			},
-			'surveys grid #edit_button': {
+			'surveylist grid #edit_button': {
 				click: function() {
-					console.log("edit survey clicked");
-				}
+					var survey = this.getGrid().getSelectionModel().getSelection()[0];
+					this.editSurvey(survey);
+				}.bind(this)
 			},
-			'surveys grid #live_button': {
+			'surveylist grid #live_button': {
 				click: function() {
 					var survey = this.getGrid().getSelectionModel().getSelection()[0];
 					var confirm_message = survey.get('is_live') ? I18N.get('confirm_set_hidden') : I18N.get('confirm_set_visible');
@@ -46,7 +52,7 @@ Ext.define('Survey.controller.Surveys', {
 					}, this));
 				}
 			},
-			'surveys grid #open_button': {
+			'surveylist grid #open_button': {
 				click: function() {
 					var survey = this.getGrid().getSelectionModel().getSelection()[0];
 					var confirm_message = survey.get('is_open') ? I18N.get('confirm_set_closed') : I18N.get('confirm_set_open');
@@ -59,7 +65,7 @@ Ext.define('Survey.controller.Surveys', {
 					}, this));
 				}
 			},
-			'surveys grid #delete_button': {
+			'surveylist grid #delete_button': {
 				click: function() {
 					var survey = this.getGrid().getSelectionModel().getSelection()[0];
 					Ext.MessageBox.confirm(I18N.get('confirm_action'), I18N.get('confirm_survey_delete'), Ext.bind(function(result) {
@@ -90,24 +96,35 @@ Ext.define('Survey.controller.Surveys', {
 			this.getOpenButton().setIcon('/media/static/Survey/img/open.png')
 		}
 	},
+	editSurvey: function(survey) {
+		console.log("editing: " + survey);
+		this.getSurveyForm().loadRecord(survey);
+		this.getSurveys().getLayout().setActiveItem("editsurvey");
+	},
 	refs: [{
+		ref: 'surveys',
+		selector: 'surveys'
+	},{
 		ref: 'grid',
-		selector: 'surveys grid'
+		selector: 'surveylist grid'
 	},{
 		ref: 'newButton',
-		selector: 'surveys grid #new_button'
+		selector: 'surveylist grid #new_button'
 	},{
 		ref: 'editButton',
-		selector: 'surveys grid #edit_button'
+		selector: 'surveylist grid #edit_button'
 	},{
 		ref: 'liveButton',
-		selector: 'surveys grid #live_button'
+		selector: 'surveylist grid #live_button'
 	},{
 		ref: 'openButton',
-		selector: 'surveys grid #open_button'
+		selector: 'surveylist grid #open_button'
 	},{
 		ref: 'deleteButton',
-		selector: 'surveys grid #delete_button'
+		selector: 'surveylist grid #delete_button'
+	},{
+		ref: 'surveyForm',
+		selector: 'editsurvey form'
 	}],
-	stores: ['survey.Survey']
+	stores: ['survey.Survey', 'survey.Question']
 });

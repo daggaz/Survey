@@ -23,13 +23,17 @@ class ExtjsFinder(BaseFinder):
         fields = model._meta.fields
         fields = [field for field in fields if field.name != model._meta.pk.name]
         fields = ["{name: '%s', type: '%s'}" % (field.name, django_to_extsjs_type_map[type(field)]) for field in fields]
-        fields = ",\n".join(fields)
+        fields = ",\n        ".join(fields)
+        associations = []
+        associations = ",\n        ".join(associations)
         return loader.render_to_string('model.js',
                                        {'app_name': app_name,
                                         'app': model._meta.app_label,
                                         'model': model._meta.object_name,
                                         'fields': fields,
+                                        'associations': associations,
                                         })
+    
     def model_to_extjs_store(self, app_name, model):
         return loader.render_to_string('store.js',
                                        {'app_name': app_name,

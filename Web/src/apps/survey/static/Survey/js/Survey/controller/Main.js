@@ -1,6 +1,6 @@
 Ext.define('Survey.controller.Main', {
      extend: 'Ext.app.Controller',
-     views: ['Main', 'Login', 'Home', 'Surveys'],
+     views: ['Main'],
      refs: [{
      	ref: 'MainContent',
      	selector: '#main_content'
@@ -49,7 +49,7 @@ Ext.define('Survey.controller.Main', {
      	callback = callback || function () {};
      	return Ext.bind(function() {
 			this.getMainContent().removeAll();
-			viewCmp = this['get' + view + 'View']();
+			viewCmp = this.getController(view).getMainView();
 	     	this.getMainContent().add(viewCmp);
 	     	this.getMainContent().doLayout();
 	     	Ext.ComponentQuery.query('main #main_menu button[view!='+view+']').forEach(function (cmp) {

@@ -1,5 +1,6 @@
 Ext.define('Survey.controller.Login', {
 	extend : 'Ext.app.Controller',
+	views: ['Login'],
 	init: function() {
 		this.control({
 			'login textfield': {
@@ -15,6 +16,9 @@ Ext.define('Survey.controller.Login', {
 		ref: 'error',
 		selector: 'login #error'
 	}],
+	getMainView: function() {
+		return this.getLoginView();
+	},
 	loginUser: function(username, password) {
 		Ext.Ajax.request({
 			url: '/api/login/',

@@ -1,7 +1,12 @@
 Ext.define('{{ app_name }}.model.{{ app }}.{{ model }}', {
     extend: 'Ext.data.Model',
     alias: 'model.{{ app }}.{{ model }}',
-    fields: [{{ fields|safe }}],
+    fields: [
+    	{{ fields|safe }}
+    ],
+	associations: [
+		{{ associations|safe }}
+	],
 	proxy: {
 		type: 'ajax',
 		reader: {
@@ -20,5 +25,5 @@ Ext.define('{{ app_name }}.model.{{ app }}.{{ model }}', {
 		    update  : '{% url 'extjs-proxy-update' app=app model=model %}',
 		    destroy : '{% url 'extjs-proxy-destroy' app=app model=model %}'
 		}
-	}
+	},
 });
