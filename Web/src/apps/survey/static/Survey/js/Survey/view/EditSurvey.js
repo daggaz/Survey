@@ -119,6 +119,7 @@ Ext.define('Survey.view.EditSurvey', {
 		xtype: 'form',
 		itemid: 'questionform',
 		margin: '20 0 0 0',
+        minHeight: 200,
 		layout: {
 			type: 'vbox',
 			align: 'stretch',
