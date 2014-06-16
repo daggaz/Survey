@@ -1014,6 +1014,7 @@ containing a value of this type.
         public static final int bool_list_answer=0x7f05003f;
         public static final int button=0x7f050054;
         public static final int button_container=0x7f050048;
+        public static final int cancel=0x7f050061;
         public static final int char_answer=0x7f050040;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
@@ -1243,6 +1244,7 @@ containing a value of this type.
         public static final int next=0x7f0a0043;
         public static final int no=0x7f0a0012;
         public static final int no_partial_submissions=0x7f0a0030;
+        public static final int no_questions=0x7f0a0050;
         public static final int no_response=0x7f0a0017;
         public static final int no_submitted_responses=0x7f0a0036;
         /**  Surveys screen 

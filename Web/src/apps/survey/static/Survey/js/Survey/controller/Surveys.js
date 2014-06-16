@@ -1,6 +1,6 @@
 Ext.define('Survey.controller.Surveys', {
 	extend : 'Ext.app.Controller',
-	views: ['Surveys', 'SurveyList', 'EditSurvey'],
+	views: ['Surveys', 'SurveyList'],
 	getMainView: function() {
 		return this.getSurveysView();
 	},
@@ -25,6 +25,10 @@ Ext.define('Survey.controller.Surveys', {
 						this.getLiveButton().disable();
 						this.getOpenButton().disable();						
 					}
+				}.bind(this),
+				itemdblclick: function(grid, record, item, index, e, eOpts) {
+					this.editSurvey(record);
+					e.stopEvent();
 				}.bind(this)
 			},
 			'surveylist grid #new_button': {
@@ -35,43 +39,43 @@ Ext.define('Survey.controller.Surveys', {
 			},
 			'surveylist grid #edit_button': {
 				click: function() {
-					var survey = this.getGrid().getSelectionModel().getSelection()[0];
+					var survey = this.getSurveyGrid().getSelectionModel().getSelection()[0];
 					this.editSurvey(survey);
 				}.bind(this)
 			},
 			'surveylist grid #live_button': {
 				click: function() {
-					var survey = this.getGrid().getSelectionModel().getSelection()[0];
+					var survey = this.getSurveyGrid().getSelectionModel().getSelection()[0];
 					var confirm_message = survey.get('is_live') ? I18N.get('confirm_set_hidden') : I18N.get('confirm_set_visible');
 					Ext.MessageBox.confirm(I18N.get('confirm_action'), confirm_message, Ext.bind(function(result) {
 						if (result == "yes") {
 							survey.set('is_live', !survey.get('is_live'));
 							this.updateLiveButton(survey);
-							this.getGrid().getStore().sync({failure: this.getController('Main').syncFailure});
+							this.getSurveyGrid().getStore().sync({failure: this.getController('Main').syncFailure});
 						}
 					}, this));
 				}
 			},
 			'surveylist grid #open_button': {
 				click: function() {
-					var survey = this.getGrid().getSelectionModel().getSelection()[0];
+					var survey = this.getSurveyGrid().getSelectionModel().getSelection()[0];
 					var confirm_message = survey.get('is_open') ? I18N.get('confirm_set_closed') : I18N.get('confirm_set_open');
 					Ext.MessageBox.confirm(I18N.get('confirm_action'), confirm_message, Ext.bind(function(result) {
 						if (result == "yes") {
 							survey.set('is_open', !survey.get('is_open'));
 							this.updateOpenButton(survey);
-							this.getGrid().getStore().sync({failure: this.getController('Main').syncFailure});
+							this.getSurveyGrid().getStore().sync({failure: this.getController('Main').syncFailure});
 						}
 					}, this));
 				}
 			},
 			'surveylist grid #delete_button': {
 				click: function() {
-					var survey = this.getGrid().getSelectionModel().getSelection()[0];
+					var survey = this.getSurveyGrid().getSelectionModel().getSelection()[0];
 					Ext.MessageBox.confirm(I18N.get('confirm_action'), I18N.get('confirm_survey_delete'), Ext.bind(function(result) {
 						if (result == "yes") {
-							this.getGrid().getStore().remove(survey);
-							this.getGrid().getStore().sync({failure: this.getController('Main').syncFailure});
+							this.getSurveyGrid().getStore().remove(survey);
+							this.getSurveyGrid().getStore().sync({failure: this.getController('Main').syncFailure});
 						}
 					}, this));
 				}
@@ -97,15 +101,13 @@ Ext.define('Survey.controller.Surveys', {
 		}
 	},
 	editSurvey: function(survey) {
-		console.log("editing: " + survey);
-		this.getSurveyForm().loadRecord(survey);
-		this.getSurveys().getLayout().setActiveItem("editsurvey");
+		this.getController('EditSurvey').editSurvey(survey);
 	},
 	refs: [{
 		ref: 'surveys',
 		selector: 'surveys'
 	},{
-		ref: 'grid',
+		ref: 'surveyGrid',
 		selector: 'surveylist grid'
 	},{
 		ref: 'newButton',
@@ -122,9 +124,6 @@ Ext.define('Survey.controller.Surveys', {
 	},{
 		ref: 'deleteButton',
 		selector: 'surveylist grid #delete_button'
-	},{
-		ref: 'surveyForm',
-		selector: 'editsurvey form'
 	}],
-	stores: ['survey.Survey', 'survey.Question']
+	stores: ['survey.Survey']
 });

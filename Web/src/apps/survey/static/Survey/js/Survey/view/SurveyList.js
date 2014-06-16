@@ -20,7 +20,7 @@ Ext.define('Survey.view.SurveyList', {
         frame: true,
         viewConfig: {
 	        emptyText: I18N.get('no_surveys'),
-            stripeRows: false,
+            stripeRows: false
 //            plugins: [{
 //                ptype: 'preview',
 //                bodyField: 'excerpt',

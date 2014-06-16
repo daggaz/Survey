@@ -133,6 +133,9 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerC
 		case R.id.submit:
 			submit();
 			return true;
+		case R.id.cancel:
+			cancel();
+			return true;
 		default:
             return super.onOptionsItemSelected(item);
 		}
@@ -161,6 +164,10 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerC
 		} else {
 			Toast.makeText(this, R.string.not_complete, Toast.LENGTH_LONG).show();
 		}
+	}
+	
+	public void cancel() {
+		finish();
 	}
 
 	public void saveDraft() {
@@ -251,18 +258,24 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerC
 	}
 
 	public void doShowQuestion(int index) {
-		currentIndex = index;
-		currentQuestion = response.survey.questions.toArray(new Question[] {})[index];
-		Log.d("EditResponse", "question: " + currentQuestion);
-		currentAnswer = response.getOrCreateAnswer(currentQuestion);
-		Log.d("EditResponse", "answer: " + currentAnswer);
-		
-		mTitle = getResources().getText(R.string.question) + ": " + currentQuestion.label;
-		getSupportActionBar().setTitle(mTitle);
-		getSupportFragmentManager()
-		.beginTransaction()
-		.replace(R.id.container, new QuestionFragment())
-		.commit();
+		Question[] questions = response.survey.questions.toArray(new Question[] {});
+		if (questions.length > 0) { 
+			currentIndex = index;
+			currentQuestion = questions[index];
+			Log.d("EditResponse", "question: " + currentQuestion);
+			currentAnswer = response.getOrCreateAnswer(currentQuestion);
+			Log.d("EditResponse", "answer: " + currentAnswer);
+			
+			mTitle = getResources().getText(R.string.question) + ": " + currentQuestion.label;
+			getSupportActionBar().setTitle(mTitle);
+			getSupportFragmentManager()
+			.beginTransaction()
+			.replace(R.id.container, new QuestionFragment())
+			.commit();
+		} else {
+			mTitle = getResources().getText(R.string.no_questions);
+			getSupportActionBar().setTitle(mTitle);
+		}
 	}
 	
 	@Override

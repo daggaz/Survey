@@ -25,6 +25,14 @@ class ExtjsFinder(BaseFinder):
         fields = ["{name: '%s', type: '%s'}" % (field.name, django_to_extsjs_type_map[type(field)]) for field in fields]
         fields = ",\n        ".join(fields)
         associations = []
+        association_template = "{type: 'hasMany', model: '%s.model.%s.%s', name:'%s', foreignKey:'%s'}"
+        for rel in model._meta.get_all_related_objects():
+            associations.append(association_template % (app_name,
+                                                        rel.model._meta.app_label,
+                                                        rel.model._meta.object_name,
+                                                        rel.get_accessor_name(),
+                                                        rel.field.name,
+                                                        ))
         associations = ",\n        ".join(associations)
         return loader.render_to_string('model.js',
                                        {'app_name': app_name,

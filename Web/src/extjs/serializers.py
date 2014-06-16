@@ -38,8 +38,12 @@ def Deserializer(stream_or_string, Model, **options):
         data = json.loads(stream_or_string)
         objects = []
         for datum in data:
-            pk = datum[Model._meta.pk.name]
-            del datum[Model._meta.pk.name]
+            pk_name = Model._meta.pk.name
+            if pk_name in datum:
+                pk = datum[pk_name]
+                del datum[pk_name]
+            else:
+                pk = None
             obj = {'model': "%s.%s" % (Model._meta.app_label, Model._meta.object_name),
                    'pk': pk,
                    'fields': datum,

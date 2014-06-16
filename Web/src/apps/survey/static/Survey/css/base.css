@@ -21,6 +21,10 @@ h2 {
 	color: inherit;
 }
 
+.x-panel-default-framed.x-item-disabled {
+	border-color: #b7d7ef;
+}
+
 .loading, .loading .x-panel-body {
 	background: #0A294E;
 	color: white;

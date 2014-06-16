@@ -2,13 +2,29 @@ Ext.define('Survey.view.EditSurvey', {
 	extend: 'Ext.Panel',
 	alias : 'widget.editsurvey',
 	bodyPadding: '10px 20px 20px 20px',
-//	overflowY: 'scroll',
-	autoScroll: true,
+	overflowY: 'scroll',
 	layout: {
 		type: 'vbox',
 		align: 'stretch'
 	},
 	items: [{
+		layout: {
+			type: 'hbox',
+			align: 'center'
+		},
+		items: [{
+			xtype: 'box',
+			autoEl: {
+				tag: 'h1',
+				html: I18N.get('edit_survey')
+			},
+			flex: 1
+		},{
+			xtype: 'button',
+			itemId: 'saveButton',
+			text: I18N.get('save')
+		}]
+	},{
 		xtype: 'form',
 		itemId: 'surveyform',
 		layout: {
@@ -16,46 +32,22 @@ Ext.define('Survey.view.EditSurvey', {
 			align: 'stretch',
 			defaultMargins: '0 0 10 0'
 		},
-		items: [{
-			layout: {
-				type: 'hbox',
-				align: 'center'
-			},
-			items: [{
-				xtype: 'box',
-				autoEl: {
-					tag: 'h1',
-					html: I18N.get('edit_survey')
-				},
-				flex: 1
-			},{
-				xtype: 'button',
-				itemId: 'cancelButton',
-				margin: '0 10 0 0',
-				text: I18N.get('cancel')
-			},{
-				xtype: 'button',
-				itemId: 'saveButton',
-				formBind: true,
-				text: I18N.get('save')
-			}]
-		},{
-        	xtype: 'textfield',
-            fieldLabel: I18N.get('title'),
-			allowBlank: false,
-			msgTarget: 'under',
-            name: 'title'
-        },
-        {
-            xtype: 'textareafield',
-            fieldLabel: I18N.get('description'),
-			allowBlank: false,
-			msgTarget: 'under',
-            name: 'description'
-        }]
+		items: [
+            {
+            	xtype: 'textfield',
+                fieldLabel: I18N.get('title'),
+                name: 'title'
+            },
+            {
+                xtype: 'textareafield',
+                fieldLabel: 'Description',
+                name: 'description'
+            }
+        ]
 	},{
     	xtype: 'grid',
 		title: I18N.get('questions'),
+		store: 'survey.Question',
         frame: true,
         minHeight: 200,
         columns:[
@@ -76,8 +68,8 @@ Ext.define('Survey.view.EditSurvey', {
 	            sortable: false
 	        },{
 	            text: I18N.get('required'),
-	            dataIndex: 'required',
-	            width: 80,
+	            dataIndex: 'option_type',
+	            width: 50,
 	            renderer: function (value, metaData, record, rowIdx, colIdx, store) {
 	            	if (value) {
 	            		return '<img src="/media/static/Survey/img/tick.png" />';
@@ -105,12 +97,6 @@ Ext.define('Survey.view.EditSurvey', {
 		        disabled: true
 		    },{
 		        xtype: 'button',
-		        itemId: 'edit_button',
-		        icon: '/media/static/Survey/img/edit.png',
-		        text: I18N.get('edit_question'),
-		        disabled: true
-		    },{
-		        xtype: 'button',
 		        itemId: 'required_button',
 		        icon: '/media/static/Survey/img/tick.png',
 		        text: I18N.get('set_required'),
@@ -129,5 +115,20 @@ Ext.define('Survey.view.EditSurvey', {
 		        disabled: true
 		    }]
 		}]
+	},{
+		xtype: 'form',
+		itemid: 'questionform',
+		margin: '20 0 0 0',
+        minHeight: 200,
+		layout: {
+			type: 'vbox',
+			align: 'stretch',
+			defaultMargins: '0 0 10 0'
+		},
+		frame: true,
+		title: I18N.get('edit_question'),
+		bodyPadding: '20 20 0 20',
+		items: [
+        ]
 	}]
 });

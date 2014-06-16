@@ -23,6 +23,8 @@ def read(request, app, model):
             query = model.objects.all()
             start = read.cleaned_data['start']
             limit = read.cleaned_data['limit']
+            filter = read.cleaned_data['filter']
+            print "filter: %s" % filter
             total = query.count()
             if start and limit is not None:
                 query = query[start:start+limit]
@@ -64,4 +66,17 @@ def destroy(request, app, model):
         return HttpResponseNotAllowed()
     
 def create(request, app, model):
-    pass
+    model = _get_model_or_404(app, model)
+    
+    if request.method == "POST":
+        if request.is_ajax():
+            print request.body
+            saved = []
+            for obj in deseralizer(request.body, model):
+                obj.save()
+                saved.append(obj.object)
+            return HttpResponse(str(serializer.serialize(saved, ensure_ascii=False)))
+        else:
+            return HttpResponseBadRequest()
+    else:
+        return HttpResponseNotAllowed()

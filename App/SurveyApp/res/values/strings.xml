@@ -83,5 +83,6 @@
     <string name="confirm_submission_message">Once submitted, you will not be able to make any changes.</string>
     <string name="not_complete">You have not completed all the required questions!</string>
     <string name="response_submitted">Response submitted: please synchronise</string>
+    <string name="no_questions">No questions!</string>
     
 </resources>

@@ -35,10 +35,10 @@ Ext.Ajax.request({
 				I18N.strings = Ext.decode(response.responseText)['strings'];
 				Ext.application({
 					requires: ['Ext.grid.*', 'Ext.data.*', 'Ext.util.*', 'Ext.util.JSON.*', 'Ext.state.*'],
-					models: ['survey.Survey'],
+					models: ['survey.Survey', 'survey.Question'],
 					name: 'Survey',
 					appFolder: '/media/static/Survey/js/Survey',
-					controllers: ['Main', 'Login', 'Surveys', 'Home'],
+					controllers: ['Main', 'Login', 'Surveys', 'Home', 'EditSurvey', 'EditQuestion'],
 					autoCreateViewport: true,
 					refs: [{
 						ref: 'viewport',

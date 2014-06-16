@@ -7,4 +7,6 @@
           android:title="@string/save_draft" />
 	<item android:id="@+id/question_list"
           android:title="@string/question_list" />
+	<item android:id="@+id/cancel"
+          android:title="@string/cancel" />
 </menu>

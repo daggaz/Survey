@@ -11,6 +11,9 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
+from django.utils.text import slugify
+from django.dispatch.dispatcher import receiver
+from django.db.models.signals import pre_save
 
 class ChoiceEnum(object):
     def __init__(self, choices):
@@ -106,8 +109,7 @@ class Survey(models.Model):
     
     def __init__(self, *args, **kwargs):
         super(Survey, self).__init__(*args, **kwargs)
-        self._old_live = self.is_live
-    
+        
     def to_jsondata(self):
         kwargs = {'slug': self.slug}
         submit_url = reverse('embeded_survey_questions', kwargs=kwargs)
@@ -123,15 +125,8 @@ class Survey(models.Model):
 
     class Meta:
         ordering = ('-live_date',)
-        
-    def save(self, *args, **kwargs):
-        if self.is_live and not self._old_live:
-            self.live_date = now()
-        elif not self.is_live:
-            self.live_date = None
-        self._old_live = self.is_live
-        return super(Survey, self).save(*args, **kwargs)
     
+
     def get_public_fields(self, fieldnames=None):
         if fieldnames:
             return self.get_fields(fieldnames)
@@ -167,6 +162,19 @@ class Survey(models.Model):
         for format in sorted(FORMAT_CHOICES):
             downloads.append(self.get_download_tag(format))
         return delimiter.join(downloads)
+
+@receiver(pre_save, sender=Survey)
+def presave_handler(sender, instance=None, **kwargs):
+    instance.slug = slugify(instance.title)
+    print "saving %s (%s)" % (instance.title, instance.slug)
+    if instance.pk:
+        old_live = Survey.objects.get(pk=instance.pk).is_live
+    else:
+        old_live = False
+    if instance.is_live and not old_live:
+        instance.live_date = now()
+    elif not instance.is_live:
+        instance.live_date = None
 
 POSITION_HELP = ("What order does this question appear in the survey form and "
                  "in permalinks?")
