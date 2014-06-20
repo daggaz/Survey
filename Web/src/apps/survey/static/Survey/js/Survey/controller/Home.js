@@ -3,5 +3,12 @@ Ext.define('Survey.controller.Home', {
 	views: ['Home'],
 	getMainView: function() {
 		return this.getHomeView();
+	},
+	canNavigateFrom: function() {
+		return true;
+	},
+	navigateFrom: function(doNavigate) {
+		if (this.canNavigateFrom())
+			doNavigate();
 	}
 });

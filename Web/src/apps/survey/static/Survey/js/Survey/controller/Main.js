@@ -21,10 +21,22 @@ Ext.define('Survey.controller.Main', {
 			},
 			'main #main_menu button': {
 				selected: function(view) {
-					this.showView(view);
+					this.currentViewController.navigateFrom(Ext.bind(function() {
+						this.showView(view);
+					}, this));
 				}
 			}
      	});
+     	
+	    Ext.EventManager.addListener(window, 'beforeunload', Ext.bind(function (e) {
+	    	var message = I18N.get('confirm_discard_changes');
+		    if (this.currentViewController.canNavigateFrom) {
+		        if (e) e.returnValue = message;
+		        if (window.event) window.event.returnValue = message;
+		        return message;
+		    }
+	    }, this),
+	    this, {normalized: false});
      },
      onLaunch: function () {
      	Ext.getCmp('loading_viewport').destroy();
@@ -39,6 +51,7 @@ Ext.define('Survey.controller.Main', {
      showView: function (view, callback) {
      	var viewShowing = this.viewShowing;
 	    this.viewShowing = true;
+	    this.currentViewController = this.getController(view);
      	if (viewShowing)
 	     	this.getMainContent().el.fadeOut({opacity: 0.1, duration: 300, easing: 'easeInOut', callback: this._doShowView(view, true, callback)});
 	    else
@@ -49,7 +62,7 @@ Ext.define('Survey.controller.Main', {
      	callback = callback || function () {};
      	return Ext.bind(function() {
 			this.getMainContent().removeAll();
-			viewCmp = this.getController(view).getMainView();
+			viewCmp = this.currentViewController.getMainView();
 	     	this.getMainContent().add(viewCmp);
 	     	this.getMainContent().doLayout();
 	     	Ext.ComponentQuery.query('main #main_menu button[view!='+view+']').forEach(function (cmp) {

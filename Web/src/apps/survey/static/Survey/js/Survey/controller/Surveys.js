@@ -4,6 +4,19 @@ Ext.define('Survey.controller.Surveys', {
 	getMainView: function() {
 		return this.getSurveysView();
 	},
+	canNavigateFrom: function () {
+		if (this.getSurveys().getLayout().getActiveItem().itemId == "surveylist")
+			return true;
+	},
+	navigateFrom: function(doNavigate) {
+		if (this.canNavigateFrom())
+			doNavigate();
+		else
+			Ext.MessageBox.confirm(I18N.get('confirm_action'), I18N.get('confirm_discard_changes'), Ext.bind(function(result) {
+				if (result == "yes")
+					doNavigate();
+			}, this));
+	},
 	init: function() {
 		this.control({
 			'surveylist grid': {

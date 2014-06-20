@@ -64,5 +64,6 @@
         'multiple_checkbox_list': '{% trans "Multiple Checkbox List" %}',
         'confirm_cancel': '{% trans "Are you sure you want to discard your changes?" %}',
         'cancel': '{% trans "Cancel" %}',
+        'confirm_discard_changes': '{% trans "Are you sure you want to leave this page? You will lose your changes!" %}',
 	}
 }
