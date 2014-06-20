@@ -182,11 +182,6 @@ POSITION_HELP = ("What order does this question appear in the survey form and "
 
 class Question(models.Model):
     survey = models.ForeignKey(Survey, related_name="questions")
-    fieldname = models.CharField(
-        max_length=32,
-        help_text=_('a single-word identifier used to track this value; '
-                    'it must begin with a letter and may contain '
-                    'alphanumerics and underscores (no spaces).'))
     question = models.TextField(help_text=_("Appears on the survey entry page."))
     label = models.TextField(help_text=_("Appears on the results page."))
     help_text = models.TextField(blank=True)
@@ -221,7 +216,7 @@ class Question(models.Model):
 
     class Meta:
         ordering = ('order',)
-        unique_together = ('fieldname', 'survey')
+        unique_together = ('label', 'survey')
 
     def __unicode__(self):
         return self.question

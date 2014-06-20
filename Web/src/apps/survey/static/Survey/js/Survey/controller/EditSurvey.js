@@ -55,7 +55,8 @@ Ext.define('Survey.controller.EditSurvey', {
 			'editsurvey grid #required_button': {
 				click: function() {
 					var question = this.getQuestionGrid().getSelectionModel().getSelection()[0];
-					Ext.MessageBox.confirm(I18N.get('confirm_action'), I18N.get('confirm_set_required'), Ext.bind(function(result) {
+					var message = question.get('required') ? I18N.get('confirm_set_optional') : I18N.get('confirm_set_required');
+					Ext.MessageBox.confirm(I18N.get('confirm_action'), message, Ext.bind(function(result) {
 						if (result == "yes") {
 							question.set('required', !question.get('required'));
 							this.updateRequiredButton(question);
@@ -75,6 +76,24 @@ Ext.define('Survey.controller.EditSurvey', {
 				click: function () {
 					var survey = this.getSurveyForm().getRecord();
 					this.getSurveyForm().updateRecord(survey);
+					var questionNames = {};
+					var error = false;
+					survey.questionsStore.data.each(function(question) {
+						if (question.get('label') in questionNames) {
+							error = true;
+							return false;
+						}
+						questionNames[question.get('label')] = 1;
+					});
+					if (error) {
+						Ext.MessageBox.show({
+                            title: I18N.get('save_error'),
+                            msg: I18N.get('unique_question_names'),
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.Msg.OK
+                        });
+                        return;
+					}
 					var store = this.getSurveySurveyStore();
 					console.log("saving " + survey.id);
 					console.log(store.getById(survey.id))

@@ -23,7 +23,7 @@ public class Answer {
 	
 	@Override
 	public String toString() {
-		return "<Answer: id=" + id + ", response=" + reponse.id + ", survey=" + question.survey + ", question=" + question.field_name + ", value=" + value + ">";  
+		return "<Answer: id=" + id + ", response=" + reponse.id + ", survey=" + question.survey + ", question=" + question.label + ", value=" + value + ">";  
 	}
 
 	public boolean isComplete() {
