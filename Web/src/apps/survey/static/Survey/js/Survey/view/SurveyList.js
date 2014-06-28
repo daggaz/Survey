@@ -21,12 +21,6 @@ Ext.define('Survey.view.SurveyList', {
         viewConfig: {
 	        emptyText: I18N.get('no_surveys'),
             stripeRows: false
-//            plugins: [{
-//                ptype: 'preview',
-//                bodyField: 'excerpt',
-//                expanded: true,
-//                pluginId: 'preview'
-//            }]
         },
 		listeners : {
 			render : function(grid) {
@@ -82,30 +76,30 @@ Ext.define('Survey.view.SurveyList', {
 		    items: [{
 		        xtype: 'button',
 		        itemId: 'new_button',
-		        icon: '/media/static/Survey/img/add.png',
+		        icon: Config.media_url + 'Survey/img/add.png',
 		        text: I18N.get('new_survey')
 		    },{
 		        xtype: 'button',
 		        itemId: 'edit_button',
-		        icon: '/media/static/Survey/img/edit.png',
+		        icon: Config.media_url + 'Survey/img/edit.png',
 		        text: I18N.get('edit_survey'),
 		        disabled: true
 		    },{
 		        xtype: 'button',
 		        itemId: 'delete_button',
-		        icon: '/media/static/Survey/img/delete.png',
+		        icon: Config.media_url + 'Survey/img/delete.png',
 		        text: I18N.get('delete_survey'),
 		        disabled: true
 		    },{
 		        xtype: 'button',
 		        itemId: 'live_button',
-		        icon: '/media/static/Survey/img/visible.png',
+		        icon: Config.media_url + 'Survey/img/visible.png',
 		        text: I18N.get('set_visible'),
 		        disabled: true
 		    },{
 		        xtype: 'button',
 		        itemId: 'open_button',
-		        icon: '/media/static/Survey/img/open.png',
+		        icon: Config.media_url + 'Survey/img/open.png',
 		        text: I18N.get('set_open'),
 		        disabled: true
 		    }]

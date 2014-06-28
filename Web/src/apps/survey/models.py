@@ -216,7 +216,7 @@ class Question(models.Model):
 
     class Meta:
         ordering = ('order',)
-        unique_together = ('label', 'survey')
+        unique_together = ('label', 'survey', 'order')
 
     def __unicode__(self):
         return self.question

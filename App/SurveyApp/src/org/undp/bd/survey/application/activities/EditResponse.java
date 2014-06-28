@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -265,7 +266,6 @@ public class EditResponse extends ActionBarActivity implements NavigationDrawerC
 			Log.d("EditResponse", "question: " + currentQuestion);
 			currentAnswer = response.getOrCreateAnswer(currentQuestion);
 			Log.d("EditResponse", "answer: " + currentAnswer);
-			
 			mTitle = getResources().getText(R.string.question) + ": " + currentQuestion.label;
 			getSupportActionBar().setTitle(mTitle);
 			getSupportFragmentManager()

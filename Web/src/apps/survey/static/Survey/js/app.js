@@ -8,7 +8,10 @@ var I18N = {
 		return this.strings[key] || key;
 	},
 	strings: {}
-}
+};
+var Config = {
+
+};
 Ext.onReady(function () {
 	Ext.create('Ext.Viewport', {
 		id: 'loading_viewport',
@@ -32,12 +35,14 @@ Ext.Ajax.request({
 		url: '/api/app/resources/',
 		callback: function (options, success, response) {
 			if (success) {
-				I18N.strings = Ext.decode(response.responseText)['strings'];
+				data = Ext.decode(response.responseText);
+				I18N.strings = data['strings'];
+				Config.media_url = data['media_url'];
 				Ext.application({
 					requires: ['Ext.grid.*', 'Ext.data.*', 'Ext.util.*', 'Ext.util.JSON.*', 'Ext.state.*'],
 					models: ['survey.Survey', 'survey.Question'],
 					name: 'Survey',
-					appFolder: '/media/static/Survey/js/Survey',
+					appFolder: Config.media_url + 'Survey/js/Survey',
 					controllers: ['Main', 'Login', 'Surveys', 'Home', 'EditSurvey', 'EditQuestion'],
 					autoCreateViewport: true,
 					refs: [{

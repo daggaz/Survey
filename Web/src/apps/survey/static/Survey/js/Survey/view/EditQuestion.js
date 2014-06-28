@@ -64,6 +64,10 @@ Ext.define('Survey.view.EditQuestion', {
 	            	change: function(field) { field.up('editquestion').updatePreview(); }
 	            }
 	        },{
+	            xtype: 'textareafield',
+	            fieldLabel: I18N.get('help_text'),
+				name: 'help_text'
+        	},{
 	        	xtype: 'checkboxfield',
                 boxLabel: I18N.get('required'),
                 name: 'required',
@@ -80,25 +84,29 @@ Ext.define('Survey.view.EditQuestion', {
 				forceSelection : true,
 				allowBlank: false,
 				msgTarget: 'under',
-            	store: Ext.create('Ext.data.Store', {
-				    fields: ['value', 'name'],
-				    data : [
-				        {"value": "char", "name": I18N.get('text')},
-				        {"value": "text", "name": I18N.get('multi_line_text')},
-				        {"value": "integer", "name": I18N.get('number')},
-				        {"value": "float", "name": I18N.get('decimal_number')},
-				        {"value": "select", "name": I18N.get('drop_down_list')},
-				        {"value": "choice", "name": I18N.get('radio_button_list')},
-				        {"value": "bool_list", "name": I18N.get('multiple_checkbox_list')}
-				    ]
-				}),
+            	store: 'QuestionType',
     			queryMode: 'local',
 			    displayField: 'name',
 			    valueField: 'value',
 	            listeners: {
-	            	change: function(field) { field.up('editquestion').updatePreview(); }
+	            	change: function(field, option_type) {
+	            		var choices = field.up('#questionform').down('#choicesfield')
+	            		var hasChoices = Ext.Array.contains(['choice', 'select', 'bool_list'], option_type);
+	            		choices.setVisible(hasChoices);
+	            		choices.allowBlank = !hasChoices;
+	            		choices.validate();
+	            		field.up('editquestion').updatePreview();
+	            	}
 	            }
-            }],
+            },{
+            	xtype: 'textareafield',
+            	itemId: 'choicesfield',
+            	hidden: true,
+	            fieldLabel: I18N.get('choices'),
+				name: 'options',
+				msgTarget: 'under'
+            }
+        ],
 			flex: 1
 		},{
 			margin: '0 20',
@@ -117,7 +125,7 @@ Ext.define('Survey.view.EditQuestion', {
 				height: 503,
 				bodyPadding: '40 11 57 11',
 				bodyStyle: {
-					'background-image': "url('/media/static/Survey/img/android-phone.png')"
+					'background-image': "url('" + Config.media_url + "Survey/img/android-phone.png')"
 				},
 				layout: {
 					type: 'vbox',
@@ -128,7 +136,7 @@ Ext.define('Survey.view.EditQuestion', {
 					itemId: 'actionBar',
 					bodyPadding: '12 0 0 40',
 					bodyStyle: {
-						'background-image': "url('/media/static/Survey/img/action-bar.png')",
+						'background-image': "url('" + Config.media_url + "Survey/img/action-bar.png')",
 						'color': 'white'
 					}
 				},{
@@ -152,7 +160,7 @@ Ext.define('Survey.view.EditQuestion', {
 						height: 31,
 						margin: '10 0',
 						bodyStyle: {
-							'background-image': "url('/media/static/Survey/img/back-forward-buttons.png')",
+							'background-image': "url('" + Config.media_url + "Survey/img/back-forward-buttons.png')",
 							'color': 'white'
 						},
 						layout: 'hbox',
@@ -197,17 +205,27 @@ Ext.define('Survey.view.EditQuestion', {
 		preview.down('#actionBar').update(I18N.get('question') + ": " + form.label);
 		preview.down('#questiontext').update((form.required ? "*" : "") + form.question);
 		console.log("type: " + form.option_type);
-		if (form.option_type == 'char') {
-			question.removeAll();
+		question.removeAll();
+		if (Ext.Array.contains(['char', 'integer', 'float'], form.option_type)) {
 			question.add({
 				xtype: 'box',
 				autoEl: {
 					tag: 'img',
-					src: '/media/static/Survey/img/text-field.png',
+					src: Config.media_url + 'Survey/img/text-field.png',
 					width: 250,
 					height: 34
 				}
-			})
+			});
+		} else if (form.option_type == "text") {
+			question.add({
+				xtype: 'box',
+				autoEl: {
+					tag: 'img',
+					src: Config.media_url + 'Survey/img/textarea-field.png',
+					width: 250,
+					height: 34
+				}
+			});
 		} else {
 			
 		}

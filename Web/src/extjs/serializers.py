@@ -48,6 +48,7 @@ def Deserializer(stream_or_string, Model, **options):
                    'pk': pk,
                    'fields': datum,
                    }
+            print obj
             objects.append(obj)
         for obj in PythonDeserializer(objects, **options):
             yield obj

@@ -6,6 +6,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.undp.bd.survey.application.api.DjangoObject;
 
+import android.util.Log;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -27,9 +29,6 @@ public class Question extends DjangoObject {
 	
 	@DatabaseField(canBeNull=false)
 	public int order;
-	
-	@DatabaseField(canBeNull=false)
-	public String field_name;
 	
 	@DatabaseField(canBeNull=false)
 	public String question;
@@ -81,6 +80,7 @@ public class Question extends DjangoObject {
 			label = data.getString("label");
 			option_type = data.getString("option_type");
 			options = data.getString("options");
+			Log.d("Question.initialise", "options: " + options);
 			survey = helper.getSurveys().queryBuilder().where().eq("remote_id", data.getInt("survey")).queryForFirst();
 		} catch (JSONException e) {
 			throw new RuntimeException(e);

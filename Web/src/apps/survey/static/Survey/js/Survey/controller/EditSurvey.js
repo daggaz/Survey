@@ -23,6 +23,8 @@ Ext.define('Survey.controller.EditSurvey', {
 						this.getEditButton().disable();
 						this.getDeleteButton().disable();
 						this.getRequiredButton().disable();
+						this.getUpButton().disable();
+						this.getDownButton().disable();
 					}
 				}.bind(this),
 				itemdblclick: function(grid, question, item, index, e, eOpts) {
@@ -64,6 +66,49 @@ Ext.define('Survey.controller.EditSurvey', {
 					}, this));
 				}
 			},
+			'editsurvey grid #up_button': {
+				click: function() {
+					var previous = null;
+					var question = this.getQuestionGrid().getSelectionModel().getSelection()[0];
+					var questions = this.getQuestionGrid().getStore();
+					questions.data.each(function(q) {
+						if (question == q)
+						    return false;
+						previous = q;
+					});
+					if (previous !== null) {
+						var o = previous.get('order');
+						previous.set('order', question.get('order'));
+						question.set('order', o);
+						questions.sort();
+						this.updateUpButton(question);
+						this.updateDownButton(question);
+					}
+				}
+			},
+			'editsurvey grid #down_button': {
+				click: function() {
+					var previous = null;
+					var next = null;
+					var question = this.getQuestionGrid().getSelectionModel().getSelection()[0];
+					var questions = this.getQuestionGrid().getStore();
+					questions.data.each(function(q) {
+						if (previous == question) {
+							next = q;
+						    return false;
+						}
+						previous = q;
+					});
+					if (next !== null) {
+						var o = next.get('order');
+						next.set('order', question.get('order'));
+						question.set('order', o);
+						questions.sort();
+						this.updateUpButton(question);
+						this.updateDownButton(question);
+					}
+				}
+			},
 			'editsurvey #cancelButton': {
 				click: function () {
 					Ext.MessageBox.confirm(I18N.get('confirm_action'), I18N.get('confirm_cancel'), Ext.bind(function(result) {
@@ -72,28 +117,42 @@ Ext.define('Survey.controller.EditSurvey', {
 					}, this));
 				}
 			},
+			
 			'editsurvey #saveButton': {
 				click: function () {
 					var survey = this.getSurveyForm().getRecord();
 					this.getSurveyForm().updateRecord(survey);
-					var questionNames = {};
-					var error = false;
-					survey.questionsStore.data.each(function(question) {
-						if (question.get('label') in questionNames) {
-							error = true;
-							return false;
-						}
-						questionNames[question.get('label')] = 1;
-					});
+					
+					var checkColumnUnique = function(store, column, extra) {
+						var error = false;
+						var values = {};
+						if (extra !== undefined)
+							values[extra] = extra;
+						store.data.each(function(item) {
+							if (item.get(column) in values) {
+								error = true;
+								return false;
+							}
+							values[item.get(column)] = 1;
+						});
+						return !error;
+					};
+					var error = null;
+					if (!checkColumnUnique(survey.questionsStore, 'label'))
+						error = I18N.get('unique_question_names');
+					else if (!checkColumnUnique(this.getSurveySurveyStore(), 'title', survey.phantom ? survey.get('title') : undefined))
+						error = I18N.get('unique_survey_names');
+					
 					if (error) {
 						Ext.MessageBox.show({
                             title: I18N.get('save_error'),
-                            msg: I18N.get('unique_question_names'),
+                            msg: error,
                             icon: Ext.MessageBox.ERROR,
                             buttons: Ext.Msg.OK
                         });
                         return;
 					}
+					
 					var store = this.getSurveySurveyStore();
 					console.log("saving " + survey.id);
 					console.log(store.getById(survey.id))
@@ -129,21 +188,21 @@ Ext.define('Survey.controller.EditSurvey', {
 	updateRequiredButton: function(selection) {
 		if (selection.get('required')) {
 			this.getRequiredButton().setText(I18N.get('set_optional'));
-			this.getRequiredButton().setIcon('/media/static/Survey/img/cross.png')
+			this.getRequiredButton().setIcon(Config.media_url + 'Survey/img/cross.png')
 		} else {
 			this.getRequiredButton().setText(I18N.get('set_required'));
-			this.getRequiredButton().setIcon('/media/static/Survey/img/tick.png')
+			this.getRequiredButton().setIcon(Config.media_url + 'Survey/img/tick.png')
 		}
 	},
 	updateUpButton: function(selection) {
-		if (selection.order == 0) {
+		if (selection.get('order') == 1) {
 			this.getUpButton().disable();
 		} else {
 			this.getUpButton().enable();
 		}
 	},
 	updateDownButton: function(selection) {
-		if (selection.order >= this.getQuestionGrid().getStore().getCount()-1) {
+		if (selection.get('order') >= this.getQuestionGrid().getStore().getCount()) {
 			this.getDownButton().disable();
 		} else {
 			this.getDownButton().enable();
@@ -152,7 +211,10 @@ Ext.define('Survey.controller.EditSurvey', {
 	editSurvey: function(survey) {
 		console.log("editing: " + survey);
 		this.getSurveyForm().loadRecord(survey);
-		this.getQuestionGrid().reconfigure(survey.questions());
+		var questions = survey.questions();
+		questions.sort('order', 'ASC');
+		this.getQuestionGrid().getSelectionModel().deselectAll();
+		this.getQuestionGrid().reconfigure(questions);
 		this.getSurveyForm().getForm().clearInvalid();
 		this.getSurveys().getLayout().setActiveItem("editsurvey");
 	},

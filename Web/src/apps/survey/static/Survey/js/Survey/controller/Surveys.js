@@ -98,19 +98,19 @@ Ext.define('Survey.controller.Surveys', {
 	updateLiveButton: function(selection) {
 		if (selection.get('is_live')) {
 			this.getLiveButton().setText(I18N.get('set_hidden'));
-			this.getLiveButton().setIcon('/media/static/Survey/img/hidden.png')
+			this.getLiveButton().setIcon(Config.media_url + 'Survey/img/hidden.png')
 		} else {
 			this.getLiveButton().setText(I18N.get('set_visible'));
-			this.getLiveButton().setIcon('/media/static/Survey/img/visible.png')
+			this.getLiveButton().setIcon(Config.media_url + 'Survey/img/visible.png')
 		}
 	},
 	updateOpenButton: function(selection) {
 		if (selection.get('is_open')) {
 			this.getOpenButton().setText(I18N.get('set_closed'));
-			this.getOpenButton().setIcon('/media/static/Survey/img/closed.png')
+			this.getOpenButton().setIcon(Config.media_url + 'Survey/img/closed.png')
 		} else {
 			this.getOpenButton().setText(I18N.get('set_open'));
-			this.getOpenButton().setIcon('/media/static/Survey/img/open.png')
+			this.getOpenButton().setIcon(Config.media_url + 'Survey/img/open.png')
 		}
 	},
 	editSurvey: function(survey) {

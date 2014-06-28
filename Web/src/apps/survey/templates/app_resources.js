@@ -1,5 +1,7 @@
 {% load i18n %}
+{% load staticfiles %}
 {
+	'media_url': '{% static "" %}',
 	'strings': {
 		'app_title': '{% trans "Bangladesh" %}',
 		'username': '{% trans "Username" %}',
@@ -67,6 +69,9 @@
         'confirm_discard_changes': '{% trans "Are you sure you want to leave this page? You will lose your changes!" %}',
         'confirm_set_required': '{% trans "Are you sure you want make this question required?" %}',
         'confirm_set_optional': '{% trans "Are you sure you want make this question optional?" %}',
-        'unique_question_names': '{% trans "Error: question names must be unique!" %}',
+        'unique_question_names': '{% trans "Error: Question names must be unique!" %}',
+        'unique_survey_names': '{% trans "Error: Survey names must be unique!" %}',
+        'help_text': '{% trans "Help text" %}',
+        'choices': '{% trans "Choices" %}',
 	}
 }

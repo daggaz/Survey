@@ -9,7 +9,7 @@ var header = {
 	items: [{
 	    xtype: 'image',
 	    id: 'logo',
-    	src: '/media/static/Survey/img/logo.png',
+    	src: Config.media_url + 'Survey/img/logo.png',
     	width: 142
     },{
     	layout: {

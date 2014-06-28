@@ -115,6 +115,7 @@ public class AnswerFragment extends Fragment {
 
 		RadioGroup group = (RadioGroup) rootView.findViewById(R.id.radio_answer);
 		int i = 0;
+		Log.d("AnswerFragment", "Choices: " + answer.question.options);
 		for (String option : answer.question.options.split("\\r|\\r\\n|\\n")) {
 			RadioButton rb = new RadioButton(getActivity());
 			rb.setText(option);

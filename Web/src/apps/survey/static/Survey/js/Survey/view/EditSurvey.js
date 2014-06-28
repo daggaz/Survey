@@ -45,8 +45,7 @@ Ext.define('Survey.view.EditSurvey', {
 			allowBlank: false,
 			msgTarget: 'under',
             name: 'title'
-        },
-        {
+        },{
             xtype: 'textareafield',
             fieldLabel: I18N.get('description'),
 			allowBlank: false,
@@ -60,6 +59,11 @@ Ext.define('Survey.view.EditSurvey', {
         minHeight: 200,
         columns:[
         	{
+	            text: '#',
+	            dataIndex: 'order',
+	            width: 50,
+	            sortable: false
+	        },{
 	            text: I18N.get('name'),
 	            dataIndex: 'label',
 	            width: 100,
@@ -95,36 +99,36 @@ Ext.define('Survey.view.EditSurvey', {
 		    items: [{
 		        xtype: 'button',
 		        itemId: 'new_button',
-		        icon: '/media/static/Survey/img/add.png',
+		        icon: Config.media_url + 'Survey/img/add.png',
 		        text: I18N.get('new_question')
 		    },{
 		        xtype: 'button',
 		        itemId: 'delete_button',
-		        icon: '/media/static/Survey/img/delete.png',
+		        icon: Config.media_url + 'Survey/img/delete.png',
 		        text: I18N.get('delete_question'),
 		        disabled: true
 		    },{
 		        xtype: 'button',
 		        itemId: 'edit_button',
-		        icon: '/media/static/Survey/img/edit.png',
+		        icon: Config.media_url + 'Survey/img/edit.png',
 		        text: I18N.get('edit_question'),
 		        disabled: true
 		    },{
 		        xtype: 'button',
 		        itemId: 'required_button',
-		        icon: '/media/static/Survey/img/tick.png',
+		        icon: Config.media_url + 'Survey/img/tick.png',
 		        text: I18N.get('set_required'),
 		        disabled: true
 		    },{
 		        xtype: 'button',
 		        itemId: 'up_button',
-		        icon: '/media/static/Survey/img/up.png',
+		        icon: Config.media_url + 'Survey/img/up.png',
 		        text: I18N.get('move_up'),
 		        disabled: true
 		    },{
 		        xtype: 'button',
 		        itemId: 'down_button',
-		        icon: '/media/static/Survey/img/down.png',
+		        icon: Config.media_url + 'Survey/img/down.png',
 		        text: I18N.get('move_down'),
 		        disabled: true
 		    }]
