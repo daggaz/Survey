@@ -81,6 +81,9 @@ public class AnswerFragment extends Fragment {
 			@Override
 			public void afterTextChanged(Editable s) {}
 		});
+		if ((inputType & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0) {
+			text.setMinLines(3);
+		}
 		return rootView;
 	}
 
@@ -147,7 +150,8 @@ public class AnswerFragment extends Fragment {
 				answers.add(choice);
 		for (final String option : answer.question.options.split("\\r|\\r\\n|\\n")) {
 			CheckBox cb = new CheckBox(getActivity());
-			cb.setText(option);
+			cb.setText(" " + option);
+			cb.setTextColor(getResources().getColor(R.color.white));
 			if (answers.contains(option))
 				cb.setChecked(true);
 			cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {

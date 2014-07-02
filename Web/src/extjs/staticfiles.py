@@ -24,20 +24,26 @@ class ExtjsFinder(BaseFinder):
         fields = [field for field in fields if field.name != model._meta.pk.name]
         fields = ["{name: '%s', type: '%s'}" % (field.name, django_to_extsjs_type_map[type(field)]) for field in fields]
         fields = ",\n        ".join(fields)
+        requires = []
         associations = []
-        association_template = "{type: 'hasMany', model: '%s.model.%s.%s', name:'%s', foreignKey:'%s'}"
+        association_template = "{type: 'hasMany', model: '%s', name:'%s', foreignKey:'%s'}"
         for rel in model._meta.get_all_related_objects():
-            associations.append(association_template % (app_name,
-                                                        rel.model._meta.app_label,
-                                                        rel.model._meta.object_name,
+            model_class = '%s.model.%s.%s' % (app_name,
+                                              rel.model._meta.app_label,
+                                              rel.model._meta.object_name,
+                                              )
+            requires.append("'%s'" % model_class)
+            associations.append(association_template % (model_class,
                                                         rel.get_accessor_name(),
                                                         rel.field.name,
                                                         ))
         associations = ",\n        ".join(associations)
+        requires = ",\n        ".join(requires)
         return loader.render_to_string('model.js',
                                        {'app_name': app_name,
                                         'app': model._meta.app_label,
                                         'model': model._meta.object_name,
+                                        'requires': requires,
                                         'fields': fields,
                                         'associations': associations,
                                         })

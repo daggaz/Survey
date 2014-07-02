@@ -66,7 +66,10 @@ Ext.define('Survey.view.EditQuestion', {
 	        },{
 	            xtype: 'textareafield',
 	            fieldLabel: I18N.get('help_text'),
-				name: 'help_text'
+				name: 'help_text',
+                listeners: {
+	            	change: function(field) { field.up('editquestion').updatePreview(); }
+	            }
         	},{
 	        	xtype: 'checkboxfield',
                 boxLabel: I18N.get('required'),
@@ -104,7 +107,10 @@ Ext.define('Survey.view.EditQuestion', {
             	hidden: true,
 	            fieldLabel: I18N.get('choices'),
 				name: 'options',
-				msgTarget: 'under'
+				msgTarget: 'under',
+                listeners: {
+	            	change: function(field) { field.up('editquestion').updatePreview(); }
+	            }
             }
         ],
 			flex: 1
@@ -185,8 +191,15 @@ Ext.define('Survey.view.EditQuestion', {
 						}]
 					},{
 						itemId: 'required',
-						bodyPadding: '0 0 0 14',
+						bodyPadding: '0 0 10 14',
 						html: "* " + I18N.get('preview_required_message'),
+						bodyStyle: {	
+							'color': 'white',
+							'font-size': '11px'
+						}
+					},{
+						itemId: 'help_text',
+						margin: '0 14',
 						bodyStyle: {	
 							'color': 'white',
 							'font-size': '11px'
@@ -202,8 +215,8 @@ Ext.define('Survey.view.EditQuestion', {
 		var preview = this.down('#questionpreview');
 		var question = preview.down('#question')
 		console.log('updating preview');
-		preview.down('#actionBar').update(I18N.get('question') + ": " + form.label);
-		preview.down('#questiontext').update((form.required ? "*" : "") + form.question);
+		preview.down('#actionBar').update(Ext.htmlEncode(I18N.get('question') + ": " + form.label));
+		preview.down('#questiontext').update((form.required ? "*" : "") + Ext.htmlEncode(form.question));
 		console.log("type: " + form.option_type);
 		question.removeAll();
 		if (Ext.Array.contains(['char', 'integer', 'float'], form.option_type)) {
@@ -223,12 +236,30 @@ Ext.define('Survey.view.EditQuestion', {
 					tag: 'img',
 					src: Config.media_url + 'Survey/img/textarea-field.png',
 					width: 250,
-					height: 34
+					height: 61
 				}
 			});
+		} else if (Ext.Array.contains(['choice', 'bool_list'], form.option_type)) {
+			var options = form.options.split('\n')
+			var img = {'choice': 'radio', 'bool_list': 'checkbox'}[form.option_type]; 
+			for (var i = 0; i < options.length; i++) {
+				if (Ext.String.trim(options[i]) == "")
+					continue;
+				question.add({
+					xtype: 'box',
+					autoEl: {
+						tag: 'div',
+						style: 'padding: 5px 15px; color: white',
+						html: '<img style="vertical-align:middle" src="' + Config.media_url + 'Survey/img/' + img + '.png"/> <span>' + Ext.htmlEncode(options[i]) + '</span>'
+					}
+				});
+			}
 		} else {
 			
 		}
 		preview.down('#required').setVisible(form.required);
+		var help_html = Ext.htmlEncode(form.help_text);
+		help_html = help_html.replace(/\n/g, '<br />');
+		preview.down('#help_text').update(help_html);
 	}
 });

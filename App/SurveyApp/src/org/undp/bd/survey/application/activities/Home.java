@@ -76,9 +76,6 @@ public class Home extends ActionBarActivity {
 	}
 	
 	private void logout() {
-    	User user = ApplicationData.instance().getUser();
-		user.session_key = null;
-		getHelper().getUsers().update(user);
 	    new AlertDialog.Builder(this)
 	        .setIcon(android.R.drawable.ic_dialog_alert)
 	        .setTitle(getResources().getString(R.string.logout))
@@ -86,6 +83,9 @@ public class Home extends ActionBarActivity {
 	        .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 		        @Override
 		        public void onClick(DialogInterface dialog, int which) {
+		        	User user = ApplicationData.instance().getUser();
+		        	user.session_key = null;
+		        	getHelper().getUsers().update(user);
 		            finish();    
 		        }
 		})

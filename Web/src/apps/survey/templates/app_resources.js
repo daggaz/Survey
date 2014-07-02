@@ -73,5 +73,8 @@
         'unique_survey_names': '{% trans "Error: Survey names must be unique!" %}',
         'help_text': '{% trans "Help text" %}',
         'choices': '{% trans "Choices" %}',
+        'responses': '{% trans "Responses" %}',
+        'assigned_users': '{% trans "Assigned Users" %}',
+        'change_users': '{% trans "Assign Users" %}',
 	}
 }

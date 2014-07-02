@@ -9,6 +9,9 @@ Ext.define('Survey.view.Surveys', {
 		xtype: 'editsurvey',
 		itemId: 'editsurvey'
 	},{
+		xtype: 'editsurveyusers',
+		itemId: 'editsurveyusers'
+	},{
 		xtype: 'editquestion',
 		itemId: 'editquestion'
 	}]

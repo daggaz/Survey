@@ -40,10 +40,10 @@ Ext.Ajax.request({
 				Config.media_url = data['media_url'];
 				Ext.application({
 					requires: ['Ext.grid.*', 'Ext.data.*', 'Ext.util.*', 'Ext.util.JSON.*', 'Ext.state.*'],
-					models: ['survey.Survey', 'survey.Question'],
+					models: ['survey.Survey', 'survey.Question', 'survey.Submission'],
 					name: 'Survey',
 					appFolder: Config.media_url + 'Survey/js/Survey',
-					controllers: ['Main', 'Login', 'Surveys', 'Home', 'EditSurvey', 'EditQuestion'],
+					controllers: ['Main', 'Login', 'Surveys', 'Home', 'EditSurvey', 'EditQuestion', 'EditSurveyUsers'],
 					autoCreateViewport: true,
 					refs: [{
 						ref: 'viewport',

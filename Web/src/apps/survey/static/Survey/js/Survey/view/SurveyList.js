@@ -68,6 +68,20 @@ Ext.define('Survey.view.SurveyList', {
 			    	return '<img src="/media/static/Survey/img/closed.png" />';
 			    }
             }
+        },{
+            text: I18N.get('responses'),
+            width: 100,
+            renderer: function (value, metaData, record, rowIdx, colIdx, store) {
+            	return record.submissions().getCount();
+            },
+            sortable: true
+        },{
+            text: I18N.get('assigned_users'),
+            width: 200,
+            renderer: function (value, metaData, record, rowIdx, colIdx, store) {
+            	return record.users().getCount();
+            },
+            sortable: true
         }],
     	flex: 1,
     	dockedItems: [{
@@ -83,6 +97,12 @@ Ext.define('Survey.view.SurveyList', {
 		        itemId: 'edit_button',
 		        icon: Config.media_url + 'Survey/img/edit.png',
 		        text: I18N.get('edit_survey'),
+		        disabled: true
+		    },{
+		        xtype: 'button',
+		        itemId: 'users_button',
+		        icon: Config.media_url + 'Survey/img/user.png',
+		        text: I18N.get('change_users'),
 		        disabled: true
 		    },{
 		        xtype: 'button',

@@ -26,6 +26,7 @@ Ext.define('Survey.controller.Surveys', {
 				selectionchange: function (grid, selected, opts) {
 					if (selected.length == 1) {
 						this.getEditButton().enable();
+						this.getUsersButton().enable();
 						this.getDeleteButton().enable();
 						this.getLiveButton().enable();
 						this.getOpenButton().enable();
@@ -34,6 +35,7 @@ Ext.define('Survey.controller.Surveys', {
 						this.updateLiveButton(selected[0]);
 					} else {
 						this.getEditButton().disable();
+						this.getUsersButton().disable();
 						this.getDeleteButton().disable();
 						this.getLiveButton().disable();
 						this.getOpenButton().disable();						
@@ -54,6 +56,12 @@ Ext.define('Survey.controller.Surveys', {
 				click: function() {
 					var survey = this.getSurveyGrid().getSelectionModel().getSelection()[0];
 					this.editSurvey(survey);
+				}.bind(this)
+			},
+			'surveylist grid #users_button': {
+				click: function() {
+					var survey = this.getSurveyGrid().getSelectionModel().getSelection()[0];
+					this.editSurveyUsers(survey);
 				}.bind(this)
 			},
 			'surveylist grid #live_button': {
@@ -116,6 +124,9 @@ Ext.define('Survey.controller.Surveys', {
 	editSurvey: function(survey) {
 		this.getController('EditSurvey').editSurvey(survey);
 	},
+	editSurveyUsers: function(survey) {
+		this.getController('EditSurveyUsers').editSurveyUsers(survey);
+	},
 	refs: [{
 		ref: 'surveys',
 		selector: 'surveys'
@@ -128,6 +139,9 @@ Ext.define('Survey.controller.Surveys', {
 	},{
 		ref: 'editButton',
 		selector: 'surveylist grid #edit_button'
+	},{
+		ref: 'usersButton',
+		selector: 'surveylist grid #users_button'
 	},{
 		ref: 'liveButton',
 		selector: 'surveylist grid #live_button'
