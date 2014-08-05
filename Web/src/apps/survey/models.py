@@ -183,7 +183,7 @@ POSITION_HELP = ("What order does this question appear in the survey form and "
 class Question(models.Model):
     survey = models.ForeignKey(Survey, related_name="questions")
     question = models.TextField(help_text=_("Appears on the survey entry page."))
-    label = models.TextField(help_text=_("Appears on the results page."))
+    label = models.CharField(max_length=255, help_text=_("Appears on the results page."))
     help_text = models.TextField(blank=True)
     required = models.BooleanField(default=False,
         help_text=_("Unsafe to change on live surveys. Radio button list and "
