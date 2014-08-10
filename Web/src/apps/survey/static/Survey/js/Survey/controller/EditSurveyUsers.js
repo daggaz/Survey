@@ -1,6 +1,6 @@
 Ext.define('Survey.controller.EditSurveyUsers', {
 	extend : 'Ext.app.Controller',
-	views: ['EditSurveyUsers'],
+	views: ['EditSurveyUsers', 'UserSelectionDialog'],
 	init: function() {
 		this.control({
 			'editsurveyusers grid': {
@@ -12,30 +12,16 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 				},
 				selectionchange: function (grid, selected, opts) {
 					if (selected.length == 1) {
-						this.getEditButton().enable();
 						this.getDeleteButton().enable();
-						this.getRequiredButton().enable();
-						
-						this.updateRequiredButton(selected[0]);
-						this.updateUpButton(selected[0]);
-						this.updateDownButton(selected[0]);
 					} else {
-						this.getEditButton().disable();
 						this.getDeleteButton().disable();
-						this.getRequiredButton().disable();
-						this.getUpButton().disable();
-						this.getDownButton().disable();
 					}
-				}.bind(this),
-				itemdblclick: function(grid, question, item, index, e, eOpts) {
-					this.editQuestion(question);
-					e.stopEvent();
 				}.bind(this)
 			},
 			'editsurveyusers grid #add_button': {
 				click: function() {
-//					var question =  Ext.create('Survey.model.survey.Question');
-//					this.editQuestion(question);
+					Ext.create('widget.userselectiondialog', {
+					}).show();
 				}.bind(this)
 			},
 			'editsurveyusers grid #remove_button': {
@@ -55,36 +41,6 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 			
 			'editsurveyusers #saveButton': {
 				click: function () {
-//					var checkColumnUnique = function(store, column, extra) {
-//						var error = false;
-//						var values = {};
-//						if (extra !== undefined)
-//							values[extra] = extra;
-//						store.data.each(function(item) {
-//							if (item.get(column) in values) {
-//								error = true;
-//								return false;
-//							}
-//							values[item.get(column)] = 1;
-//						});
-//						return !error;
-////					};
-//					var error = null;
-//					if (!checkColumnUnique(survey.questionsStore, 'label'))
-//						error = I18N.get('unique_question_names');
-//					else if (!checkColumnUnique(this.getSurveySurveyStore(), 'title', survey.phantom ? survey.get('title') : undefined))
-//						error = I18N.get('unique_survey_names');
-//					
-//					if (error) {
-//						Ext.MessageBox.show({
-//                            title: I18N.get('save_error'),
-//                            msg: error,
-//                            icon: Ext.MessageBox.ERROR,
-//                            buttons: Ext.Msg.OK
-//                        });
-//                        return;
-//					}
-//					
 					var store = this.getUserGrid().getStore();
 					if (store.getNewRecords().length > 0 || store.getModifiedRecords().length > 0 || store.getRemovedRecords().length > 0) {
 						store.sync({
@@ -103,8 +59,8 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 	editSurveyUsers: function(survey) {
 		console.log("editing urers for: " + survey);
 		this.getUserGrid().getSelectionModel().deselectAll();
-		this.getUserGrid().reconfigure(survey.questions());
 		this.getSurveys().getLayout().setActiveItem("editsurveyusers");
+		this.getUserGrid().reconfigure(survey.users());
 	},
 	refs: [{
 		ref: 'surveys',
@@ -113,11 +69,14 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 		ref: 'userGrid',
 		selector: 'editsurveyusers grid'
 	},{
-		ref: 'editButton',
+		ref: 'addButton',
 		selector: 'editsurveyusers grid #add_button'
 	},{
 		ref: 'deleteButton',
-		selector: 'editsurvey grid #remove_button'
+		selector: 'editsurveyusers grid #delete_button'
+	},{
+		ref: 'userDialog',
+		selector: 'editsurveyusers #userdialog'
 	}],
-	stores: ['survey.Survey', 'auth.User']
+	stores: ['survey.Survey', 'survey.Survey_users', 'auth.User']
 });

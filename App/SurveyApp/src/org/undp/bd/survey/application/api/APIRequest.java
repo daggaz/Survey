@@ -29,7 +29,7 @@ class APIRequest {
 	public void execute() {
     	HttpClient httpclient = new DefaultHttpClient();
         try {
-        	Log.d("HTTPTask", "loading: " + request.getURI().toString());
+        	Log.d("APIRequest", "loading: " + request.getURI().toString());
         	HttpResponse response = httpclient.execute(request);
             StatusLine statusLine = response.getStatusLine();
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
@@ -49,7 +49,7 @@ class APIRequest {
 	}
 	
 	private void processResponse(String response) {
-		Log.d("APITask", "response: " + response);
+		Log.d("APIRequest", "response: " + response);
 		try {
 			JSONObject data = new JSONObject(response);
 			String status = data.getString("status");

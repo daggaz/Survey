@@ -35,7 +35,18 @@ Ext.define('Survey.view.EditSurveyUsers', {
     	xtype: 'grid',
 		title: I18N.get('assigned_users'),
         frame: true,
-        minHeight: 200,
+        listeners : {
+        	added: function () {
+				this.getStore().load();
+			},
+			reconfigure: function(grid, store) {
+				store.load();
+			}
+		},
+        viewConfig: {
+	        emptyText: I18N.get('no_users'),
+            stripeRows: false
+        },
         columns:[{
 	            text: I18N.get('username'),
 	            dataIndex: 'username',
@@ -54,7 +65,7 @@ Ext.define('Survey.view.EditSurveyUsers', {
 		    dock: 'top',
 		    items: [{
 		        xtype: 'button',
-		        itemId: 'new_button',
+		        itemId: 'add_button',
 		        icon: Config.media_url + 'Survey/img/add.png',
 		        text: I18N.get('add_user')
 		    },{
@@ -65,5 +76,8 @@ Ext.define('Survey.view.EditSurveyUsers', {
 		        disabled: true
 		    }]
 		}]
+	},{
+		xtype: 'userselectiondialog',
+		itemId: 'userdialog'
 	}]
 });

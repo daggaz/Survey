@@ -86,4 +86,4 @@ def sync_surveys(request):
         data = {'status': 'failed',
                 'reason': 'not authorized',
                 }
-    return HttpResponse(json.dumps(data), mimetype='application/json')
+    return HttpResponse(json.dumps(data), content_type='application/json')

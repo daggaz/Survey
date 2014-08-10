@@ -24,12 +24,11 @@ Ext.define('Survey.view.SurveyList', {
         },
 		listeners : {
 			render : function(grid) {
-				grid.body.mask('Loading&helip;');
+				grid.body.mask('Loading...');
 				grid.getStore().load(function () {
 					grid.body.unmask();
 				});
-			},
-			delay: 200
+			}
 		},
         columns:[{
             text: I18N.get('title'),
@@ -72,14 +71,23 @@ Ext.define('Survey.view.SurveyList', {
             text: I18N.get('responses'),
             width: 100,
             renderer: function (value, metaData, record, rowIdx, colIdx, store) {
-            	return record.submissions().getCount();
+            	var id = "submissions_" + record.id;
+            	record.submissions().load(function (records, operation, success) {
+            		Ext.get(id).update(records.length+"");
+            	});
+            	return "<div id=\"" + id + "\">...</div>";
             },
             sortable: true
         },{
             text: I18N.get('assigned_users'),
-            width: 200,
+            width: 120,
             renderer: function (value, metaData, record, rowIdx, colIdx, store) {
-            	return record.users().getCount();
+            	var id = "assigned_users_" + record.id;
+            	record.users().load(function (records, operation, success) {
+            		console.log(records);
+            		Ext.get(id).update(records.length+"");
+            	});
+            	return "<div id=\"" + id + "\">...</div>";
             },
             sortable: true
         }],

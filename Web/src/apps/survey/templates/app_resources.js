@@ -76,5 +76,9 @@
         'responses': '{% trans "Responses" %}',
         'assigned_users': '{% trans "Assigned Users" %}',
         'change_users': '{% trans "Assign Users" %}',
+        'email': '{% trans "Email" %}',
+        'add_user': '{% trans "Assign User" %}',
+        'remove_user': '{% trans "Remove User" %}',
+        'select_user': '{% trans "Select User" %}',
 	}
 }

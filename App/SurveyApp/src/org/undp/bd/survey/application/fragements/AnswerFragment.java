@@ -29,7 +29,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 
 public class AnswerFragment extends Fragment {
@@ -92,7 +91,6 @@ public class AnswerFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_answer_select, container, false);
 
 		Spinner select = (Spinner) rootView.findViewById(R.id.select_answer);
-		int i = 0;
 		String[] options = answer.question.options.split("\\r|\\r\\n|\\n");
 		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getActivity(), android.R.layout.simple_spinner_dropdown_item, options);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -143,7 +141,6 @@ public class AnswerFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_answer_bool_list, container, false);
 
 		LinearLayout group = (LinearLayout) rootView.findViewById(R.id.bool_list_answer);
-		int i = 0;
 		final List<String> answers = new ArrayList<String>();
 		if (answer.value != null)
 			for (String choice : answer.value.split("\n"))

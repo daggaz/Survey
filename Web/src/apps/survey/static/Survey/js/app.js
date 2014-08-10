@@ -39,7 +39,7 @@ Ext.Ajax.request({
 				I18N.strings = data['strings'];
 				Config.media_url = data['media_url'];
 				Ext.application({
-					requires: ['Ext.grid.*', 'Ext.data.*', 'Ext.util.*', 'Ext.util.JSON.*', 'Ext.state.*'],
+					requires: ['Ext.grid.*', 'Ext.data.*', 'Ext.util.*', 'Ext.util.JSON.*', 'Ext.state.*', 'Ext.window.*'],
 					models: ['survey.Survey', 'survey.Question', 'survey.Submission'],
 					name: 'Survey',
 					appFolder: Config.media_url + 'Survey/js/Survey',
