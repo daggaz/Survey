@@ -71,7 +71,7 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
     if (isDevelopment === null && window.location.protocol === 'file:') {
         isDevelopment = true;
     }
-
+    isDevelopment = true;
     document.write('<script type="text/javascript" charset="UTF-8" src="' + 
         path + 'ext-all' + (isDevelopment ? '-dev' : '') + '.js"></script>');
 })();

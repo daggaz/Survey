@@ -6,7 +6,6 @@ import re
 from operator import itemgetter
 
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -91,7 +90,6 @@ class Survey(models.Model):
             "Send a notification to these e-mail addresses whenever someone "
             "submits an entry to this survey. Comma delimited. Messages to "
             "staff emails will include admin urls."))
-    site = models.ForeignKey(Site)
     default_report = models.ForeignKey(
         'SurveyReport',
         blank=True,

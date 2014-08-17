@@ -20,8 +20,7 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 			},
 			'editsurveyusers grid #add_button': {
 				click: function() {
-					Ext.create('widget.userselectiondialog', {
-					}).show();
+					this.getUserDialog().show();
 				}.bind(this)
 			},
 			'editsurveyusers grid #remove_button': {
@@ -38,10 +37,10 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 					}, this));
 				}
 			},
-			
 			'editsurveyusers #saveButton': {
 				click: function () {
-					var store = this.getUserGrid().getStore();
+					var store = this.getSurveySurvey_usersStore();
+					debugger;
 					if (store.getNewRecords().length > 0 || store.getModifiedRecords().length > 0 || store.getRemovedRecords().length > 0) {
 						store.sync({
 							success: function (rec, op) {
@@ -53,14 +52,39 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 						this.getSurveys().getLayout().setActiveItem("surveylist");
 					}
 				}
+			},
+			'userselectiondialog #ok_button': {
+				click: function () {
+					console.log('bob');
+					this.getUserDialog().hide();
+					var grid = this.getUserDialog().down('grid');
+					Ext.each(grid.getSelectionModel().getSelection(), function (user) {
+						console.log(user);
+						console.log(user.get('email'));
+						var link = Ext.create('Survey.model.survey.Survey_users');
+						link.set('survey', this.survey.get('id'));
+						link.set('user', user.get('id'));
+						this.getSurveySurvey_usersStore().add(link);
+						this.getUserGrid().getStore().add(user);
+					}.bind(this));
+					grid.getSelectionModel().clearSelections();
+				}
+			},
+			'userselectiondialog #cancel_button': {
+				click: function () {
+					this.getUserDialog().hide();
+					var grid = this.getUserDialog().down('grid');
+					grid.getSelectionModel().deselectAll();
+				}
 			}
 		});
 	},
 	editSurveyUsers: function(survey) {
-		console.log("editing urers for: " + survey);
+		console.log("editing users for: " + survey);
 		this.getUserGrid().getSelectionModel().deselectAll();
 		this.getSurveys().getLayout().setActiveItem("editsurveyusers");
-		this.getUserGrid().reconfigure(survey.users());
+		this.survey = survey;
+		debugger;
 	},
 	refs: [{
 		ref: 'surveys',

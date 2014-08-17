@@ -24,10 +24,7 @@ Ext.define('Survey.view.SurveyList', {
         },
 		listeners : {
 			render : function(grid) {
-				grid.body.mask('Loading...');
-				grid.getStore().load(function () {
-					grid.body.unmask();
-				});
+				grid.getStore().load();
 			}
 		},
         columns:[{

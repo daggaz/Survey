@@ -28,16 +28,21 @@ def app(request):
 def app_resources(request):
     return TemplateResponse(request, 'app_resources.js', {})
 
-def api_login(request):
+def api_login(request, staff=False):
     user = authenticate(username=request.GET.get('username'),
                         password=request.GET.get('password'),
                         )
     if user is not None:
         if user.is_active:
-            login(request, user)
-            data = {'status': 'success',
-                    'session_key': request.session.session_key,
-                    }
+            if not staff or (staff and user.is_staff):
+                login(request, user)
+                data = {'status': 'success',
+                        'session_key': request.session.session_key,
+                        }
+            else:
+                data = {'status': 'failed',
+                        'reason': 'not authorised',
+                        }
         else:
             data = {'status': 'failed',
                     'reason': 'account disabled',

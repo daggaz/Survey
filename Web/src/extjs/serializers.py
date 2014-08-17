@@ -3,6 +3,7 @@ from django.core.serializers.python import Deserializer as PythonDeserializer
 from django.utils.encoding import smart_text
 from django.utils import six
 from django.core.serializers.base import DeserializationError
+from django.db.models import ForeignKey
 import sys
 import json
 
@@ -34,6 +35,7 @@ def Deserializer(stream_or_string, Model, **options):
         stream_or_string = stream_or_string.read()
     if isinstance(stream_or_string, bytes):
         stream_or_string = stream_or_string.decode('utf-8')
+    foreign_keys = [field.name for field in Model._meta.fields if isinstance(field, ForeignKey)]
     try:
         data = json.loads(stream_or_string)
         objects = []
@@ -44,6 +46,9 @@ def Deserializer(stream_or_string, Model, **options):
                 del datum[pk_name]
             else:
                 pk = None
+            for foreign_key in foreign_keys:
+                if foreign_key in datum and datum[foreign_key] == 0:
+                    datum[foreign_key] = None
             obj = {'model': "%s.%s" % (Model._meta.app_label, Model._meta.object_name),
                    'pk': pk,
                    'fields': datum,

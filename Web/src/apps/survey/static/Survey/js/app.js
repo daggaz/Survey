@@ -43,7 +43,7 @@ Ext.Ajax.request({
 					models: ['survey.Survey', 'survey.Question', 'survey.Submission'],
 					name: 'Survey',
 					appFolder: Config.media_url + 'Survey/js/Survey',
-					controllers: ['Main', 'Login', 'Surveys', 'Home', 'EditSurvey', 'EditQuestion', 'EditSurveyUsers'],
+					controllers: ['Main', 'Login', 'Surveys', 'Home', 'EditSurvey', 'EditQuestion', 'EditSurveyUsers', 'Users'],
 					autoCreateViewport: true,
 					refs: [{
 						ref: 'viewport',

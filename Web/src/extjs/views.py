@@ -1,6 +1,5 @@
 from django.db import models
-from django.http.response import Http404, HttpResponseBadRequest, HttpResponse,\
-    HttpResponseNotAllowed
+from django.http.response import Http404, HttpResponseBadRequest, HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden
 from django.core import serializers
 import json
 from django.contrib.comments import get_model
@@ -9,12 +8,20 @@ deseralizer = serializers.get_deserializer('extjson')
 
 from extjs.forms import ReadForm
 
+def user_is_staff(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_staff:
+            return view_func(request, *args, **kwargs)
+        return HttpResponseForbidden()
+    return _wrapped_view
+
 def _get_model_or_404(app, model):
     model = models.get_model(app, model)
     if model is None:
         raise Http404()
     return model
 
+@user_is_staff
 def read(request, app, model):
     model = _get_model_or_404(app, model)
     
@@ -29,7 +36,7 @@ def read(request, app, model):
                 print "filter: %s" % filter
                 conditions = {}
                 for condition in filter:
-                    conditions[condition['property']] = condition['value']
+                    conditions[condition['property']] = condition.get('value')
                 query = query.filter(**conditions)
 
             total = query.count()
@@ -55,6 +62,7 @@ def read(request, app, model):
     else:
         return HttpResponseNotAllowed()
 
+@user_is_staff
 def update(request, app, model):
     model = _get_model_or_404(app, model)
     
@@ -69,6 +77,7 @@ def update(request, app, model):
     else:
         return HttpResponseNotAllowed()
 
+@user_is_staff
 def destroy(request, app, model):
     model = _get_model_or_404(app, model)
     
@@ -82,6 +91,7 @@ def destroy(request, app, model):
     else:
         return HttpResponseNotAllowed()
     
+@user_is_staff
 def create(request, app, model):
     model = _get_model_or_404(app, model)
     
@@ -99,9 +109,35 @@ def create(request, app, model):
     else:
         return HttpResponseNotAllowed()
 
+@user_is_staff
 def create_m2m(request, app, model, related_app, related_model):
-    pass
-
+    model = _get_model_or_404(app, model)
+    related_model = _get_model_or_404(related_app, related_model)
+    
+    joining_model = None
+    for field in model._meta.many_to_many:
+        if field.rel.to._meta == related_model._meta:
+            joining_model = field.rel.through
+            break
+    if not joining_model:
+        raise Http404()
+    print joining_model
+    
+    if request.method == "POST":
+        if request.is_ajax():
+            print request.body
+            saved = []
+            for obj in deseralizer(request.body, joining_model):
+                obj.save()
+                saved.append(obj.object)
+            serializer = serializers.get_serializer('extjson')()
+            return HttpResponse(str(serializer.serialize(saved, ensure_ascii=False)), content_type='application/json')
+        else:
+            return HttpResponseBadRequest()
+    else:
+        return HttpResponseNotAllowed()
+    
+@user_is_staff
 def read_m2m(request, app, model, related_app, related_model):
     model = _get_model_or_404(app, model)
     related_model = _get_model_or_404(related_app, related_model)
@@ -126,7 +162,8 @@ def read_m2m(request, app, model, related_app, related_model):
                 print "filter: %s" % filter
                 conditions = {}
                 for condition in filter:
-                    conditions[condition['property']] = condition['value']
+                    if 'property' in condition:
+                        conditions[condition['property']] = condition.get('value')
                 query = query.filter(**conditions)
             
             start = read.cleaned_data['start']
@@ -151,8 +188,30 @@ def read_m2m(request, app, model, related_app, related_model):
     else:
         return HttpResponseNotAllowed()
 
+@user_is_staff
 def update_m2m(request, app, model, related_app, related_model):
     pass
 
+@user_is_staff
 def destroy_m2m(request, app, model, related_app, related_model):
-    pass
+    model = _get_model_or_404(app, model)
+    related_model = _get_model_or_404(related_app, related_model)
+    
+    joining_model = None
+    for field in model._meta.many_to_many:
+        if field.rel.to._meta == related_model._meta:
+            joining_model = field.rel.through
+            break
+    if not joining_model:
+        raise Http404()
+    print joining_model
+    
+    if request.method == "POST":
+        if request.is_ajax():
+            print request.body
+            joining_model.objects.filter(pk__in=[getattr(obj.object, joining_model._meta.pk.name) for obj in deseralizer(request.body, joining_model)]).delete()
+            return HttpResponse()
+        else:
+            return HttpResponseBadRequest()
+    else:
+        return HttpResponseNotAllowed()

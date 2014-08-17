@@ -2,23 +2,47 @@ Ext.define('Survey.view.UserSelectionDialog', {
     extend: 'Ext.window.Window',
     alias : 'widget.userselectiondialog',
     title: I18N.get('select_user'),
-    height: 142,
-    width: 270,
+    height: 400,
+    width: 350,
     layout: 'fit',
     modal: true,
     resizable: false,
     closable: false,
-    items: [
-    ],
+    items: [{
+    	xtype: 'grid',
+        frame: false,
+        store: 'auth.User',
+        listeners : {
+        	added: function () {
+				this.getStore().load();
+			},
+			reconfigure: function(grid, store) {
+				store.load();
+			}
+		},
+        viewConfig: {
+	        emptyText: I18N.get('no_users'),
+            stripeRows: false
+        },
+        columns:[{
+	            text: I18N.get('username'),
+	            dataIndex: 'username',
+	            width: 100,
+	            sortable: false
+	        },{
+	            text: I18N.get('email'),
+	            dataIndex: 'email',
+	            width: 300,
+	            sortable: false
+	        }
+	   	],
+    	flex: 1
+    }],
     buttons: [{
     	itemId: 'ok_button',
-    	text: 'OK',
+    	text: 'OK'
     },{
     	itemId: 'cancel_button',
-    	text: 'Cancel',
-    	handler: function () {
-    		console.log(this);
-    		this.up('.window').close();
-    	}
+    	text: 'Cancel'
     }]
 });

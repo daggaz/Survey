@@ -35,6 +35,7 @@ Ext.define('Survey.view.EditSurveyUsers', {
     	xtype: 'grid',
 		title: I18N.get('assigned_users'),
         frame: true,
+        store: 'auth.User',
         listeners : {
         	added: function () {
 				this.getStore().load();
