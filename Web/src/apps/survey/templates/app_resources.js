@@ -97,5 +97,9 @@
         'confirm_set_active': '{% trans "Are you sure you want make the user active?" %}',
         'confirm_set_inactive': '{% trans "Are you sure you want make this user inactive?" %}',
         'no_users_selected': '{% trans "No users selected" %}',
+        'welcome': '{% trans "Welcome" %}',
+        'welcome_message': '{% trans "Welcome to the UNDP Bangladesh survey portal!" %}',
+        'getting_started': '{% trans "Getting Started" %}',
+        'getting_started_message': '{% trans "Download the survey application for Android:" %}'
 	}
 }

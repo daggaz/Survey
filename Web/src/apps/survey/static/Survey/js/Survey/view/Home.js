@@ -5,5 +5,6 @@ Ext.define('Survey.view.Home', {
 	html: '<h1>' + I18N.get('welcome') + '</h1>' +
 		  '<p>' + I18N.get('welcome_message') + '</p>' +
 		  '<h2>' + I18N.get('getting_started') + '</h2>' +
-		  '<p>' + I18N.get('getting_started_message') + '</p>'
+		  '<p>' + I18N.get('getting_started_message') + '<br />' +
+		  '<a href="/media/static/SurveyApp.apk">Download here</a></p>'
 });
