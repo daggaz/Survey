@@ -1,6 +1,8 @@
 package org.undp.bd.survey.application.activities;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.undp.bd.survey.application.R;
 import org.undp.bd.survey.application.actions.SynchroniseAction;
 import org.undp.bd.survey.application.data.ApplicationData;
@@ -46,8 +48,17 @@ public class Home extends ActionBarActivity {
 		new SynchroniseAction(db) {
 
 			@Override
-			protected void onSuccess() {
-				Toast.makeText(getApplicationContext(), R.string.synchronising_success, Toast.LENGTH_LONG).show();
+			protected void onSuccess(JSONObject data) {
+				int nacks;
+				try {
+					nacks = data.getJSONArray("nacks").length();
+				} catch (JSONException e) {
+					nacks = 0;
+				}
+				if (nacks > 0)
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.synchronising_error) + " " + getResources().getString(R.string.submission_error).replace("{0}", Integer.toString(nacks)) , Toast.LENGTH_LONG).show();
+				else
+					Toast.makeText(getApplicationContext(), R.string.synchronising_success, Toast.LENGTH_LONG).show();
 			}
 			
 			@Override

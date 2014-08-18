@@ -24,8 +24,8 @@ import android.content.Context;
 import android.util.Log;
 
 public class API {
-	public static String API_BASE = "http://undp.grantanamo.com/api"; 
-//	public static String API_BASE = "http://10.0.2.2:8000/api";
+//	public static String API_BASE = "http://undp.grantanamo.com/api"; 
+	public static String API_BASE = "http://10.0.2.2:8000/api";
 	
 	@SuppressWarnings("unused")
 	private static HttpGet get(String url) {

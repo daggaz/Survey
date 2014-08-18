@@ -38,7 +38,7 @@ public abstract class SynchroniseAction {
 		this.database = db.getHelper();
 	}
 
-	protected abstract void onSuccess();
+	protected abstract void onSuccess(JSONObject data);
 	protected abstract void onFailure(FailureType offline, String reason);
 
 	private class SynchroniseTask extends APITask {
@@ -61,7 +61,7 @@ public abstract class SynchroniseAction {
 				processAcknowledgments(data);
 				processSurveys(data);
 				processQuestions(data);
-				SynchroniseAction.this.onSuccess();
+				SynchroniseAction.this.onSuccess(data);
 			} catch (JSONException e) {
 				onFailure(FailureType.API, context.getResources().getString(R.string.synchronising_response_invalid));
 			}

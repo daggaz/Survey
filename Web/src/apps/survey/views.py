@@ -57,12 +57,23 @@ def sync_surveys(request):
     if request.user.is_authenticated():
         responses = json.loads(request.POST['responses'])
         acknowledgments = []
+        nacks = []
         for response in responses:
             print response
             try:
                 uuid = response['uuid']
                 with transaction.atomic():
-                    survey = Survey.objects.get(pk=response['survey_id'])
+                    try:
+                        survey = Survey.objects.get(pk=response['survey_id'])
+                    except Survey.DoesNotExist:
+                        nacks.append({'uuid': uuid, 'reason': 'Survey %s does not exist' % response['survey_id']})
+                        continue
+                    if not survey.is_live:
+                        nacks.append({'uuid': uuid, 'reason': 'Survey "%s" is not live' % survey.title})
+                        continue
+                    if not survey.is_open:
+                        nacks.append({'uuid': uuid, 'reason': 'Survey "%s" is not open' % survey.title})
+                        continue
                     if not survey.submissions.filter(uuid=uuid).exists():
                         submission = Submission()
                         submission.survey = survey
@@ -85,7 +96,8 @@ def sync_surveys(request):
         data = {'status': 'success',
                 'surveys': surveys,
                 'questions': questions,
-                'acknowledgments': acknowledgments
+                'acknowledgments': acknowledgments,
+                'nacks': nacks,
                 }
     else:
         data = {'status': 'failed',
