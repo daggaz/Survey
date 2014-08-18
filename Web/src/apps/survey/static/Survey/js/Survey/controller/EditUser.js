@@ -49,17 +49,20 @@ Ext.define('Survey.controller.EditUser', {
 					console.log("saving " + user.id);
 					console.log(store.getById(user.id))
 					var newUser = user.phantom;
-					if (newUser)
+					if (newUser) {
+						user.set('date_joined', new Date());
+						user.set('last_login', new Date());
 						store.add(user);
+					}
 					if (store.getNewRecords().length > 0 || store.getModifiedRecords().length > 0 || store.getRemovedRecords().length > 0) {
 						store.sync({
 							success: function (rec, op) {
-								saved();
+								this.getUsers().getLayout().setActiveItem("userlist");
 							}.bind(this),
 							failure: this.getController('Main').syncFailure
 						});
 					} else {
-						saved();
+						this.getUsers().getLayout().setActiveItem("userlist");
 					}
 				}
 			}

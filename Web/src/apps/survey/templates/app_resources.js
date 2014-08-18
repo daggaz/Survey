@@ -96,5 +96,6 @@
         'confirm_set_not_staff': '{% trans "Are you sure you want remove administrative rights from this user?" %}',
         'confirm_set_active': '{% trans "Are you sure you want make the user active?" %}',
         'confirm_set_inactive': '{% trans "Are you sure you want make this user inactive?" %}',
+        'no_users_selected': '{% trans "No users selected" %}',
 	}
 }

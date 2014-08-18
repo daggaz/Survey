@@ -4,12 +4,6 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 	init: function() {
 		this.control({
 			'editsurveyusers grid': {
-				added: function () {
-					this.getStore().load();
-				},
-				reconfigure: function(grid, store) {
-					store.load();
-				},
 				selectionchange: function (grid, selected, opts) {
 					if (selected.length == 1) {
 						this.getDeleteButton().enable();
@@ -20,13 +14,37 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 			},
 			'editsurveyusers grid #add_button': {
 				click: function() {
-					this.getUserDialog().show();
+					var controller = this;
+					var users = Ext.create('Survey.store.auth.User', {
+						listeners: {
+							load: function (records, operation, success) {
+								this.filterBy(function (user) {
+									var result = {'value': true};
+									controller.getUserGrid().getStore().each(function (other) {
+										if (user.get('id') == other.get('id'))
+											result['value'] = false;
+									});
+									return result['value'];
+								});
+								controller.getUserDialog().show();
+							}
+						}
+					});
+					controller.getUserDialog().down('grid').reconfigure(users);
 				}.bind(this)
 			},
-			'editsurveyusers grid #remove_button': {
+			'editsurveyusers grid #delete_button': {
 				click: function() {
-//					var question = this.getQuestionGrid().getSelectionModel().getSelection()[0];
-//					this.editQuestion(question);
+					var user = this.getUserGrid().getSelectionModel().getSelection()[0];
+					this.getUserGrid().getStore().remove(user);
+					var remove = [];
+					this.getSurveySurvey_usersStore().each(function (link) {
+						if (link.get('survey') == this.survey.get('id') && link.get('user') == user.get('id'))
+							remove.push(link);
+					}.bind(this));
+					Ext.each(remove, function (link) {
+						this.getSurveySurvey_usersStore().remove(link);
+					}.bind(this));
 				}.bind(this)
 			},
 			'editsurveyusers #cancelButton': {
@@ -40,10 +58,10 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 			'editsurveyusers #saveButton': {
 				click: function () {
 					var store = this.getSurveySurvey_usersStore();
-					debugger;
 					if (store.getNewRecords().length > 0 || store.getModifiedRecords().length > 0 || store.getRemovedRecords().length > 0) {
 						store.sync({
 							success: function (rec, op) {
+								this.getSurveys().down('surveylist').down('grid').getView().refresh();
 								this.getSurveys().getLayout().setActiveItem("surveylist");
 							}.bind(this),
 							failure: this.getController('Main').syncFailure
@@ -80,11 +98,36 @@ Ext.define('Survey.controller.EditSurveyUsers', {
 		});
 	},
 	editSurveyUsers: function(survey) {
+		this.survey = survey;
 		console.log("editing users for: " + survey);
 		this.getUserGrid().getSelectionModel().deselectAll();
-		this.getSurveys().getLayout().setActiveItem("editsurveyusers");
-		this.survey = survey;
-		debugger;
+		
+		var controller = this;
+		this.getSurveySurvey_usersStore().pageSize = null;
+		this.getSurveySurvey_usersStore().load(function (records, operation, success) {
+			var ids = [];
+			Ext.each(records, function (link) {
+				if (link.get('survey') == survey.get('id'))
+					ids.push(link.get('user'));
+			});
+			var userIsAssociated = function (user) {
+				var result = {'value': false};
+				Ext.each(ids, function (id) {
+					if (user.get('id') == id)
+						result['value'] = true;
+				});
+				return result['value'];
+			};
+			var users = Ext.create('Survey.store.auth.User', {
+				listeners: {
+					load: function (records, operation, success) {
+						this.filterBy(userIsAssociated);
+						controller.getSurveys().getLayout().setActiveItem("editsurveyusers");
+					}
+				}
+			});
+			controller.getUserGrid().reconfigure(users);
+		});
 	},
 	refs: [{
 		ref: 'surveys',

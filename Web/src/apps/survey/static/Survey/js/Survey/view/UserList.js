@@ -19,7 +19,7 @@ Ext.define('Survey.view.UserList', {
         loadMask: true,
         frame: true,
         viewConfig: {
-	        emptyText: I18N.get('no_users'),
+	        emptyText: I18N.get('no_users_selected'),
             stripeRows: false
         },
 		listeners : {
