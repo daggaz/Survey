@@ -5,6 +5,7 @@
 # from django.http.response import HttpResponseRedirect, HttpResponse
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.db import transaction
 from django.http.response import HttpResponse
@@ -29,8 +30,8 @@ def app_resources(request):
     return TemplateResponse(request, 'app_resources.js', {})
 
 def api_login(request, staff=False):
-    user = authenticate(username=request.GET.get('username'),
-                        password=request.GET.get('password'),
+    user = authenticate(username=request.REQUEST.get('username'),
+                        password=request.REQUEST.get('password'),
                         )
     if user is not None:
         if user.is_active:
@@ -50,6 +51,32 @@ def api_login(request, staff=False):
     else:
         data = {'status': 'failed',
                 'reason': 'invalid username/password',
+                }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def change_password(request):
+    if request.user.is_authenticated() and request.user.is_staff:
+        try:
+            user = User.objects.get(username=request.POST['username'])
+        except User.DoesNotExist:
+            user
+            data = {'status': 'failed',
+                    'reason': 'user does not exist',
+                    }
+        else:
+            password = request.POST['password']
+            if len(password) >= 5:
+                user.set_password(password)
+                user.save()
+                data = {'status': 'success',
+                        }
+            else:
+                data = {'status': 'failed',
+                        'reason': 'passwords must me at least 5 characters',
+                        }
+    else:
+        data = {'status': 'failed',
+                'reason': 'not authorised',
                 }
     return HttpResponse(json.dumps(data), content_type='application/json')
 

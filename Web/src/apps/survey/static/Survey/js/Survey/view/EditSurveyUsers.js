@@ -54,6 +54,16 @@ Ext.define('Survey.view.EditSurveyUsers', {
 	            width: 100,
 	            sortable: false
 	        },{
+	        	text: I18N.get('first_name'),
+	            dataIndex: 'first_name',
+	            width: 150,
+	            sortable: true
+	        },{
+	        	text: I18N.get('last_name'),
+	            dataIndex: 'last_name',
+	            width: 150,
+	            sortable: true
+	        },{
 	            text: I18N.get('email'),
 	            dataIndex: 'email',
 	            width: 300,

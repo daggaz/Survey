@@ -62,7 +62,7 @@ Ext.define('Survey.view.EditUser', {
             fieldLabel: I18N.get('email'),
 			allowBlank: true,
 			msgTarget: 'under',
-            name: 'email'
+			name: 'email'
         },{
         	xtype: 'checkboxfield',
             boxLabel: I18N.get('staff'),

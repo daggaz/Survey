@@ -107,7 +107,15 @@ Ext.define('Survey.view.UserList', {
 		        icon: Config.media_url + 'Survey/img/tick.png',
 		        text: I18N.get('set_active'),
 		        disabled: true
+		    },{
+		        xtype: 'button',
+		        itemId: 'password_button',
+		        icon: Config.media_url + 'Survey/img/password.png',
+		        text: I18N.get('change_password'),
+		        disabled: true
 		    }]
 		}]
+	},{
+		xtype: 'changepassworddialog',
 	}]
 });

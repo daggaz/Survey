@@ -1,6 +1,6 @@
 Ext.define('Survey.controller.Users', {
 	extend : 'Ext.app.Controller',
-	views: ['Users', 'UserList', 'EditUser'],
+	views: ['Users', 'UserList', 'EditUser', 'ChangePasswordDialog'],
 	getMainView: function() {
 		return this.getUsersView();
 	},
@@ -29,6 +29,7 @@ Ext.define('Survey.controller.Users', {
 						this.getDeleteButton().enable();
 						this.getActiveButton().enable();
 						this.getStaffButton().enable();
+						this.getPasswordButton().enable();
 						
 						this.updateActiveButton(selected[0]);
 						this.updateStaffButton(selected[0]);
@@ -37,6 +38,7 @@ Ext.define('Survey.controller.Users', {
 						this.getDeleteButton().disable();
 						this.getActiveButton().disable();
 						this.getStaffButton().disable();
+						this.getPasswordButton().disable();
 					}
 				}.bind(this),
 				itemdblclick: function(grid, record, item, index, e, eOpts) {
@@ -92,6 +94,55 @@ Ext.define('Survey.controller.Users', {
 						}
 					}, this));
 				}
+			},
+			'userlist grid #password_button': {
+				click: function() {
+					var user = this.getUserGrid().getSelectionModel().getSelection()[0];
+					this.changePassword(user);
+				}
+			},
+			'userlist changepassworddialog form textfield': {
+				specialkey: function (field, e) {
+					if (e.getKey() == e.ENTER)
+						field.up('form').getForm().submit();
+				}
+			},
+			'userlist changepassworddialog form': {
+				changepassword: function(user, password) {
+					Ext.Ajax.request({
+						url: '/api/password/',
+						method: 'POST',
+						params: {username: user.get('username'), password: password},
+						callback: Ext.bind(function (options, success, response) {
+							console.log(response.responseText);
+							if (success) {
+								var result = Ext.decode(response.responseText);
+								if (result.status == "success") {
+									this.getError().hide();
+									this.getPasswordForm().form.reset();
+									this.getPasswordDialog().hide();
+								} else {
+									this.getError().show();
+									this.getError().update(result.reason);
+								}
+							} else {
+								Ext.Msg.show({
+									title: I18N.get('error'),
+									msg: 'Server error',
+			           				icon: Ext.Msg.ERROR,
+			           				buttons: Ext.Msg.OK
+		           				});
+								console.log("login failed");
+							}
+						}, this)
+					});
+				}
+			},
+			'userlist changepassworddialog #cancel_button': {
+				click: function() {
+					this.getPasswordForm().form.reset();
+					this.getPasswordDialog().hide();
+				}
 			}
 		});
 	},
@@ -116,6 +167,15 @@ Ext.define('Survey.controller.Users', {
 	editUser: function(user) {
 		this.getController('EditUser').editUser(user);
 	},
+	changePassword: function(user) {
+		var dialog = this.getPasswordDialog();
+		this.getDialogMessage().update(I18N.get('change_password_message')
+				.replace("{username}", user.get('username'))
+				.replace("{first_name}", user.get('first_name'))
+				.replace("{last_name}", user.get('last_name')));
+		this.getPasswordForm().user = user;
+		dialog.show();
+	},
 	refs: [{
 		ref: 'users',
 		selector: 'users'
@@ -137,6 +197,24 @@ Ext.define('Survey.controller.Users', {
 	},{
 		ref: 'staffButton',
 		selector: 'userlist grid #staff_button'
+	},{
+		ref: 'passwordButton',
+		selector: 'userlist grid #password_button'
+	},{
+		ref: 'passwordDialog',
+		selector: 'userlist changepassworddialog'
+	},{
+		ref: 'dialogMessage',
+		selector: 'userlist changepassworddialog #change_password_message'
+	},{
+		ref: 'passwordForm',
+		selector: 'userlist changepassworddialog #form'
+	},{
+		ref: 'error',
+		selector: 'userlist changepassworddialog #error'
+	},{
+		ref: 'dialogOKButton',
+		selector: 'userlist changepassworddialog #ok_button'
 	}],
 	stores: ['auth.User']
 });

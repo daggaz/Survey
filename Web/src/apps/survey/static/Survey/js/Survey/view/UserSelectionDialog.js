@@ -3,7 +3,7 @@ Ext.define('Survey.view.UserSelectionDialog', {
     alias : 'widget.userselectiondialog',
     title: I18N.get('select_user'),
     height: 400,
-    width: 350,
+    width: 500,
     layout: 'fit',
     modal: true,
     resizable: false,
@@ -29,6 +29,16 @@ Ext.define('Survey.view.UserSelectionDialog', {
 	            dataIndex: 'username',
 	            width: 100,
 	            sortable: false
+	        },{
+	        	text: I18N.get('first_name'),
+	            dataIndex: 'first_name',
+	            width: 150,
+	            sortable: true
+	        },{
+	        	text: I18N.get('last_name'),
+	            dataIndex: 'last_name',
+	            width: 150,
+	            sortable: true
 	        },{
 	            text: I18N.get('email'),
 	            dataIndex: 'email',

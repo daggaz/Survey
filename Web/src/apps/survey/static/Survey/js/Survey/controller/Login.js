@@ -22,7 +22,7 @@ Ext.define('Survey.controller.Login', {
 	loginUser: function(username, password) {
 		Ext.Ajax.request({
 			url: '/api/login/',
-			method: 'GET',
+			method: 'POST',
 			params: {username: username, password: password },
 			callback: Ext.bind(function (options, success, response) {
 				console.log(response.responseText);

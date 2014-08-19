@@ -100,6 +100,11 @@
         'welcome': '{% trans "Welcome" %}',
         'welcome_message': '{% trans "Welcome to the UNDP Bangladesh survey portal!" %}',
         'getting_started': '{% trans "Getting Started" %}',
-        'getting_started_message': '{% trans "Download the survey application for Android:" %}'
+        'getting_started_message': '{% trans "Download the survey application for Android:" %}',
+        'change_password': '{% trans "Change Password" %}',
+        'confirm_password': '{% trans "Confirm password" %}',
+        'change_password_message': '{% trans "Changing password for {username} ({first_name} {last_name}):" %}',
+        'password_to_short': '{% trans "Passwords must be at least 5 characters" %}',
+        'passwords_must_match': '{% trans "Passwords must match" %}',
 	}
 }
