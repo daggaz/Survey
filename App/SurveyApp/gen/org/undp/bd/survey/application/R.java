@@ -1300,13 +1300,11 @@ containing a value of this type.
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
- API 11 theme customizations can go here. 
 
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
     
- API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f0b0083;
         /**  Application theme. 
@@ -1314,7 +1312,6 @@ containing a value of this type.
         public static final int AppTheme=0x7f0b0086;
         public static final int ButtonBar=0x7f0b0089;
         public static final int ButtonBarButton=0x7f0b008a;
-        public static final int FullscreenActionBarStyle=0x7f0b008c;
         public static final int FullscreenTheme=0x7f0b0088;
         /**  ActionBar styles 
          */
@@ -1509,6 +1506,22 @@ containing a value of this type.
         public static final int Widget_AppCompat_ProgressBar=0x7f0b000a;
         public static final int Widget_AppCompat_ProgressBar_Horizontal=0x7f0b0009;
         public static final int Widget_AppCompat_Spinner_DropDown_ActionBar=0x7f0b0022;
+        /** 
+    <style name="FullscreenTheme" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+         */
+        public static final int et=0x7f0b008c;
     }
     public static final class styleable {
         /**  ============================================ 
