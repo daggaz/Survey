@@ -32,7 +32,7 @@ Ext.define('Survey.controller.Login', {
 						this.getError().hide();
 						Survey.getApplication().session_key = result.session_key;
 						console.log("login success: session = " + Survey.getApplication().session_key);
-						Survey.getApplication().getMainController().showView('Surveys', function () {
+						Survey.getApplication().getMainController().showView('Home', function () {
 							Survey.getApplication().getMainController().showHeader();
 						});
 					} else {
