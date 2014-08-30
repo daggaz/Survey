@@ -3,4 +3,4 @@ Web/src/db.sqlite3
 App/SurveyApp/bin/
 App/appcompat_v7/bin/
 .gitignore~
-
+Thumbs.db
