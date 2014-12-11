@@ -2,7 +2,6 @@ from django.db import models
 from django.http.response import Http404, HttpResponseBadRequest, HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden
 from django.core import serializers
 import json
-from django.contrib.comments import get_model
 
 deseralizer = serializers.get_deserializer('extjson')
 
@@ -54,9 +53,9 @@ def read(request, app, model):
             #print query.query
             
             serializer = serializers.get_serializer('extjson')()
-            result = str(serializer.serialize(query, total=total, ensure_ascii=False))
+            result = serializer.serialize(query, total=total, ensure_ascii=False).encode('utf-8')
             print "xxx: %s" % result
-            return HttpResponse(result, content_type='application/json')
+            return HttpResponse(result, content_type='application/json; charset=utf-8')
         else:
             return HttpResponseBadRequest()
     else:
@@ -103,7 +102,8 @@ def create(request, app, model):
                 obj.save()
                 saved.append(obj.object)
             serializer = serializers.get_serializer('extjson')()
-            return HttpResponse(str(serializer.serialize(saved, ensure_ascii=False)), content_type='application/json')
+            result = serializer.serialize(saved, ensure_ascii=False).encode('utf-8')
+            return HttpResponse(result, content_type='application/json; charset=utf-8')
         else:
             return HttpResponseBadRequest()
     else:
@@ -131,7 +131,8 @@ def create_m2m(request, app, model, related_app, related_model):
                 obj.save()
                 saved.append(obj.object)
             serializer = serializers.get_serializer('extjson')()
-            return HttpResponse(str(serializer.serialize(saved, ensure_ascii=False)), content_type='application/json')
+            result = serializer.serialize(saved, ensure_ascii=False).encode('utf-8')
+            return HttpResponse(result, content_type='application/json; charset=utf-8')
         else:
             return HttpResponseBadRequest()
     else:
@@ -180,9 +181,9 @@ def read_m2m(request, app, model, related_app, related_model):
             total = query.count()
             
             serializer = serializers.get_serializer('extjson')()
-            result = str(serializer.serialize(query, total=total, ensure_ascii=False))
+            result = serializer.serialize(query, total=total, ensure_ascii=False).encode('utf-8')
             print "xxx: %s" % result
-            return HttpResponse(result, content_type='application/json')
+            return HttpResponse(result, content_type='application/json; charset=utf-8')
         else:
             return HttpResponseBadRequest()
     else:
