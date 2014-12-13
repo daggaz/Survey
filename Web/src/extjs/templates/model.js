@@ -21,6 +21,9 @@ Ext.define('{{ app_name }}.model.{{ app }}.{{ model }}', {
 			type: 'json',
 			allowSingle: false
 		},
+		pageParam: null,
+		startParam: null,
+		limitParam: null,
 		api: {
 			{% if related_model %}
 			    create  : '{% url 'extjs-m2m-proxy-create' app=app model=source_model related_app=related_app related_model=related_model %}',
